@@ -1,0 +1,1643 @@
+{
+  "schemaVersion": "0.3.0",
+  "asOf": "2026-09-11T16:00:00+08:00",
+  "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+  "dataMode": "DEMO_FIXTURE",
+  "isDemo": true,
+  "primaryEntity": "US",
+  "entities": {
+    "US": {
+      "schemaVersion": "0.3.0",
+      "graphId": "wmos.core.us",
+      "graphVersion": "0.3.0",
+      "asOf": "2026-09-11T16:00:00+08:00",
+      "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+      "dataMode": "DEMO_FIXTURE",
+      "isDemo": true,
+      "entity": "US",
+      "status": "research_candidate",
+      "causalClaim": "curated mechanism hypotheses; activity is not causal attribution",
+      "nodes": [
+        {
+          "id": "global.productivity",
+          "label": "生产率与技术扩散",
+          "layer": "structure",
+          "type": "latent",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "global.order",
+          "label": "贸易与秩序压力",
+          "layer": "order",
+          "type": "latent",
+          "binding": {
+            "entity": "GLOBAL",
+            "dimension": "order",
+            "field": "level"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "GLOBAL",
+            "dimension": "order",
+            "field": "level",
+            "score": 0.8308,
+            "trend": "up",
+            "confidence": 0.7916,
+            "freshness": "stale"
+          }
+        },
+        {
+          "id": "selected.growth",
+          "label": "增长状态",
+          "layer": "cycle",
+          "type": "latent",
+          "binding": {
+            "entity": "selected",
+            "dimension": "growth",
+            "field": "momentum"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "US",
+            "dimension": "growth",
+            "field": "momentum",
+            "score": -0.3601,
+            "trend": "down",
+            "confidence": 0.9202,
+            "freshness": "fresh"
+          }
+        },
+        {
+          "id": "selected.inflation",
+          "label": "通胀状态",
+          "layer": "cycle",
+          "type": "latent",
+          "binding": {
+            "entity": "selected",
+            "dimension": "inflation",
+            "field": "momentum"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "US",
+            "dimension": "inflation",
+            "field": "momentum",
+            "score": 0.274,
+            "trend": "up",
+            "confidence": 0.9112,
+            "freshness": "fresh"
+          }
+        },
+        {
+          "id": "selected.fragility",
+          "label": "资产负债表脆弱性",
+          "layer": "balance_sheet",
+          "type": "latent",
+          "binding": {
+            "entity": "selected",
+            "dimension": "fragility",
+            "field": "level"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "US",
+            "dimension": "fragility",
+            "field": "level",
+            "score": 0.5024,
+            "trend": "up",
+            "confidence": 0.8867,
+            "freshness": "fresh"
+          }
+        },
+        {
+          "id": "selected.liquidity",
+          "label": "政策与金融条件",
+          "layer": "policy",
+          "type": "policy",
+          "binding": {
+            "entity": "selected",
+            "dimension": "liquidity",
+            "field": "level"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "US",
+            "dimension": "liquidity",
+            "field": "level",
+            "score": -0.4647,
+            "trend": "flat",
+            "confidence": 0.9187,
+            "freshness": "fresh"
+          }
+        },
+        {
+          "id": "market.inflation_expectations",
+          "label": "通胀预期",
+          "layer": "expectations",
+          "type": "market",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.equity_growth",
+          "label": "权益增长风险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.real_rate",
+          "label": "实际利率风险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.credit",
+          "label": "信用风险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.inflation",
+          "label": "通胀与商品风险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.monetary_insurance",
+          "label": "货币秩序保险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e.order.inflation",
+          "source": "global.order",
+          "target": "selected.inflation",
+          "relation": "mechanism_hypothesis",
+          "sign": "positive",
+          "shape": "conditional",
+          "strength": 0.55,
+          "confidence": 0.62,
+          "lag": {
+            "minDays": 14,
+            "modeDays": 90,
+            "maxDays": 365
+          },
+          "conditions": [
+            "supply_or_trade_shock_persists"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:dalio-order-supply-channel"
+          ],
+          "invalidation": "核心价格与工资动量持续回落且供给冲击消退",
+          "status": "research_candidate",
+          "activityScore": 0.3317,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.inflation.liquidity",
+          "source": "selected.inflation",
+          "target": "selected.liquidity",
+          "relation": "policy_reaction_hypothesis",
+          "sign": "negative",
+          "shape": "conditional",
+          "strength": 0.7,
+          "confidence": 0.72,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 60,
+            "maxDays": 270
+          },
+          "conditions": [
+            "inflation_above_policy_tolerance"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:policy-reaction-function"
+          ],
+          "invalidation": "政策明确转向增长或金融稳定目标且通胀容忍度上升",
+          "status": "research_candidate",
+          "activityScore": 0.3696,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.liquidity.growth",
+          "source": "selected.liquidity",
+          "target": "selected.growth",
+          "relation": "transmission_hypothesis",
+          "sign": "positive",
+          "shape": "conditional",
+          "strength": 0.65,
+          "confidence": 0.7,
+          "lag": {
+            "minDays": 60,
+            "modeDays": 180,
+            "maxDays": 540
+          },
+          "conditions": [
+            "credit_transmission_operates"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:credit-transmission"
+          ],
+          "invalidation": "金融条件收紧但信用、需求和就业持续改善",
+          "status": "research_candidate",
+          "activityScore": 0.369,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.liquidity.fragility",
+          "source": "selected.liquidity",
+          "target": "selected.fragility",
+          "relation": "refinancing_hypothesis",
+          "sign": "negative",
+          "shape": "nonlinear",
+          "strength": 0.62,
+          "confidence": 0.66,
+          "lag": {
+            "minDays": 30,
+            "modeDays": 180,
+            "maxDays": 730
+          },
+          "conditions": [
+            "refinancing_wall_or_floating_debt"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:debt-service-channel"
+          ],
+          "invalidation": "偿债负担与违约指标在高利率环境下持续改善",
+          "status": "research_candidate",
+          "activityScore": 0.3559,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.fragility.growth",
+          "source": "selected.fragility",
+          "target": "selected.growth",
+          "relation": "balance_sheet_hypothesis",
+          "sign": "negative",
+          "shape": "nonlinear",
+          "strength": 0.66,
+          "confidence": 0.68,
+          "lag": {
+            "minDays": 30,
+            "modeDays": 150,
+            "maxDays": 540
+          },
+          "conditions": [
+            "deleveraging_or_credit_event"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:balance-sheet-cycle"
+          ],
+          "invalidation": "高脆弱性未伴随贷款标准、信用利差或支出恶化",
+          "status": "research_candidate",
+          "activityScore": 0.3571,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.growth.equity",
+          "source": "selected.growth",
+          "target": "factor.equity_growth",
+          "relation": "risk_mapping",
+          "sign": "positive",
+          "shape": "conditional",
+          "strength": 0.72,
+          "confidence": 0.7,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 30,
+            "maxDays": 180
+          },
+          "conditions": [
+            "earnings_revision_channel"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:factor-mapping-v0.1"
+          ],
+          "invalidation": "盈利与权益风险溢价显著脱离增长状态",
+          "status": "research_candidate",
+          "activityScore": 0.3592,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.fragility.credit",
+          "source": "selected.fragility",
+          "target": "factor.credit",
+          "relation": "risk_mapping",
+          "sign": "positive",
+          "shape": "nonlinear",
+          "strength": 0.75,
+          "confidence": 0.68,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 30,
+            "maxDays": 180
+          },
+          "conditions": [
+            "credit_spread_channel"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:factor-mapping-v0.1"
+          ],
+          "invalidation": "信用压力代理与脆弱性长期反向变化",
+          "status": "research_candidate",
+          "activityScore": 0.3653,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.inflation.factor",
+          "source": "selected.inflation",
+          "target": "factor.inflation",
+          "relation": "risk_mapping",
+          "sign": "positive",
+          "shape": "conditional",
+          "strength": 0.7,
+          "confidence": 0.68,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 30,
+            "maxDays": 180
+          },
+          "conditions": [
+            "inflation_surprise_persists"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:factor-mapping-v0.1"
+          ],
+          "invalidation": "通胀风险资产未对持续通胀意外产生正向敏感度",
+          "status": "research_candidate",
+          "activityScore": 0.3301,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.liquidity.realrate",
+          "source": "selected.liquidity",
+          "target": "factor.real_rate",
+          "relation": "risk_mapping",
+          "sign": "negative",
+          "shape": "conditional",
+          "strength": 0.72,
+          "confidence": 0.7,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 14,
+            "maxDays": 90
+          },
+          "conditions": [
+            "market_rate_channel"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:factor-mapping-v0.1"
+          ],
+          "invalidation": "政策金融条件与实际利率风险长期脱钩",
+          "status": "research_candidate",
+          "activityScore": 0.3788,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.order.insurance",
+          "source": "global.order",
+          "target": "factor.monetary_insurance",
+          "relation": "risk_mapping",
+          "sign": "positive",
+          "shape": "nonlinear",
+          "strength": 0.55,
+          "confidence": 0.52,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 90,
+            "maxDays": 730
+          },
+          "conditions": [
+            "monetary_or_sanctions_risk"
+          ],
+          "evidenceGrade": "D",
+          "evidenceRefs": [
+            "research:monetary-order-insurance"
+          ],
+          "invalidation": "秩序压力上升未伴随储备多元化或保险需求",
+          "status": "research_candidate",
+          "activityScore": 0.304,
+          "runtimeStatus": "candidate_only"
+        }
+      ],
+      "paths": [
+        {
+          "id": "path.credit_contraction",
+          "label": "金融收紧 → 脆弱性 → 增长",
+          "edgeIds": [
+            "e.liquidity.fragility",
+            "e.fragility.growth",
+            "e.growth.equity"
+          ],
+          "activityScore": 0.3574,
+          "evidenceGrade": "C"
+        },
+        {
+          "id": "path.supply_policy",
+          "label": "供给冲击 → 政策约束",
+          "edgeIds": [
+            "e.order.inflation",
+            "e.inflation.liquidity",
+            "e.liquidity.growth"
+          ],
+          "activityScore": 0.3568,
+          "evidenceGrade": "C"
+        },
+        {
+          "id": "path.order_insurance",
+          "label": "秩序压力 → 货币保险",
+          "edgeIds": [
+            "e.order.insurance"
+          ],
+          "activityScore": 0.304,
+          "evidenceGrade": "D"
+        }
+      ],
+      "primaryPathId": "path.credit_contraction",
+      "hypotheses": [
+        {
+          "id": "H1",
+          "title": "当前价格压力主要由供给与秩序冲击维持",
+          "status": "active",
+          "confidence": 0.58,
+          "falsification": "核心价格、工资与能源动量连续三个观察期共同回落"
+        },
+        {
+          "id": "H2",
+          "title": "当前价格压力主要来自需求韧性",
+          "status": "competing",
+          "confidence": 0.42,
+          "falsification": "增长与就业持续下行但通胀压力不降"
+        },
+        {
+          "id": "H3",
+          "title": "金融条件尚未有效传导至实体增长",
+          "status": "competing",
+          "confidence": 0.46,
+          "falsification": "信用、就业和消费连续两个观察期同步恶化"
+        }
+      ],
+      "modelVersion": "causal-binding-0.3.0"
+    },
+    "CN": {
+      "schemaVersion": "0.3.0",
+      "graphId": "wmos.core.cn",
+      "graphVersion": "0.3.0",
+      "asOf": "2026-09-11T16:00:00+08:00",
+      "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+      "dataMode": "DEMO_FIXTURE",
+      "isDemo": true,
+      "entity": "CN",
+      "status": "research_candidate",
+      "causalClaim": "curated mechanism hypotheses; activity is not causal attribution",
+      "nodes": [
+        {
+          "id": "global.productivity",
+          "label": "生产率与技术扩散",
+          "layer": "structure",
+          "type": "latent",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "global.order",
+          "label": "贸易与秩序压力",
+          "layer": "order",
+          "type": "latent",
+          "binding": {
+            "entity": "GLOBAL",
+            "dimension": "order",
+            "field": "level"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "GLOBAL",
+            "dimension": "order",
+            "field": "level",
+            "score": 0.8308,
+            "trend": "up",
+            "confidence": 0.7916,
+            "freshness": "stale"
+          }
+        },
+        {
+          "id": "selected.growth",
+          "label": "增长状态",
+          "layer": "cycle",
+          "type": "latent",
+          "binding": {
+            "entity": "selected",
+            "dimension": "growth",
+            "field": "momentum"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "CN",
+            "dimension": "growth",
+            "field": "momentum",
+            "score": -0.1765,
+            "trend": "flat",
+            "confidence": 0.8951,
+            "freshness": "fresh"
+          }
+        },
+        {
+          "id": "selected.inflation",
+          "label": "通胀状态",
+          "layer": "cycle",
+          "type": "latent",
+          "binding": {
+            "entity": "selected",
+            "dimension": "inflation",
+            "field": "momentum"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "CN",
+            "dimension": "inflation",
+            "field": "momentum",
+            "score": 0.3967,
+            "trend": "up",
+            "confidence": 0.8844,
+            "freshness": "fresh"
+          }
+        },
+        {
+          "id": "selected.fragility",
+          "label": "资产负债表脆弱性",
+          "layer": "balance_sheet",
+          "type": "latent",
+          "binding": {
+            "entity": "selected",
+            "dimension": "fragility",
+            "field": "level"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "CN",
+            "dimension": "fragility",
+            "field": "level",
+            "score": 0.6006,
+            "trend": "flat",
+            "confidence": 0.8284,
+            "freshness": "stale"
+          }
+        },
+        {
+          "id": "selected.liquidity",
+          "label": "政策与金融条件",
+          "layer": "policy",
+          "type": "policy",
+          "binding": {
+            "entity": "selected",
+            "dimension": "liquidity",
+            "field": "level"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "CN",
+            "dimension": "liquidity",
+            "field": "level",
+            "score": 0.4122,
+            "trend": "up",
+            "confidence": 0.884,
+            "freshness": "fresh"
+          }
+        },
+        {
+          "id": "market.inflation_expectations",
+          "label": "通胀预期",
+          "layer": "expectations",
+          "type": "market",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.equity_growth",
+          "label": "权益增长风险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.real_rate",
+          "label": "实际利率风险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.credit",
+          "label": "信用风险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.inflation",
+          "label": "通胀与商品风险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.monetary_insurance",
+          "label": "货币秩序保险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e.order.inflation",
+          "source": "global.order",
+          "target": "selected.inflation",
+          "relation": "mechanism_hypothesis",
+          "sign": "positive",
+          "shape": "conditional",
+          "strength": 0.55,
+          "confidence": 0.62,
+          "lag": {
+            "minDays": 14,
+            "modeDays": 90,
+            "maxDays": 365
+          },
+          "conditions": [
+            "supply_or_trade_shock_persists"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:dalio-order-supply-channel"
+          ],
+          "invalidation": "核心价格与工资动量持续回落且供给冲击消退",
+          "status": "research_candidate",
+          "activityScore": 0.3384,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.inflation.liquidity",
+          "source": "selected.inflation",
+          "target": "selected.liquidity",
+          "relation": "policy_reaction_hypothesis",
+          "sign": "negative",
+          "shape": "conditional",
+          "strength": 0.7,
+          "confidence": 0.72,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 60,
+            "maxDays": 270
+          },
+          "conditions": [
+            "inflation_above_policy_tolerance"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:policy-reaction-function"
+          ],
+          "invalidation": "政策明确转向增长或金融稳定目标且通胀容忍度上升",
+          "status": "research_candidate",
+          "activityScore": 0.3666,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.liquidity.growth",
+          "source": "selected.liquidity",
+          "target": "selected.growth",
+          "relation": "transmission_hypothesis",
+          "sign": "positive",
+          "shape": "conditional",
+          "strength": 0.65,
+          "confidence": 0.7,
+          "lag": {
+            "minDays": 60,
+            "modeDays": 180,
+            "maxDays": 540
+          },
+          "conditions": [
+            "credit_transmission_operates"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:credit-transmission"
+          ],
+          "invalidation": "金融条件收紧但信用、需求和就业持续改善",
+          "status": "research_candidate",
+          "activityScore": 0.3369,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.liquidity.fragility",
+          "source": "selected.liquidity",
+          "target": "selected.fragility",
+          "relation": "refinancing_hypothesis",
+          "sign": "negative",
+          "shape": "nonlinear",
+          "strength": 0.62,
+          "confidence": 0.66,
+          "lag": {
+            "minDays": 30,
+            "modeDays": 180,
+            "maxDays": 730
+          },
+          "conditions": [
+            "refinancing_wall_or_floating_debt"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:debt-service-channel"
+          ],
+          "invalidation": "偿债负担与违约指标在高利率环境下持续改善",
+          "status": "research_candidate",
+          "activityScore": 0.3462,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.fragility.growth",
+          "source": "selected.fragility",
+          "target": "selected.growth",
+          "relation": "balance_sheet_hypothesis",
+          "sign": "negative",
+          "shape": "nonlinear",
+          "strength": 0.66,
+          "confidence": 0.68,
+          "lag": {
+            "minDays": 30,
+            "modeDays": 150,
+            "maxDays": 540
+          },
+          "conditions": [
+            "deleveraging_or_credit_event"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:balance-sheet-cycle"
+          ],
+          "invalidation": "高脆弱性未伴随贷款标准、信用利差或支出恶化",
+          "status": "research_candidate",
+          "activityScore": 0.3364,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.growth.equity",
+          "source": "selected.growth",
+          "target": "factor.equity_growth",
+          "relation": "risk_mapping",
+          "sign": "positive",
+          "shape": "conditional",
+          "strength": 0.72,
+          "confidence": 0.7,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 30,
+            "maxDays": 180
+          },
+          "conditions": [
+            "earnings_revision_channel"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:factor-mapping-v0.1"
+          ],
+          "invalidation": "盈利与权益风险溢价显著脱离增长状态",
+          "status": "research_candidate",
+          "activityScore": 0.3159,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.fragility.credit",
+          "source": "selected.fragility",
+          "target": "factor.credit",
+          "relation": "risk_mapping",
+          "sign": "positive",
+          "shape": "nonlinear",
+          "strength": 0.75,
+          "confidence": 0.68,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 30,
+            "maxDays": 180
+          },
+          "conditions": [
+            "credit_spread_channel"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:factor-mapping-v0.1"
+          ],
+          "invalidation": "信用压力代理与脆弱性长期反向变化",
+          "status": "research_candidate",
+          "activityScore": 0.3658,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.inflation.factor",
+          "source": "selected.inflation",
+          "target": "factor.inflation",
+          "relation": "risk_mapping",
+          "sign": "positive",
+          "shape": "conditional",
+          "strength": 0.7,
+          "confidence": 0.68,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 30,
+            "maxDays": 180
+          },
+          "conditions": [
+            "inflation_surprise_persists"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:factor-mapping-v0.1"
+          ],
+          "invalidation": "通胀风险资产未对持续通胀意外产生正向敏感度",
+          "status": "research_candidate",
+          "activityScore": 0.3448,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.liquidity.realrate",
+          "source": "selected.liquidity",
+          "target": "factor.real_rate",
+          "relation": "risk_mapping",
+          "sign": "negative",
+          "shape": "conditional",
+          "strength": 0.72,
+          "confidence": 0.7,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 14,
+            "maxDays": 90
+          },
+          "conditions": [
+            "market_rate_channel"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:factor-mapping-v0.1"
+          ],
+          "invalidation": "政策金融条件与实际利率风险长期脱钩",
+          "status": "research_candidate",
+          "activityScore": 0.3578,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.order.insurance",
+          "source": "global.order",
+          "target": "factor.monetary_insurance",
+          "relation": "risk_mapping",
+          "sign": "positive",
+          "shape": "nonlinear",
+          "strength": 0.55,
+          "confidence": 0.52,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 90,
+            "maxDays": 730
+          },
+          "conditions": [
+            "monetary_or_sanctions_risk"
+          ],
+          "evidenceGrade": "D",
+          "evidenceRefs": [
+            "research:monetary-order-insurance"
+          ],
+          "invalidation": "秩序压力上升未伴随储备多元化或保险需求",
+          "status": "research_candidate",
+          "activityScore": 0.304,
+          "runtimeStatus": "candidate_only"
+        }
+      ],
+      "paths": [
+        {
+          "id": "path.supply_policy",
+          "label": "供给冲击 → 政策约束",
+          "edgeIds": [
+            "e.order.inflation",
+            "e.inflation.liquidity",
+            "e.liquidity.growth"
+          ],
+          "activityScore": 0.3473,
+          "evidenceGrade": "C"
+        },
+        {
+          "id": "path.credit_contraction",
+          "label": "金融收紧 → 脆弱性 → 增长",
+          "edgeIds": [
+            "e.liquidity.fragility",
+            "e.fragility.growth",
+            "e.growth.equity"
+          ],
+          "activityScore": 0.3328,
+          "evidenceGrade": "C"
+        },
+        {
+          "id": "path.order_insurance",
+          "label": "秩序压力 → 货币保险",
+          "edgeIds": [
+            "e.order.insurance"
+          ],
+          "activityScore": 0.304,
+          "evidenceGrade": "D"
+        }
+      ],
+      "primaryPathId": "path.supply_policy",
+      "hypotheses": [
+        {
+          "id": "H1",
+          "title": "当前价格压力主要由供给与秩序冲击维持",
+          "status": "active",
+          "confidence": 0.58,
+          "falsification": "核心价格、工资与能源动量连续三个观察期共同回落"
+        },
+        {
+          "id": "H2",
+          "title": "当前价格压力主要来自需求韧性",
+          "status": "competing",
+          "confidence": 0.42,
+          "falsification": "增长与就业持续下行但通胀压力不降"
+        },
+        {
+          "id": "H3",
+          "title": "金融条件尚未有效传导至实体增长",
+          "status": "competing",
+          "confidence": 0.46,
+          "falsification": "信用、就业和消费连续两个观察期同步恶化"
+        }
+      ],
+      "modelVersion": "causal-binding-0.3.0"
+    },
+    "GLOBAL": {
+      "schemaVersion": "0.3.0",
+      "graphId": "wmos.core.global",
+      "graphVersion": "0.3.0",
+      "asOf": "2026-09-11T16:00:00+08:00",
+      "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+      "dataMode": "DEMO_FIXTURE",
+      "isDemo": true,
+      "entity": "GLOBAL",
+      "status": "research_candidate",
+      "causalClaim": "curated mechanism hypotheses; activity is not causal attribution",
+      "nodes": [
+        {
+          "id": "global.productivity",
+          "label": "生产率与技术扩散",
+          "layer": "structure",
+          "type": "latent",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "global.order",
+          "label": "贸易与秩序压力",
+          "layer": "order",
+          "type": "latent",
+          "binding": {
+            "entity": "GLOBAL",
+            "dimension": "order",
+            "field": "level"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "GLOBAL",
+            "dimension": "order",
+            "field": "level",
+            "score": 0.8308,
+            "trend": "up",
+            "confidence": 0.7916,
+            "freshness": "stale"
+          }
+        },
+        {
+          "id": "selected.growth",
+          "label": "增长状态",
+          "layer": "cycle",
+          "type": "latent",
+          "binding": {
+            "entity": "selected",
+            "dimension": "growth",
+            "field": "momentum"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "GLOBAL",
+            "dimension": "growth",
+            "field": "momentum",
+            "score": -0.3044,
+            "trend": "down",
+            "confidence": 0.8309,
+            "freshness": "fresh"
+          }
+        },
+        {
+          "id": "selected.inflation",
+          "label": "通胀状态",
+          "layer": "cycle",
+          "type": "latent",
+          "binding": {
+            "entity": "selected",
+            "dimension": "inflation",
+            "field": "momentum"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "GLOBAL",
+            "dimension": "inflation",
+            "field": "momentum",
+            "score": 0.2716,
+            "trend": "up",
+            "confidence": 0.8394,
+            "freshness": "fresh"
+          }
+        },
+        {
+          "id": "selected.fragility",
+          "label": "资产负债表脆弱性",
+          "layer": "balance_sheet",
+          "type": "latent",
+          "binding": {
+            "entity": "selected",
+            "dimension": "fragility",
+            "field": "level"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "GLOBAL",
+            "dimension": "fragility",
+            "field": "level",
+            "score": 0.4636,
+            "trend": "up",
+            "confidence": 0.8027,
+            "freshness": "fresh"
+          }
+        },
+        {
+          "id": "selected.liquidity",
+          "label": "政策与金融条件",
+          "layer": "policy",
+          "type": "policy",
+          "binding": {
+            "entity": "selected",
+            "dimension": "liquidity",
+            "field": "level"
+          },
+          "state": {
+            "bindingStatus": "observed_model_state",
+            "entity": "GLOBAL",
+            "dimension": "liquidity",
+            "field": "level",
+            "score": -0.1874,
+            "trend": "flat",
+            "confidence": 0.8121,
+            "freshness": "fresh"
+          }
+        },
+        {
+          "id": "market.inflation_expectations",
+          "label": "通胀预期",
+          "layer": "expectations",
+          "type": "market",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.equity_growth",
+          "label": "权益增长风险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.real_rate",
+          "label": "实际利率风险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.credit",
+          "label": "信用风险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.inflation",
+          "label": "通胀与商品风险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        },
+        {
+          "id": "factor.monetary_insurance",
+          "label": "货币秩序保险",
+          "layer": "portfolio",
+          "type": "portfolio_factor",
+          "assumptionScore": null,
+          "assumptionConfidence": 0.0,
+          "state": {
+            "bindingStatus": "research_assumption",
+            "score": null,
+            "trend": "unknown",
+            "confidence": 0.0,
+            "freshness": "unobserved"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e.order.inflation",
+          "source": "global.order",
+          "target": "selected.inflation",
+          "relation": "mechanism_hypothesis",
+          "sign": "positive",
+          "shape": "conditional",
+          "strength": 0.55,
+          "confidence": 0.62,
+          "lag": {
+            "minDays": 14,
+            "modeDays": 90,
+            "maxDays": 365
+          },
+          "conditions": [
+            "supply_or_trade_shock_persists"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:dalio-order-supply-channel"
+          ],
+          "invalidation": "核心价格与工资动量持续回落且供给冲击消退",
+          "status": "research_candidate",
+          "activityScore": 0.3215,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.inflation.liquidity",
+          "source": "selected.inflation",
+          "target": "selected.liquidity",
+          "relation": "policy_reaction_hypothesis",
+          "sign": "negative",
+          "shape": "conditional",
+          "strength": 0.7,
+          "confidence": 0.72,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 60,
+            "maxDays": 270
+          },
+          "conditions": [
+            "inflation_above_policy_tolerance"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:policy-reaction-function"
+          ],
+          "invalidation": "政策明确转向增长或金融稳定目标且通胀容忍度上升",
+          "status": "research_candidate",
+          "activityScore": 0.313,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.liquidity.growth",
+          "source": "selected.liquidity",
+          "target": "selected.growth",
+          "relation": "transmission_hypothesis",
+          "sign": "positive",
+          "shape": "conditional",
+          "strength": 0.65,
+          "confidence": 0.7,
+          "lag": {
+            "minDays": 60,
+            "modeDays": 180,
+            "maxDays": 540
+          },
+          "conditions": [
+            "credit_transmission_operates"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:credit-transmission"
+          ],
+          "invalidation": "金融条件收紧但信用、需求和就业持续改善",
+          "status": "research_candidate",
+          "activityScore": 0.3061,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.liquidity.fragility",
+          "source": "selected.liquidity",
+          "target": "selected.fragility",
+          "relation": "refinancing_hypothesis",
+          "sign": "negative",
+          "shape": "nonlinear",
+          "strength": 0.62,
+          "confidence": 0.66,
+          "lag": {
+            "minDays": 30,
+            "modeDays": 180,
+            "maxDays": 730
+          },
+          "conditions": [
+            "refinancing_wall_or_floating_debt"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:debt-service-channel"
+          ],
+          "invalidation": "偿债负担与违约指标在高利率环境下持续改善",
+          "status": "research_candidate",
+          "activityScore": 0.2989,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.fragility.growth",
+          "source": "selected.fragility",
+          "target": "selected.growth",
+          "relation": "balance_sheet_hypothesis",
+          "sign": "negative",
+          "shape": "nonlinear",
+          "strength": 0.66,
+          "confidence": 0.68,
+          "lag": {
+            "minDays": 30,
+            "modeDays": 150,
+            "maxDays": 540
+          },
+          "conditions": [
+            "deleveraging_or_credit_event"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:balance-sheet-cycle"
+          ],
+          "invalidation": "高脆弱性未伴随贷款标准、信用利差或支出恶化",
+          "status": "research_candidate",
+          "activityScore": 0.3217,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.growth.equity",
+          "source": "selected.growth",
+          "target": "factor.equity_growth",
+          "relation": "risk_mapping",
+          "sign": "positive",
+          "shape": "conditional",
+          "strength": 0.72,
+          "confidence": 0.7,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 30,
+            "maxDays": 180
+          },
+          "conditions": [
+            "earnings_revision_channel"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:factor-mapping-v0.1"
+          ],
+          "invalidation": "盈利与权益风险溢价显著脱离增长状态",
+          "status": "research_candidate",
+          "activityScore": 0.3203,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.fragility.credit",
+          "source": "selected.fragility",
+          "target": "factor.credit",
+          "relation": "risk_mapping",
+          "sign": "positive",
+          "shape": "nonlinear",
+          "strength": 0.75,
+          "confidence": 0.68,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 30,
+            "maxDays": 180
+          },
+          "conditions": [
+            "credit_spread_channel"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:factor-mapping-v0.1"
+          ],
+          "invalidation": "信用压力代理与脆弱性长期反向变化",
+          "status": "research_candidate",
+          "activityScore": 0.3323,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.inflation.factor",
+          "source": "selected.inflation",
+          "target": "factor.inflation",
+          "relation": "risk_mapping",
+          "sign": "positive",
+          "shape": "conditional",
+          "strength": 0.7,
+          "confidence": 0.68,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 30,
+            "maxDays": 180
+          },
+          "conditions": [
+            "inflation_surprise_persists"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:factor-mapping-v0.1"
+          ],
+          "invalidation": "通胀风险资产未对持续通胀意外产生正向敏感度",
+          "status": "research_candidate",
+          "activityScore": 0.3076,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.liquidity.realrate",
+          "source": "selected.liquidity",
+          "target": "factor.real_rate",
+          "relation": "risk_mapping",
+          "sign": "negative",
+          "shape": "conditional",
+          "strength": 0.72,
+          "confidence": 0.7,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 14,
+            "maxDays": 90
+          },
+          "conditions": [
+            "market_rate_channel"
+          ],
+          "evidenceGrade": "C",
+          "evidenceRefs": [
+            "research:factor-mapping-v0.1"
+          ],
+          "invalidation": "政策金融条件与实际利率风险长期脱钩",
+          "status": "research_candidate",
+          "activityScore": 0.2919,
+          "runtimeStatus": "candidate_only"
+        },
+        {
+          "id": "e.order.insurance",
+          "source": "global.order",
+          "target": "factor.monetary_insurance",
+          "relation": "risk_mapping",
+          "sign": "positive",
+          "shape": "nonlinear",
+          "strength": 0.55,
+          "confidence": 0.52,
+          "lag": {
+            "minDays": 0,
+            "modeDays": 90,
+            "maxDays": 730
+          },
+          "conditions": [
+            "monetary_or_sanctions_risk"
+          ],
+          "evidenceGrade": "D",
+          "evidenceRefs": [
+            "research:monetary-order-insurance"
+          ],
+          "invalidation": "秩序压力上升未伴随储备多元化或保险需求",
+          "status": "research_candidate",
+          "activityScore": 0.304,
+          "runtimeStatus": "candidate_only"
+        }
+      ],
+      "paths": [
+        {
+          "id": "path.credit_contraction",
+          "label": "金融收紧 → 脆弱性 → 增长",
+          "edgeIds": [
+            "e.liquidity.fragility",
+            "e.fragility.growth",
+            "e.growth.equity"
+          ],
+          "activityScore": 0.3136,
+          "evidenceGrade": "C"
+        },
+        {
+          "id": "path.supply_policy",
+          "label": "供给冲击 → 政策约束",
+          "edgeIds": [
+            "e.order.inflation",
+            "e.inflation.liquidity",
+            "e.liquidity.growth"
+          ],
+          "activityScore": 0.3135,
+          "evidenceGrade": "C"
+        },
+        {
+          "id": "path.order_insurance",
+          "label": "秩序压力 → 货币保险",
+          "edgeIds": [
+            "e.order.insurance"
+          ],
+          "activityScore": 0.304,
+          "evidenceGrade": "D"
+        }
+      ],
+      "primaryPathId": "path.credit_contraction",
+      "hypotheses": [
+        {
+          "id": "H1",
+          "title": "当前价格压力主要由供给与秩序冲击维持",
+          "status": "active",
+          "confidence": 0.58,
+          "falsification": "核心价格、工资与能源动量连续三个观察期共同回落"
+        },
+        {
+          "id": "H2",
+          "title": "当前价格压力主要来自需求韧性",
+          "status": "competing",
+          "confidence": 0.42,
+          "falsification": "增长与就业持续下行但通胀压力不降"
+        },
+        {
+          "id": "H3",
+          "title": "金融条件尚未有效传导至实体增长",
+          "status": "competing",
+          "confidence": 0.46,
+          "falsification": "信用、就业和消费连续两个观察期同步恶化"
+        }
+      ],
+      "modelVersion": "causal-binding-0.3.0"
+    }
+  },
+  "modelVersion": "causal-binding-0.3.0"
+}

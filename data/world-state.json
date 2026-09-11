@@ -1,0 +1,1534 @@
+{
+  "schemaVersion": "0.2.0",
+  "asOf": "2026-09-11T16:00:00+08:00",
+  "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+  "dataMode": "DEMO_FIXTURE",
+  "isDemo": true,
+  "primaryEntity": "US",
+  "entities": {
+    "US": {
+      "schemaVersion": "0.2.0",
+      "entity": "US",
+      "asOf": "2026-09-11T16:00:00+08:00",
+      "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+      "dataMode": "DEMO_FIXTURE",
+      "isDemo": true,
+      "dimensions": {
+        "growth": {
+          "level": -0.3662,
+          "momentum": -0.3601,
+          "pressure": 0.3632,
+          "trend": "down",
+          "confidence": 0.9202,
+          "coverage": 1.0,
+          "freshness": "fresh"
+        },
+        "inflation": {
+          "level": 0.687,
+          "momentum": 0.274,
+          "pressure": 0.5218,
+          "trend": "up",
+          "confidence": 0.9112,
+          "coverage": 1.0,
+          "freshness": "fresh"
+        },
+        "fragility": {
+          "level": 0.5024,
+          "momentum": 0.3148,
+          "pressure": 0.4461,
+          "trend": "up",
+          "confidence": 0.8867,
+          "coverage": 1.0,
+          "freshness": "fresh"
+        },
+        "order": {
+          "level": 0.8308,
+          "momentum": 0.4265,
+          "pressure": 0.7095,
+          "trend": "up",
+          "confidence": 0.7916,
+          "coverage": 1.0,
+          "freshness": "stale"
+        },
+        "liquidity": {
+          "level": -0.4647,
+          "momentum": -0.122,
+          "pressure": 0.3276,
+          "confidence": 0.9187,
+          "coverage": 1.0,
+          "trend": "flat",
+          "freshness": "fresh",
+          "subdimensions": {
+            "policy": {
+              "level": -0.5246,
+              "momentum": 0.0,
+              "pressure": 0.3148,
+              "trend": "flat",
+              "confidence": 0.9325,
+              "coverage": 1.0,
+              "freshness": "fresh"
+            },
+            "credit": {
+              "level": -0.4497,
+              "momentum": -0.2133,
+              "pressure": 0.3551,
+              "trend": "down",
+              "confidence": 0.9075,
+              "coverage": 1.0,
+              "freshness": "fresh"
+            },
+            "market": {
+              "level": -0.4047,
+              "momentum": -0.1467,
+              "pressure": 0.3015,
+              "trend": "flat",
+              "confidence": 0.9175,
+              "coverage": 1.0,
+              "freshness": "fresh"
+            }
+          }
+        }
+      },
+      "regime": {
+        "label": "stagflation",
+        "status": "confirmed",
+        "confidence": 0.9112,
+        "probabilities": {
+          "goldilocks": 0.0458,
+          "overheating": 0.1242,
+          "contraction": 0.2596,
+          "stagflation": 0.5704
+        }
+      },
+      "overlays": {
+        "fragility": "medium",
+        "order": "high"
+      },
+      "drivers": [
+        {
+          "indicatorId": "US_L_CREDIT",
+          "label": "银行信贷条件",
+          "dimension": "liquiditycredit",
+          "impact": -0.1877,
+          "qualityStatus": "fresh",
+          "sourceCapability": "A",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "US_F_INTEREST",
+          "label": "财政利息负担",
+          "dimension": "fragility",
+          "impact": 0.1844,
+          "qualityStatus": "fresh",
+          "sourceCapability": "A",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "US_L_MARKET",
+          "label": "市场金融条件",
+          "dimension": "liquiditymarket",
+          "impact": -0.135,
+          "qualityStatus": "fresh",
+          "sourceCapability": "A",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "US_G_INDPRO",
+          "label": "工业生产",
+          "dimension": "growth",
+          "impact": -0.1145,
+          "qualityStatus": "fresh",
+          "sourceCapability": "A",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "GL_O_CONFLICT",
+          "label": "地缘冲突压力",
+          "dimension": "order",
+          "impact": 0.1134,
+          "qualityStatus": "estimated",
+          "sourceCapability": "D",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "US_I_CORE",
+          "label": "核心 PCE",
+          "dimension": "inflation",
+          "impact": 0.107,
+          "qualityStatus": "fresh",
+          "sourceCapability": "A",
+          "explanation": "动量贡献代理（非因果归因）"
+        }
+      ],
+      "dataHealth": {
+        "statusCounts": {
+          "fresh": 13,
+          "stale": 1,
+          "estimated": 1,
+          "missing": 0,
+          "bad": 0
+        },
+        "indicators": [
+          {
+            "indicatorId": "US_G_INDPRO",
+            "label": "工业生产",
+            "entity": "US",
+            "dimension": "growth",
+            "value": 101.2,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.95,
+            "releaseTime": "2026-09-05T13:15:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-05",
+            "source": "FRED/ALFRED:INDPRO",
+            "sourceUrl": "https://fred.stlouisfed.org/series/INDPRO",
+            "sourceCapability": "A",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "US_G_RETAIL",
+            "label": "实际零售需求",
+            "entity": "US",
+            "dimension": "growth",
+            "value": 99.4,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.93,
+            "releaseTime": "2026-09-04T12:30:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-04",
+            "source": "FRED/ALFRED:RSAFS",
+            "sourceUrl": "https://fred.stlouisfed.org/series/RSAFS",
+            "sourceCapability": "A",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "US_G_PAYROLL",
+            "label": "非农就业",
+            "entity": "US",
+            "dimension": "growth",
+            "value": 100.5,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.96,
+            "releaseTime": "2026-09-04T12:30:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-04",
+            "source": "FRED/ALFRED:PAYEMS",
+            "sourceUrl": "https://fred.stlouisfed.org/series/PAYEMS",
+            "sourceCapability": "A",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "US_G_UNRATE",
+            "label": "失业率",
+            "entity": "US",
+            "dimension": "growth",
+            "value": 4.4,
+            "unit": "percent",
+            "qualityStatus": "fresh",
+            "confidence": 0.96,
+            "releaseTime": "2026-09-04T12:30:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-04",
+            "source": "FRED/ALFRED:UNRATE",
+            "sourceUrl": "https://fred.stlouisfed.org/series/UNRATE",
+            "sourceCapability": "A",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "US_I_CORE",
+            "label": "核心 PCE",
+            "entity": "US",
+            "dimension": "inflation",
+            "value": 3.1,
+            "unit": "percent_yoy",
+            "qualityStatus": "fresh",
+            "confidence": 0.96,
+            "releaseTime": "2026-08-28T12:30:00Z",
+            "observationPeriod": "2026-07",
+            "vintageId": "2026-08-28",
+            "source": "FRED/ALFRED:PCEPILFE",
+            "sourceUrl": "https://fred.stlouisfed.org/series/PCEPILFE",
+            "sourceCapability": "A",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "US_I_WAGE",
+            "label": "工资增长",
+            "entity": "US",
+            "dimension": "inflation",
+            "value": 4.0,
+            "unit": "percent_yoy",
+            "qualityStatus": "fresh",
+            "confidence": 0.94,
+            "releaseTime": "2026-09-04T12:30:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-04",
+            "source": "FRED/ALFRED:CES0500000003",
+            "sourceUrl": "https://fred.stlouisfed.org/series/CES0500000003",
+            "sourceCapability": "A",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "US_I_ENERGY",
+            "label": "能源价格",
+            "entity": "US",
+            "dimension": "inflation",
+            "value": 116.0,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.75,
+            "releaseTime": "2026-09-10T21:00:00Z",
+            "observationPeriod": "2026-09-10",
+            "vintageId": "2026-09-10",
+            "source": "OFFICIAL/RESEARCH",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "US_L_POLICY",
+            "label": "政策利率立场",
+            "entity": "US",
+            "dimension": "liquidity_policy",
+            "value": 4.25,
+            "unit": "percent",
+            "qualityStatus": "fresh",
+            "confidence": 0.98,
+            "releaseTime": "2026-09-10T20:00:00Z",
+            "observationPeriod": "2026-09-10",
+            "vintageId": "2026-09-10",
+            "source": "FRED/ALFRED:DFF",
+            "sourceUrl": "https://fred.stlouisfed.org/series/DFF",
+            "sourceCapability": "A",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "US_L_CREDIT",
+            "label": "银行信贷条件",
+            "entity": "US",
+            "dimension": "liquidity_credit",
+            "value": 0.8,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.88,
+            "releaseTime": "2026-08-15T14:00:00Z",
+            "observationPeriod": "2026-Q2",
+            "vintageId": "2026-08-15",
+            "source": "FED:SLOOS",
+            "sourceUrl": null,
+            "sourceCapability": "A",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "US_L_MARKET",
+            "label": "市场金融条件",
+            "entity": "US",
+            "dimension": "liquidity_market",
+            "value": 0.45,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.92,
+            "releaseTime": "2026-09-08T12:00:00Z",
+            "observationPeriod": "2026-09-04",
+            "vintageId": "2026-09-08",
+            "source": "FRED:NFCI",
+            "sourceUrl": "https://fred.stlouisfed.org/series/NFCI",
+            "sourceCapability": "A",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "US_F_CREDIT",
+            "label": "高收益信用利差",
+            "entity": "US",
+            "dimension": "fragility",
+            "value": 3.7,
+            "unit": "percent",
+            "qualityStatus": "fresh",
+            "confidence": 0.9,
+            "releaseTime": "2026-09-10T21:00:00Z",
+            "observationPeriod": "2026-09-10",
+            "vintageId": "2026-09-10",
+            "source": "FRED:BAMLH0A0HYM2",
+            "sourceUrl": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "US_F_INTEREST",
+            "label": "财政利息负担",
+            "entity": "US",
+            "dimension": "fragility",
+            "value": 3.4,
+            "unit": "percent_gdp",
+            "qualityStatus": "fresh",
+            "confidence": 0.91,
+            "releaseTime": "2026-08-30T12:00:00Z",
+            "observationPeriod": "2026-Q2",
+            "vintageId": "2026-08-30",
+            "source": "BEA/TREASURY",
+            "sourceUrl": null,
+            "sourceCapability": "A",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "US_F_PROPERTY",
+            "label": "房地产融资脆弱性",
+            "entity": "US",
+            "dimension": "fragility",
+            "value": 0.6,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.78,
+            "releaseTime": "2026-08-31T12:00:00Z",
+            "observationPeriod": "2026-07",
+            "vintageId": "2026-08-31",
+            "source": "OFFICIAL/RESEARCH",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "GL_O_TRADE",
+            "label": "贸易限制压力",
+            "entity": "GLOBAL",
+            "dimension": "order",
+            "value": 1.1,
+            "unit": "index",
+            "qualityStatus": "stale",
+            "confidence": 0.374,
+            "releaseTime": "2026-08-25T12:00:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-08-25",
+            "source": "WTO/RESEARCH",
+            "sourceUrl": "https://www.wto.org/",
+            "sourceCapability": "D",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "GL_O_CONFLICT",
+            "label": "地缘冲突压力",
+            "entity": "GLOBAL",
+            "dimension": "order",
+            "value": 1.3,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.455,
+            "releaseTime": "2026-09-09T12:00:00Z",
+            "observationPeriod": "2026-09-08",
+            "vintageId": "2026-09-09",
+            "source": "MULTISOURCE/RESEARCH",
+            "sourceUrl": null,
+            "sourceCapability": "D",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          }
+        ]
+      },
+      "quality": {
+        "observationCount": 15,
+        "catalogCount": 15,
+        "snapshotHash": "2506560b4724464f56c31fa6737d1d162cc54999f6e8291d84a223ccefa2212d"
+      },
+      "modelVersion": "state-regime-0.2.0"
+    },
+    "CN": {
+      "schemaVersion": "0.2.0",
+      "entity": "CN",
+      "asOf": "2026-09-11T16:00:00+08:00",
+      "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+      "dataMode": "DEMO_FIXTURE",
+      "isDemo": true,
+      "dimensions": {
+        "growth": {
+          "level": -0.4144,
+          "momentum": -0.1765,
+          "pressure": 0.2954,
+          "trend": "flat",
+          "confidence": 0.8951,
+          "coverage": 1.0,
+          "freshness": "fresh"
+        },
+        "inflation": {
+          "level": -0.5297,
+          "momentum": 0.3967,
+          "pressure": -0.1591,
+          "trend": "up",
+          "confidence": 0.8844,
+          "coverage": 1.0,
+          "freshness": "fresh"
+        },
+        "fragility": {
+          "level": 0.6006,
+          "momentum": 0.0878,
+          "pressure": 0.4468,
+          "trend": "flat",
+          "confidence": 0.8284,
+          "coverage": 1.0,
+          "freshness": "stale"
+        },
+        "order": {
+          "level": 0.8308,
+          "momentum": 0.4265,
+          "pressure": 0.7095,
+          "trend": "up",
+          "confidence": 0.7916,
+          "coverage": 1.0,
+          "freshness": "stale"
+        },
+        "liquidity": {
+          "level": 0.4122,
+          "momentum": 0.2553,
+          "pressure": -0.3494,
+          "confidence": 0.884,
+          "coverage": 1.0,
+          "trend": "up",
+          "freshness": "fresh",
+          "subdimensions": {
+            "policy": {
+              "level": 0.5139,
+              "momentum": 0.32,
+              "pressure": -0.4363,
+              "trend": "up",
+              "confidence": 0.9075,
+              "coverage": 1.0,
+              "freshness": "fresh"
+            },
+            "credit": {
+              "level": 0.3935,
+              "momentum": 0.2583,
+              "pressure": -0.3394,
+              "trend": "up",
+              "confidence": 0.9075,
+              "coverage": 1.0,
+              "freshness": "fresh"
+            },
+            "market": {
+              "level": 0.2998,
+              "momentum": 0.16,
+              "pressure": -0.2439,
+              "trend": "flat",
+              "confidence": 0.8135,
+              "coverage": 1.0,
+              "freshness": "fresh"
+            }
+          }
+        }
+      },
+      "regime": {
+        "label": "stagflation",
+        "status": "confirmed",
+        "confidence": 0.8844,
+        "probabilities": {
+          "goldilocks": 0.0788,
+          "overheating": 0.3205,
+          "contraction": 0.1021,
+          "stagflation": 0.4986
+        }
+      },
+      "overlays": {
+        "fragility": "medium",
+        "order": "high"
+      },
+      "drivers": [
+        {
+          "indicatorId": "CN_L_POLICY",
+          "label": "政策流动性",
+          "dimension": "liquiditypolicy",
+          "impact": 0.2816,
+          "qualityStatus": "fresh",
+          "sourceCapability": "B",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "CN_L_CREDIT",
+          "label": "社会融资信用脉冲",
+          "dimension": "liquiditycredit",
+          "impact": 0.2273,
+          "qualityStatus": "fresh",
+          "sourceCapability": "B",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "CN_I_PPI",
+          "label": "生产者价格",
+          "dimension": "inflation",
+          "impact": 0.1591,
+          "qualityStatus": "fresh",
+          "sourceCapability": "B",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "CN_I_CPI_CORE",
+          "label": "核心 CPI",
+          "dimension": "inflation",
+          "impact": 0.1433,
+          "qualityStatus": "fresh",
+          "sourceCapability": "B",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "GL_O_CONFLICT",
+          "label": "地缘冲突压力",
+          "dimension": "order",
+          "impact": 0.1134,
+          "qualityStatus": "estimated",
+          "sourceCapability": "D",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "CN_L_MARKET",
+          "label": "市场金融条件",
+          "dimension": "liquiditymarket",
+          "impact": 0.0806,
+          "qualityStatus": "estimated",
+          "sourceCapability": "C",
+          "explanation": "动量贡献代理（非因果归因）"
+        }
+      ],
+      "dataHealth": {
+        "statusCounts": {
+          "fresh": 9,
+          "stale": 2,
+          "estimated": 4,
+          "missing": 0,
+          "bad": 0
+        },
+        "indicators": [
+          {
+            "indicatorId": "CN_G_PMI_NEW",
+            "label": "PMI 新订单",
+            "entity": "CN",
+            "dimension": "growth",
+            "value": 49.2,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.88,
+            "releaseTime": "2026-08-31T01:30:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-08-31",
+            "source": "NBS",
+            "sourceUrl": "https://data.stats.gov.cn/",
+            "sourceCapability": "B",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "CN_G_IP",
+            "label": "工业增加值",
+            "entity": "CN",
+            "dimension": "growth",
+            "value": 4.3,
+            "unit": "percent_yoy",
+            "qualityStatus": "fresh",
+            "confidence": 0.88,
+            "releaseTime": "2026-08-15T02:00:00Z",
+            "observationPeriod": "2026-07",
+            "vintageId": "2026-08-15",
+            "source": "NBS",
+            "sourceUrl": "https://data.stats.gov.cn/",
+            "sourceCapability": "B",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "CN_G_RETAIL",
+            "label": "社会消费品零售",
+            "entity": "CN",
+            "dimension": "growth",
+            "value": 3.4,
+            "unit": "percent_yoy",
+            "qualityStatus": "fresh",
+            "confidence": 0.88,
+            "releaseTime": "2026-08-15T02:00:00Z",
+            "observationPeriod": "2026-07",
+            "vintageId": "2026-08-15",
+            "source": "NBS",
+            "sourceUrl": "https://data.stats.gov.cn/",
+            "sourceCapability": "B",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "CN_G_UNEMP",
+            "label": "城镇调查失业率",
+            "entity": "CN",
+            "dimension": "growth",
+            "value": 5.2,
+            "unit": "percent",
+            "qualityStatus": "fresh",
+            "confidence": 0.85,
+            "releaseTime": "2026-08-15T02:00:00Z",
+            "observationPeriod": "2026-07",
+            "vintageId": "2026-08-15",
+            "source": "NBS",
+            "sourceUrl": "https://data.stats.gov.cn/",
+            "sourceCapability": "B",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "CN_I_CPI_CORE",
+            "label": "核心 CPI",
+            "entity": "CN",
+            "dimension": "inflation",
+            "value": 0.9,
+            "unit": "percent_yoy",
+            "qualityStatus": "fresh",
+            "confidence": 0.88,
+            "releaseTime": "2026-09-09T01:30:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-09",
+            "source": "NBS",
+            "sourceUrl": "https://data.stats.gov.cn/",
+            "sourceCapability": "B",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "CN_I_PPI",
+            "label": "生产者价格",
+            "entity": "CN",
+            "dimension": "inflation",
+            "value": -1.4,
+            "unit": "percent_yoy",
+            "qualityStatus": "fresh",
+            "confidence": 0.88,
+            "releaseTime": "2026-09-09T01:30:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-09",
+            "source": "NBS",
+            "sourceUrl": "https://data.stats.gov.cn/",
+            "sourceCapability": "B",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "CN_I_WAGE",
+            "label": "服务与工资压力代理",
+            "entity": "CN",
+            "dimension": "inflation",
+            "value": 0.4,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.49,
+            "releaseTime": "2026-08-20T02:00:00Z",
+            "observationPeriod": "2026-Q2",
+            "vintageId": "2026-08-20",
+            "source": "NBS/RESEARCH",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "CN_L_POLICY",
+            "label": "政策流动性",
+            "entity": "CN",
+            "dimension": "liquidity_policy",
+            "value": 0.8,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.88,
+            "releaseTime": "2026-09-05T09:00:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-05",
+            "source": "PBOC",
+            "sourceUrl": "https://www.pbc.gov.cn/",
+            "sourceCapability": "B",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "CN_L_CREDIT",
+            "label": "社会融资信用脉冲",
+            "entity": "CN",
+            "dimension": "liquidity_credit",
+            "value": 0.7,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.88,
+            "releaseTime": "2026-09-11T08:00:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-11",
+            "source": "PBOC",
+            "sourceUrl": "https://www.pbc.gov.cn/",
+            "sourceCapability": "B",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "CN_L_MARKET",
+            "label": "市场金融条件",
+            "entity": "CN",
+            "dimension": "liquidity_market",
+            "value": 0.4,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.504,
+            "releaseTime": "2026-09-10T09:00:00Z",
+            "observationPeriod": "2026-09-10",
+            "vintageId": "2026-09-10",
+            "source": "PBOC/RESEARCH",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "CN_F_PROPERTY",
+            "label": "房地产抵押品周期",
+            "entity": "CN",
+            "dimension": "fragility",
+            "value": 1.1,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.86,
+            "releaseTime": "2026-08-15T02:00:00Z",
+            "observationPeriod": "2026-07",
+            "vintageId": "2026-08-15",
+            "source": "NBS",
+            "sourceUrl": "https://data.stats.gov.cn/",
+            "sourceCapability": "B",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "CN_F_LGFV",
+            "label": "地方财政与融资压力",
+            "entity": "CN",
+            "dimension": "fragility",
+            "value": 1.4,
+            "unit": "index",
+            "qualityStatus": "stale",
+            "confidence": 0.374,
+            "releaseTime": "2026-08-19T02:00:00Z",
+            "observationPeriod": "2026-Q2",
+            "vintageId": "2026-08-19",
+            "source": "MOF/RESEARCH",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "CN_F_CREDIT",
+            "label": "企业信用压力",
+            "entity": "CN",
+            "dimension": "fragility",
+            "value": 0.7,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.504,
+            "releaseTime": "2026-09-05T09:00:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-05",
+            "source": "PBOC/RESEARCH",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "GL_O_TRADE",
+            "label": "贸易限制压力",
+            "entity": "GLOBAL",
+            "dimension": "order",
+            "value": 1.1,
+            "unit": "index",
+            "qualityStatus": "stale",
+            "confidence": 0.374,
+            "releaseTime": "2026-08-25T12:00:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-08-25",
+            "source": "WTO/RESEARCH",
+            "sourceUrl": "https://www.wto.org/",
+            "sourceCapability": "D",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "GL_O_CONFLICT",
+            "label": "地缘冲突压力",
+            "entity": "GLOBAL",
+            "dimension": "order",
+            "value": 1.3,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.455,
+            "releaseTime": "2026-09-09T12:00:00Z",
+            "observationPeriod": "2026-09-08",
+            "vintageId": "2026-09-09",
+            "source": "MULTISOURCE/RESEARCH",
+            "sourceUrl": null,
+            "sourceCapability": "D",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          }
+        ]
+      },
+      "quality": {
+        "observationCount": 15,
+        "catalogCount": 15,
+        "snapshotHash": "ad6e01fb7ea1ac4fb9e6641492c1fe7b8d1906801b75d189dffe01c52126ad96"
+      },
+      "modelVersion": "state-regime-0.2.0"
+    },
+    "GLOBAL": {
+      "schemaVersion": "0.2.0",
+      "entity": "GLOBAL",
+      "asOf": "2026-09-11T16:00:00+08:00",
+      "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+      "dataMode": "DEMO_FIXTURE",
+      "isDemo": true,
+      "dimensions": {
+        "growth": {
+          "level": -0.3603,
+          "momentum": -0.3044,
+          "pressure": 0.3323,
+          "trend": "down",
+          "confidence": 0.8309,
+          "coverage": 1.0,
+          "freshness": "fresh"
+        },
+        "inflation": {
+          "level": 0.5219,
+          "momentum": 0.2716,
+          "pressure": 0.4218,
+          "trend": "up",
+          "confidence": 0.8394,
+          "coverage": 1.0,
+          "freshness": "fresh"
+        },
+        "fragility": {
+          "level": 0.4636,
+          "momentum": 0.2023,
+          "pressure": 0.3852,
+          "trend": "up",
+          "confidence": 0.8027,
+          "coverage": 1.0,
+          "freshness": "fresh"
+        },
+        "order": {
+          "level": 0.8308,
+          "momentum": 0.4265,
+          "pressure": 0.7095,
+          "trend": "up",
+          "confidence": 0.7916,
+          "coverage": 1.0,
+          "freshness": "stale"
+        },
+        "liquidity": {
+          "level": -0.1874,
+          "momentum": -0.0293,
+          "pressure": 0.1241,
+          "confidence": 0.8121,
+          "coverage": 1.0,
+          "trend": "flat",
+          "freshness": "fresh",
+          "subdimensions": {
+            "policy": {
+              "level": -0.2998,
+              "momentum": -0.0533,
+              "pressure": 0.2012,
+              "trend": "flat",
+              "confidence": 0.8135,
+              "coverage": 1.0,
+              "freshness": "fresh"
+            },
+            "credit": {
+              "level": -0.1499,
+              "momentum": -0.0267,
+              "pressure": 0.1006,
+              "trend": "flat",
+              "confidence": 0.81,
+              "coverage": 1.0,
+              "freshness": "fresh"
+            },
+            "market": {
+              "level": -0.0899,
+              "momentum": 0.0,
+              "pressure": 0.0539,
+              "trend": "flat",
+              "confidence": 0.8135,
+              "coverage": 1.0,
+              "freshness": "fresh"
+            }
+          }
+        }
+      },
+      "regime": {
+        "label": "stagflation",
+        "status": "confirmed",
+        "confidence": 0.8309,
+        "probabilities": {
+          "goldilocks": 0.0714,
+          "overheating": 0.176,
+          "contraction": 0.2294,
+          "stagflation": 0.5233
+        }
+      },
+      "overlays": {
+        "fragility": "medium",
+        "order": "high"
+      },
+      "drivers": [
+        {
+          "indicatorId": "GL_I_ENERGY",
+          "label": "全球能源价格",
+          "dimension": "inflation",
+          "impact": 0.1274,
+          "qualityStatus": "fresh",
+          "sourceCapability": "B",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "GL_O_CONFLICT",
+          "label": "地缘冲突压力",
+          "dimension": "order",
+          "impact": 0.1134,
+          "qualityStatus": "estimated",
+          "sourceCapability": "D",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "GL_G_TRADE",
+          "label": "全球贸易量",
+          "dimension": "growth",
+          "impact": -0.0812,
+          "qualityStatus": "fresh",
+          "sourceCapability": "B",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "GL_O_TRADE",
+          "label": "贸易限制压力",
+          "dimension": "order",
+          "impact": 0.0651,
+          "qualityStatus": "stale",
+          "sourceCapability": "D",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "GL_G_IP",
+          "label": "全球工业动量",
+          "dimension": "growth",
+          "impact": -0.0504,
+          "qualityStatus": "estimated",
+          "sourceCapability": "C",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "indicatorId": "GL_F_SOVEREIGN",
+          "label": "主权债务压力",
+          "dimension": "fragility",
+          "impact": 0.0457,
+          "qualityStatus": "estimated",
+          "sourceCapability": "C",
+          "explanation": "动量贡献代理（非因果归因）"
+        }
+      ],
+      "dataHealth": {
+        "statusCounts": {
+          "fresh": 2,
+          "stale": 1,
+          "estimated": 12,
+          "missing": 0,
+          "bad": 0
+        },
+        "indicators": [
+          {
+            "indicatorId": "GL_G_IP",
+            "label": "全球工业动量",
+            "entity": "GLOBAL",
+            "dimension": "growth",
+            "value": 99.2,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.525,
+            "releaseTime": "2026-09-01T00:00:00Z",
+            "observationPeriod": "2026-07",
+            "vintageId": "2026-09-01",
+            "source": "WORLD_BANK/OECD",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "GL_G_TRADE",
+            "label": "全球贸易量",
+            "entity": "GLOBAL",
+            "dimension": "growth",
+            "value": 99.0,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.84,
+            "releaseTime": "2026-08-30T00:00:00Z",
+            "observationPeriod": "2026-07",
+            "vintageId": "2026-08-30",
+            "source": "WTO",
+            "sourceUrl": "https://www.wto.org/",
+            "sourceCapability": "B",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "GL_G_SERVICES",
+            "label": "全球服务业动量",
+            "entity": "GLOBAL",
+            "dimension": "growth",
+            "value": 49.7,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.49,
+            "releaseTime": "2026-09-05T00:00:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-05",
+            "source": "OFFICIAL_AGGREGATE",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "GL_G_LABOR",
+            "label": "全球就业动量",
+            "entity": "GLOBAL",
+            "dimension": "growth",
+            "value": 99.5,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.49,
+            "releaseTime": "2026-08-25T00:00:00Z",
+            "observationPeriod": "2026-Q2",
+            "vintageId": "2026-08-25",
+            "source": "ILO/OECD",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "GL_I_CORE",
+            "label": "全球核心价格压力",
+            "entity": "GLOBAL",
+            "dimension": "inflation",
+            "value": 3.0,
+            "unit": "percent_yoy",
+            "qualityStatus": "estimated",
+            "confidence": 0.518,
+            "releaseTime": "2026-09-01T00:00:00Z",
+            "observationPeriod": "2026-07",
+            "vintageId": "2026-09-01",
+            "source": "OECD/IMF",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "GL_I_ENERGY",
+            "label": "全球能源价格",
+            "entity": "GLOBAL",
+            "dimension": "inflation",
+            "value": 112.0,
+            "unit": "index",
+            "qualityStatus": "fresh",
+            "confidence": 0.84,
+            "releaseTime": "2026-09-05T00:00:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-05",
+            "source": "WORLD_BANK_COMMODITIES",
+            "sourceUrl": null,
+            "sourceCapability": "B",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "GL_I_WAGE",
+            "label": "全球工资压力",
+            "entity": "GLOBAL",
+            "dimension": "inflation",
+            "value": 3.5,
+            "unit": "percent_yoy",
+            "qualityStatus": "estimated",
+            "confidence": 0.49,
+            "releaseTime": "2026-08-25T00:00:00Z",
+            "observationPeriod": "2026-Q2",
+            "vintageId": "2026-08-25",
+            "source": "ILO/OECD",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "GL_L_POLICY",
+            "label": "全球政策流动性",
+            "entity": "GLOBAL",
+            "dimension": "liquidity_policy",
+            "value": -0.4,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.504,
+            "releaseTime": "2026-09-01T00:00:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-09-01",
+            "source": "BIS/IMF",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "GL_L_CREDIT",
+            "label": "全球信用条件",
+            "entity": "GLOBAL",
+            "dimension": "liquidity_credit",
+            "value": -0.2,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.49,
+            "releaseTime": "2026-08-20T00:00:00Z",
+            "observationPeriod": "2026-Q2",
+            "vintageId": "2026-08-20",
+            "source": "BIS",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "GL_L_MARKET",
+            "label": "全球市场流动性",
+            "entity": "GLOBAL",
+            "dimension": "liquidity_market",
+            "value": -0.1,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.504,
+            "releaseTime": "2026-09-08T00:00:00Z",
+            "observationPeriod": "2026-09-05",
+            "vintageId": "2026-09-08",
+            "source": "BIS/RESEARCH",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "GL_F_SOVEREIGN",
+            "label": "主权债务压力",
+            "entity": "GLOBAL",
+            "dimension": "fragility",
+            "value": 0.9,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.504,
+            "releaseTime": "2026-08-20T00:00:00Z",
+            "observationPeriod": "2026-Q2",
+            "vintageId": "2026-08-20",
+            "source": "IMF",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "GL_F_CREDIT",
+            "label": "全球信用压力",
+            "entity": "GLOBAL",
+            "dimension": "fragility",
+            "value": 0.6,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.504,
+            "releaseTime": "2026-09-08T00:00:00Z",
+            "observationPeriod": "2026-09-05",
+            "vintageId": "2026-09-08",
+            "source": "BIS",
+            "sourceUrl": null,
+            "sourceCapability": "C",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "GL_F_TRADE",
+            "label": "贸易融资压力",
+            "entity": "GLOBAL",
+            "dimension": "fragility",
+            "value": 0.8,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.42,
+            "releaseTime": "2026-08-28T00:00:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-08-28",
+            "source": "WTO/RESEARCH",
+            "sourceUrl": null,
+            "sourceCapability": "D",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          },
+          {
+            "indicatorId": "GL_O_TRADE",
+            "label": "贸易限制压力",
+            "entity": "GLOBAL",
+            "dimension": "order",
+            "value": 1.1,
+            "unit": "index",
+            "qualityStatus": "stale",
+            "confidence": 0.374,
+            "releaseTime": "2026-08-25T12:00:00Z",
+            "observationPeriod": "2026-08",
+            "vintageId": "2026-08-25",
+            "source": "WTO/RESEARCH",
+            "sourceUrl": "https://www.wto.org/",
+            "sourceCapability": "D",
+            "releaseTimeBasis": "official",
+            "isEstimated": false
+          },
+          {
+            "indicatorId": "GL_O_CONFLICT",
+            "label": "地缘冲突压力",
+            "entity": "GLOBAL",
+            "dimension": "order",
+            "value": 1.3,
+            "unit": "index",
+            "qualityStatus": "estimated",
+            "confidence": 0.455,
+            "releaseTime": "2026-09-09T12:00:00Z",
+            "observationPeriod": "2026-09-08",
+            "vintageId": "2026-09-09",
+            "source": "MULTISOURCE/RESEARCH",
+            "sourceUrl": null,
+            "sourceCapability": "D",
+            "releaseTimeBasis": "official",
+            "isEstimated": true
+          }
+        ]
+      },
+      "quality": {
+        "observationCount": 15,
+        "catalogCount": 15,
+        "snapshotHash": "1cfcd91fef15401c21fbd8888fe4b3207032ca509fcfaf3eceff841f9e2fa85d"
+      },
+      "modelVersion": "state-regime-0.2.0"
+    }
+  },
+  "history": {
+    "dataMode": "DEMO_FIXTURE",
+    "points": [
+      {
+        "period": "2025-10",
+        "US": {
+          "growth": 0.2,
+          "inflation": 0.45
+        },
+        "CN": {
+          "growth": -0.55,
+          "inflation": -0.8
+        },
+        "GLOBAL": {
+          "growth": 0.05,
+          "inflation": 0.3
+        }
+      },
+      {
+        "period": "2025-11",
+        "US": {
+          "growth": 0.32,
+          "inflation": 0.32
+        },
+        "CN": {
+          "growth": -0.48,
+          "inflation": -0.76
+        },
+        "GLOBAL": {
+          "growth": 0.12,
+          "inflation": 0.22
+        }
+      },
+      {
+        "period": "2025-12",
+        "US": {
+          "growth": 0.12,
+          "inflation": 0.22
+        },
+        "CN": {
+          "growth": -0.42,
+          "inflation": -0.7
+        },
+        "GLOBAL": {
+          "growth": 0.02,
+          "inflation": 0.18
+        }
+      },
+      {
+        "period": "2026-01",
+        "US": {
+          "growth": 0.42,
+          "inflation": 0.02
+        },
+        "CN": {
+          "growth": -0.35,
+          "inflation": -0.66
+        },
+        "GLOBAL": {
+          "growth": 0.2,
+          "inflation": 0.05
+        }
+      },
+      {
+        "period": "2026-02",
+        "US": {
+          "growth": 0.62,
+          "inflation": -0.12
+        },
+        "CN": {
+          "growth": -0.32,
+          "inflation": -0.6
+        },
+        "GLOBAL": {
+          "growth": 0.34,
+          "inflation": -0.05
+        }
+      },
+      {
+        "period": "2026-03",
+        "US": {
+          "growth": 0.48,
+          "inflation": 0.02
+        },
+        "CN": {
+          "growth": -0.26,
+          "inflation": -0.5
+        },
+        "GLOBAL": {
+          "growth": 0.25,
+          "inflation": 0.04
+        }
+      },
+      {
+        "period": "2026-04",
+        "US": {
+          "growth": 0.66,
+          "inflation": 0.16
+        },
+        "CN": {
+          "growth": -0.24,
+          "inflation": -0.44
+        },
+        "GLOBAL": {
+          "growth": 0.4,
+          "inflation": 0.12
+        }
+      },
+      {
+        "period": "2026-05",
+        "US": {
+          "growth": 0.38,
+          "inflation": 0.28
+        },
+        "CN": {
+          "growth": -0.3,
+          "inflation": -0.36
+        },
+        "GLOBAL": {
+          "growth": 0.22,
+          "inflation": 0.24
+        }
+      },
+      {
+        "period": "2026-06",
+        "US": {
+          "growth": 0.08,
+          "inflation": 0.18
+        },
+        "CN": {
+          "growth": -0.38,
+          "inflation": -0.3
+        },
+        "GLOBAL": {
+          "growth": -0.02,
+          "inflation": 0.2
+        }
+      },
+      {
+        "period": "2026-07",
+        "US": {
+          "growth": -0.18,
+          "inflation": 0.42
+        },
+        "CN": {
+          "growth": -0.44,
+          "inflation": -0.22
+        },
+        "GLOBAL": {
+          "growth": -0.18,
+          "inflation": 0.36
+        }
+      },
+      {
+        "period": "2026-08",
+        "US": {
+          "growth": -0.12,
+          "inflation": 0.52
+        },
+        "CN": {
+          "growth": -0.46,
+          "inflation": -0.16
+        },
+        "GLOBAL": {
+          "growth": -0.22,
+          "inflation": 0.44
+        }
+      },
+      {
+        "period": "2026-09",
+        "US": {
+          "growth": -0.4,
+          "inflation": 0.7
+        },
+        "CN": {
+          "growth": -0.55,
+          "inflation": -0.55
+        },
+        "GLOBAL": {
+          "growth": -0.48,
+          "inflation": 0.66
+        }
+      }
+    ]
+  },
+  "quality": {
+    "observationCount": 41,
+    "catalogCount": 41,
+    "snapshotHash": "df3a333c986eca2e2215ac968ce85d927fa0fe2444c7ca259d938635fb91a5ec",
+    "statusCounts": {
+      "fresh": 24,
+      "stale": 2,
+      "estimated": 15,
+      "missing": 0,
+      "bad": 0
+    }
+  },
+  "modelVersion": "state-regime-0.2.0"
+}

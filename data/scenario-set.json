@@ -1,0 +1,651 @@
+{
+  "schemaVersion": "0.3.0",
+  "asOf": "2026-09-11T16:00:00+08:00",
+  "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+  "dataMode": "DEMO_FIXTURE",
+  "isDemo": true,
+  "primaryEntity": "US",
+  "entities": {
+    "US": {
+      "schemaVersion": "0.3.0",
+      "scenarioSetId": "wmos.medium.us",
+      "scenarioVersion": "0.3.0",
+      "asOf": "2026-09-11T16:00:00+08:00",
+      "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+      "dataMode": "DEMO_FIXTURE",
+      "isDemo": true,
+      "entity": "US",
+      "horizon": "6—18 months",
+      "updateMode": "bounded_bayesian_like_suggestion",
+      "requiresHumanApproval": true,
+      "probabilityClaim": "research judgment support; not an objective posterior",
+      "scenarios": [
+        {
+          "id": "soft_landing",
+          "slot": "BASE",
+          "title": "低速增长，通胀缓慢回落",
+          "definition": "增长保持正值，价格压力下降，政策约束逐步缓解。",
+          "priorProbability": 0.4,
+          "trigger": "增长动量企稳且通胀动量连续回落",
+          "invalidation": "信用压力显著恶化或通胀动量重新上行",
+          "impactRange": {
+            "low": -0.03,
+            "high": 0.06,
+            "mode": "research_assumption"
+          },
+          "rawModelProbability": 0.2226,
+          "suggestedProbability": 0.32,
+          "deltaPp": -8.0,
+          "contributions": [
+            {
+              "feature": "growth.momentum",
+              "value": -0.3601,
+              "weight": 0.8,
+              "impact": -0.2881
+            },
+            {
+              "feature": "inflation.momentum",
+              "value": 0.274,
+              "weight": -0.8,
+              "impact": -0.2192
+            },
+            {
+              "feature": "order.level",
+              "value": 0.8308,
+              "weight": -0.2,
+              "impact": -0.1662
+            },
+            {
+              "feature": "fragility.level",
+              "value": 0.5024,
+              "weight": -0.3,
+              "impact": -0.1507
+            },
+            {
+              "feature": "liquidity.level",
+              "value": -0.4647,
+              "weight": 0.2,
+              "impact": -0.0929
+            }
+          ],
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "credit_contraction",
+          "slot": "BEAR",
+          "title": "需求收缩触发信用压力",
+          "definition": "高实际利率与再融资压力转化为信用、就业和支出的同步收缩。",
+          "priorProbability": 0.25,
+          "trigger": "贷款条件、信用利差与就业动量同步恶化",
+          "invalidation": "信用脉冲转正且增长动量连续改善",
+          "impactRange": {
+            "low": -0.12,
+            "high": -0.05,
+            "mode": "research_assumption"
+          },
+          "rawModelProbability": 0.3219,
+          "suggestedProbability": 0.2869,
+          "deltaPp": 3.7,
+          "contributions": [
+            {
+              "feature": "fragility.level",
+              "value": 0.5024,
+              "weight": 0.7,
+              "impact": 0.3517
+            },
+            {
+              "feature": "liquidity.level",
+              "value": -0.4647,
+              "weight": -0.7,
+              "impact": 0.3253
+            },
+            {
+              "feature": "growth.momentum",
+              "value": -0.3601,
+              "weight": -0.9,
+              "impact": 0.3241
+            },
+            {
+              "feature": "inflation.momentum",
+              "value": 0.274,
+              "weight": -0.2,
+              "impact": -0.0548
+            }
+          ],
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "stagflation",
+          "slot": "REINFLATION",
+          "title": "增长减速，价格压力再起",
+          "definition": "供给和秩序冲击阻碍去通胀，政策无法及时缓解增长压力。",
+          "priorProbability": 0.35,
+          "trigger": "增长动量下行且通胀、工资或供给价格动量上行",
+          "invalidation": "供给冲击逆转且核心价格压力连续回落",
+          "impactRange": {
+            "low": -0.09,
+            "high": -0.02,
+            "mode": "research_assumption"
+          },
+          "rawModelProbability": 0.4555,
+          "suggestedProbability": 0.3931,
+          "deltaPp": 4.3,
+          "contributions": [
+            {
+              "feature": "order.level",
+              "value": 0.8308,
+              "weight": 0.4,
+              "impact": 0.3323
+            },
+            {
+              "feature": "growth.momentum",
+              "value": -0.3601,
+              "weight": -0.7,
+              "impact": 0.2521
+            },
+            {
+              "feature": "inflation.momentum",
+              "value": 0.274,
+              "weight": 0.9,
+              "impact": 0.2466
+            },
+            {
+              "feature": "liquidity.level",
+              "value": -0.4647,
+              "weight": -0.3,
+              "impact": 0.1394
+            }
+          ],
+          "approvalStatus": "pending_human_review"
+        }
+      ],
+      "overlays": [
+        {
+          "id": "productivity_upside",
+          "title": "生产率上行超预期",
+          "definition": "企业采用与单位成本改善形成广泛生产率传导。",
+          "trigger": "生产率与单位成本的正式数据确认",
+          "invalidation": "资本开支未转化为采用率或效率",
+          "suggestedProbability": 0.25,
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "order_shock",
+          "title": "秩序与供应链冲击",
+          "definition": "贸易、制裁、能源或安全事件产生非线性损失。",
+          "trigger": "冲击持续并传导至物流、能源或资本限制",
+          "invalidation": "冲突降级且供应链价格快速正常化",
+          "suggestedProbability": 0.2963,
+          "approvalStatus": "pending_human_review"
+        }
+      ],
+      "evidence": [
+        {
+          "scenarioId": "credit_contraction",
+          "feature": "fragility.level",
+          "impact": 0.3517,
+          "reliability": 0.8867,
+          "independenceCluster": "fragility"
+        },
+        {
+          "scenarioId": "stagflation",
+          "feature": "order.level",
+          "impact": 0.3323,
+          "reliability": 0.7916,
+          "independenceCluster": "order"
+        },
+        {
+          "scenarioId": "credit_contraction",
+          "feature": "liquidity.level",
+          "impact": 0.3253,
+          "reliability": 0.9187,
+          "independenceCluster": "liquidity"
+        },
+        {
+          "scenarioId": "soft_landing",
+          "feature": "growth.momentum",
+          "impact": -0.2881,
+          "reliability": 0.9202,
+          "independenceCluster": "growth"
+        },
+        {
+          "scenarioId": "soft_landing",
+          "feature": "inflation.momentum",
+          "impact": -0.2192,
+          "reliability": 0.9112,
+          "independenceCluster": "inflation"
+        }
+      ],
+      "constraints": {
+        "maxSingleRunShift": 0.08,
+        "minimumProbability": 0.1,
+        "maximumProbability": 0.7,
+        "independenceDiscount": "cluster-level; one leading item displayed per feature cluster"
+      },
+      "modelVersion": "scenario-suggestion-0.3.0"
+    },
+    "CN": {
+      "schemaVersion": "0.3.0",
+      "scenarioSetId": "wmos.medium.cn",
+      "scenarioVersion": "0.3.0",
+      "asOf": "2026-09-11T16:00:00+08:00",
+      "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+      "dataMode": "DEMO_FIXTURE",
+      "isDemo": true,
+      "entity": "CN",
+      "horizon": "6—18 months",
+      "updateMode": "bounded_bayesian_like_suggestion",
+      "requiresHumanApproval": true,
+      "probabilityClaim": "research judgment support; not an objective posterior",
+      "scenarios": [
+        {
+          "id": "soft_landing",
+          "slot": "BASE",
+          "title": "低速增长，通胀缓慢回落",
+          "definition": "增长保持正值，价格压力下降，政策约束逐步缓解。",
+          "priorProbability": 0.4,
+          "trigger": "增长动量企稳且通胀动量连续回落",
+          "invalidation": "信用压力显著恶化或通胀动量重新上行",
+          "impactRange": {
+            "low": -0.03,
+            "high": 0.06,
+            "mode": "research_assumption"
+          },
+          "rawModelProbability": 0.2775,
+          "suggestedProbability": 0.32,
+          "deltaPp": -8.0,
+          "contributions": [
+            {
+              "feature": "inflation.momentum",
+              "value": 0.3967,
+              "weight": -0.8,
+              "impact": -0.3174
+            },
+            {
+              "feature": "fragility.level",
+              "value": 0.6006,
+              "weight": -0.3,
+              "impact": -0.1802
+            },
+            {
+              "feature": "order.level",
+              "value": 0.8308,
+              "weight": -0.2,
+              "impact": -0.1662
+            },
+            {
+              "feature": "growth.momentum",
+              "value": -0.1765,
+              "weight": 0.8,
+              "impact": -0.1412
+            },
+            {
+              "feature": "liquidity.level",
+              "value": 0.4122,
+              "weight": 0.2,
+              "impact": 0.0824
+            }
+          ],
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "credit_contraction",
+          "slot": "BEAR",
+          "title": "需求收缩触发信用压力",
+          "definition": "高实际利率与再融资压力转化为信用、就业和支出的同步收缩。",
+          "priorProbability": 0.25,
+          "trigger": "贷款条件、信用利差与就业动量同步恶化",
+          "invalidation": "信用脉冲转正且增长动量连续改善",
+          "impactRange": {
+            "low": -0.12,
+            "high": -0.05,
+            "mode": "research_assumption"
+          },
+          "rawModelProbability": 0.2641,
+          "suggestedProbability": 0.2589,
+          "deltaPp": 0.9,
+          "contributions": [
+            {
+              "feature": "fragility.level",
+              "value": 0.6006,
+              "weight": 0.7,
+              "impact": 0.4204
+            },
+            {
+              "feature": "liquidity.level",
+              "value": 0.4122,
+              "weight": -0.7,
+              "impact": -0.2885
+            },
+            {
+              "feature": "growth.momentum",
+              "value": -0.1765,
+              "weight": -0.9,
+              "impact": 0.1588
+            },
+            {
+              "feature": "inflation.momentum",
+              "value": 0.3967,
+              "weight": -0.2,
+              "impact": -0.0793
+            }
+          ],
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "stagflation",
+          "slot": "REINFLATION",
+          "title": "增长减速，价格压力再起",
+          "definition": "供给和秩序冲击阻碍去通胀，政策无法及时缓解增长压力。",
+          "priorProbability": 0.35,
+          "trigger": "增长动量下行且通胀、工资或供给价格动量上行",
+          "invalidation": "供给冲击逆转且核心价格压力连续回落",
+          "impactRange": {
+            "low": -0.09,
+            "high": -0.02,
+            "mode": "research_assumption"
+          },
+          "rawModelProbability": 0.4584,
+          "suggestedProbability": 0.4211,
+          "deltaPp": 7.1,
+          "contributions": [
+            {
+              "feature": "inflation.momentum",
+              "value": 0.3967,
+              "weight": 0.9,
+              "impact": 0.357
+            },
+            {
+              "feature": "order.level",
+              "value": 0.8308,
+              "weight": 0.4,
+              "impact": 0.3323
+            },
+            {
+              "feature": "liquidity.level",
+              "value": 0.4122,
+              "weight": -0.3,
+              "impact": -0.1237
+            },
+            {
+              "feature": "growth.momentum",
+              "value": -0.1765,
+              "weight": -0.7,
+              "impact": 0.1235
+            }
+          ],
+          "approvalStatus": "pending_human_review"
+        }
+      ],
+      "overlays": [
+        {
+          "id": "productivity_upside",
+          "title": "生产率上行超预期",
+          "definition": "企业采用与单位成本改善形成广泛生产率传导。",
+          "trigger": "生产率与单位成本的正式数据确认",
+          "invalidation": "资本开支未转化为采用率或效率",
+          "suggestedProbability": 0.25,
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "order_shock",
+          "title": "秩序与供应链冲击",
+          "definition": "贸易、制裁、能源或安全事件产生非线性损失。",
+          "trigger": "冲击持续并传导至物流、能源或资本限制",
+          "invalidation": "冲突降级且供应链价格快速正常化",
+          "suggestedProbability": 0.2963,
+          "approvalStatus": "pending_human_review"
+        }
+      ],
+      "evidence": [
+        {
+          "scenarioId": "credit_contraction",
+          "feature": "fragility.level",
+          "impact": 0.4204,
+          "reliability": 0.8284,
+          "independenceCluster": "fragility"
+        },
+        {
+          "scenarioId": "stagflation",
+          "feature": "inflation.momentum",
+          "impact": 0.357,
+          "reliability": 0.8844,
+          "independenceCluster": "inflation"
+        },
+        {
+          "scenarioId": "stagflation",
+          "feature": "order.level",
+          "impact": 0.3323,
+          "reliability": 0.7916,
+          "independenceCluster": "order"
+        },
+        {
+          "scenarioId": "credit_contraction",
+          "feature": "liquidity.level",
+          "impact": -0.2885,
+          "reliability": 0.884,
+          "independenceCluster": "liquidity"
+        }
+      ],
+      "constraints": {
+        "maxSingleRunShift": 0.08,
+        "minimumProbability": 0.1,
+        "maximumProbability": 0.7,
+        "independenceDiscount": "cluster-level; one leading item displayed per feature cluster"
+      },
+      "modelVersion": "scenario-suggestion-0.3.0"
+    },
+    "GLOBAL": {
+      "schemaVersion": "0.3.0",
+      "scenarioSetId": "wmos.medium.global",
+      "scenarioVersion": "0.3.0",
+      "asOf": "2026-09-11T16:00:00+08:00",
+      "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+      "dataMode": "DEMO_FIXTURE",
+      "isDemo": true,
+      "entity": "GLOBAL",
+      "horizon": "6—18 months",
+      "updateMode": "bounded_bayesian_like_suggestion",
+      "requiresHumanApproval": true,
+      "probabilityClaim": "research judgment support; not an objective posterior",
+      "scenarios": [
+        {
+          "id": "soft_landing",
+          "slot": "BASE",
+          "title": "低速增长，通胀缓慢回落",
+          "definition": "增长保持正值，价格压力下降，政策约束逐步缓解。",
+          "priorProbability": 0.4,
+          "trigger": "增长动量企稳且通胀动量连续回落",
+          "invalidation": "信用压力显著恶化或通胀动量重新上行",
+          "impactRange": {
+            "low": -0.03,
+            "high": 0.06,
+            "mode": "research_assumption"
+          },
+          "rawModelProbability": 0.2467,
+          "suggestedProbability": 0.32,
+          "deltaPp": -8.0,
+          "contributions": [
+            {
+              "feature": "growth.momentum",
+              "value": -0.3044,
+              "weight": 0.8,
+              "impact": -0.2435
+            },
+            {
+              "feature": "inflation.momentum",
+              "value": 0.2716,
+              "weight": -0.8,
+              "impact": -0.2173
+            },
+            {
+              "feature": "order.level",
+              "value": 0.8308,
+              "weight": -0.2,
+              "impact": -0.1662
+            },
+            {
+              "feature": "fragility.level",
+              "value": 0.4636,
+              "weight": -0.3,
+              "impact": -0.1391
+            },
+            {
+              "feature": "liquidity.level",
+              "value": -0.1874,
+              "weight": 0.2,
+              "impact": -0.0375
+            }
+          ],
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "credit_contraction",
+          "slot": "BEAR",
+          "title": "需求收缩触发信用压力",
+          "definition": "高实际利率与再融资压力转化为信用、就业和支出的同步收缩。",
+          "priorProbability": 0.25,
+          "trigger": "贷款条件、信用利差与就业动量同步恶化",
+          "invalidation": "信用脉冲转正且增长动量连续改善",
+          "impactRange": {
+            "low": -0.12,
+            "high": -0.05,
+            "mode": "research_assumption"
+          },
+          "rawModelProbability": 0.2999,
+          "suggestedProbability": 0.2776,
+          "deltaPp": 2.8,
+          "contributions": [
+            {
+              "feature": "fragility.level",
+              "value": 0.4636,
+              "weight": 0.7,
+              "impact": 0.3245
+            },
+            {
+              "feature": "growth.momentum",
+              "value": -0.3044,
+              "weight": -0.9,
+              "impact": 0.274
+            },
+            {
+              "feature": "liquidity.level",
+              "value": -0.1874,
+              "weight": -0.7,
+              "impact": 0.1312
+            },
+            {
+              "feature": "inflation.momentum",
+              "value": 0.2716,
+              "weight": -0.2,
+              "impact": -0.0543
+            }
+          ],
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "stagflation",
+          "slot": "REINFLATION",
+          "title": "增长减速，价格压力再起",
+          "definition": "供给和秩序冲击阻碍去通胀，政策无法及时缓解增长压力。",
+          "priorProbability": 0.35,
+          "trigger": "增长动量下行且通胀、工资或供给价格动量上行",
+          "invalidation": "供给冲击逆转且核心价格压力连续回落",
+          "impactRange": {
+            "low": -0.09,
+            "high": -0.02,
+            "mode": "research_assumption"
+          },
+          "rawModelProbability": 0.4534,
+          "suggestedProbability": 0.4024,
+          "deltaPp": 5.2,
+          "contributions": [
+            {
+              "feature": "order.level",
+              "value": 0.8308,
+              "weight": 0.4,
+              "impact": 0.3323
+            },
+            {
+              "feature": "inflation.momentum",
+              "value": 0.2716,
+              "weight": 0.9,
+              "impact": 0.2444
+            },
+            {
+              "feature": "growth.momentum",
+              "value": -0.3044,
+              "weight": -0.7,
+              "impact": 0.2131
+            },
+            {
+              "feature": "liquidity.level",
+              "value": -0.1874,
+              "weight": -0.3,
+              "impact": 0.0562
+            }
+          ],
+          "approvalStatus": "pending_human_review"
+        }
+      ],
+      "overlays": [
+        {
+          "id": "productivity_upside",
+          "title": "生产率上行超预期",
+          "definition": "企业采用与单位成本改善形成广泛生产率传导。",
+          "trigger": "生产率与单位成本的正式数据确认",
+          "invalidation": "资本开支未转化为采用率或效率",
+          "suggestedProbability": 0.25,
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "order_shock",
+          "title": "秩序与供应链冲击",
+          "definition": "贸易、制裁、能源或安全事件产生非线性损失。",
+          "trigger": "冲击持续并传导至物流、能源或资本限制",
+          "invalidation": "冲突降级且供应链价格快速正常化",
+          "suggestedProbability": 0.2963,
+          "approvalStatus": "pending_human_review"
+        }
+      ],
+      "evidence": [
+        {
+          "scenarioId": "stagflation",
+          "feature": "order.level",
+          "impact": 0.3323,
+          "reliability": 0.7916,
+          "independenceCluster": "order"
+        },
+        {
+          "scenarioId": "credit_contraction",
+          "feature": "fragility.level",
+          "impact": 0.3245,
+          "reliability": 0.8027,
+          "independenceCluster": "fragility"
+        },
+        {
+          "scenarioId": "credit_contraction",
+          "feature": "growth.momentum",
+          "impact": 0.274,
+          "reliability": 0.8309,
+          "independenceCluster": "growth"
+        },
+        {
+          "scenarioId": "stagflation",
+          "feature": "inflation.momentum",
+          "impact": 0.2444,
+          "reliability": 0.8394,
+          "independenceCluster": "inflation"
+        }
+      ],
+      "constraints": {
+        "maxSingleRunShift": 0.08,
+        "minimumProbability": 0.1,
+        "maximumProbability": 0.7,
+        "independenceDiscount": "cluster-level; one leading item displayed per feature cluster"
+      },
+      "modelVersion": "scenario-suggestion-0.3.0"
+    }
+  },
+  "modelVersion": "scenario-suggestion-0.3.0"
+}

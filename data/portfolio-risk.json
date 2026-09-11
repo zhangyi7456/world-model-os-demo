@@ -1,0 +1,741 @@
+{
+  "schemaVersion": "0.4.0",
+  "portfolioId": "household-core",
+  "portfolioVersion": "0.1.0",
+  "asOf": "2026-09-11T16:00:00+08:00",
+  "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+  "dataMode": "DEMO_FIXTURE",
+  "isDemo": true,
+  "baseCurrency": "USD",
+  "capitalWeights": [
+    {
+      "assetId": "global_equity",
+      "label": "权益",
+      "weight": 0.44,
+      "liquidityDays": 1,
+      "mappingMethod": "asset_class_prior",
+      "confidence": 0.82
+    },
+    {
+      "assetId": "nominal_bonds",
+      "label": "名义久期",
+      "weight": 0.22,
+      "liquidityDays": 1,
+      "mappingMethod": "contractual",
+      "confidence": 0.9
+    },
+    {
+      "assetId": "gold_real_assets",
+      "label": "黄金 / 实物",
+      "weight": 0.12,
+      "liquidityDays": 2,
+      "mappingMethod": "structural_mapping",
+      "confidence": 0.76
+    },
+    {
+      "assetId": "cash",
+      "label": "现金",
+      "weight": 0.14,
+      "liquidityDays": 0,
+      "mappingMethod": "contractual",
+      "confidence": 0.95
+    },
+    {
+      "assetId": "other",
+      "label": "其他",
+      "weight": 0.08,
+      "liquidityDays": 12,
+      "mappingMethod": "manual_low_confidence",
+      "confidence": 0.58
+    }
+  ],
+  "factorExposures": [
+    {
+      "factorId": "equity",
+      "label": "权益系统风险",
+      "beta": 0.472
+    },
+    {
+      "factorId": "nominal_duration",
+      "label": "名义久期",
+      "beta": 0.22
+    },
+    {
+      "factorId": "real_rate",
+      "label": "实际利率下行",
+      "beta": 0.308
+    },
+    {
+      "factorId": "credit",
+      "label": "信用风险",
+      "beta": 0.084
+    },
+    {
+      "factorId": "inflation_commodity",
+      "label": "通胀 / 商品",
+      "beta": 0.042
+    },
+    {
+      "factorId": "usd",
+      "label": "美元",
+      "beta": -0.065
+    },
+    {
+      "factorId": "china_equity",
+      "label": "中国权益特异风险",
+      "beta": 0.126
+    }
+  ],
+  "covarianceViews": {
+    "normal": {
+      "volatility": {
+        "equity": 0.18,
+        "nominal_duration": 0.09,
+        "real_rate": 0.07,
+        "credit": 0.1,
+        "inflation_commodity": 0.13,
+        "usd": 0.09,
+        "china_equity": 0.22
+      },
+      "correlation": [
+        [
+          1.0,
+          0.15,
+          0.125,
+          0.275,
+          0.1,
+          -0.175,
+          0.325
+        ],
+        [
+          0.15,
+          1.0,
+          0.075,
+          0.165,
+          0.06,
+          -0.105,
+          0.195
+        ],
+        [
+          0.125,
+          0.075,
+          1.0,
+          0.1375,
+          0.05,
+          -0.0875,
+          0.1625
+        ],
+        [
+          0.275,
+          0.165,
+          0.1375,
+          1.0,
+          0.11,
+          -0.1925,
+          0.3575
+        ],
+        [
+          0.1,
+          0.06,
+          0.05,
+          0.11,
+          1.0,
+          -0.07,
+          0.13
+        ],
+        [
+          -0.175,
+          -0.105,
+          -0.0875,
+          -0.1925,
+          -0.07,
+          1.0,
+          -0.2275
+        ],
+        [
+          0.325,
+          0.195,
+          0.1625,
+          0.3575,
+          0.13,
+          -0.2275,
+          1.0
+        ]
+      ],
+      "covariance": [
+        [
+          0.0324,
+          0.00243,
+          0.001575,
+          0.00495,
+          0.00234,
+          -0.002835,
+          0.01287
+        ],
+        [
+          0.00243,
+          0.0081,
+          0.000473,
+          0.001485,
+          0.000702,
+          -0.000851,
+          0.003861
+        ],
+        [
+          0.001575,
+          0.000472,
+          0.0049,
+          0.000963,
+          0.000455,
+          -0.000551,
+          0.002503
+        ],
+        [
+          0.00495,
+          0.001485,
+          0.000963,
+          0.01,
+          0.00143,
+          -0.001733,
+          0.007865
+        ],
+        [
+          0.00234,
+          0.000702,
+          0.000455,
+          0.00143,
+          0.0169,
+          -0.000819,
+          0.003718
+        ],
+        [
+          -0.002835,
+          -0.000851,
+          -0.000551,
+          -0.001733,
+          -0.000819,
+          0.0081,
+          -0.004504
+        ],
+        [
+          0.01287,
+          0.003861,
+          0.002503,
+          0.007865,
+          0.003718,
+          -0.004504,
+          0.0484
+        ]
+      ],
+      "estimation": "versioned one-common-driver shrinkage fixture"
+    },
+    "stress": {
+      "volatility": {
+        "equity": 0.32,
+        "nominal_duration": 0.16,
+        "real_rate": 0.14,
+        "credit": 0.22,
+        "inflation_commodity": 0.22,
+        "usd": 0.15,
+        "china_equity": 0.38
+      },
+      "correlation": [
+        [
+          1.0,
+          0.56,
+          0.48,
+          0.68,
+          0.44,
+          -0.4,
+          0.72
+        ],
+        [
+          0.56,
+          1.0,
+          0.42,
+          0.595,
+          0.385,
+          -0.35,
+          0.63
+        ],
+        [
+          0.48,
+          0.42,
+          1.0,
+          0.51,
+          0.33,
+          -0.3,
+          0.54
+        ],
+        [
+          0.68,
+          0.595,
+          0.51,
+          1.0,
+          0.4675,
+          -0.425,
+          0.765
+        ],
+        [
+          0.44,
+          0.385,
+          0.33,
+          0.4675,
+          1.0,
+          -0.275,
+          0.495
+        ],
+        [
+          -0.4,
+          -0.35,
+          -0.3,
+          -0.425,
+          -0.275,
+          1.0,
+          -0.45
+        ],
+        [
+          0.72,
+          0.63,
+          0.54,
+          0.765,
+          0.495,
+          -0.45,
+          1.0
+        ]
+      ],
+      "covariance": [
+        [
+          0.1024,
+          0.028672,
+          0.021504,
+          0.047872,
+          0.030976,
+          -0.0192,
+          0.087552
+        ],
+        [
+          0.028672,
+          0.0256,
+          0.009408,
+          0.020944,
+          0.013552,
+          -0.0084,
+          0.038304
+        ],
+        [
+          0.021504,
+          0.009408,
+          0.0196,
+          0.015708,
+          0.010164,
+          -0.0063,
+          0.028728
+        ],
+        [
+          0.047872,
+          0.020944,
+          0.015708,
+          0.0484,
+          0.022627,
+          -0.014025,
+          0.063954
+        ],
+        [
+          0.030976,
+          0.013552,
+          0.010164,
+          0.022627,
+          0.0484,
+          -0.009075,
+          0.041382
+        ],
+        [
+          -0.0192,
+          -0.0084,
+          -0.0063,
+          -0.014025,
+          -0.009075,
+          0.0225,
+          -0.02565
+        ],
+        [
+          0.087552,
+          0.038304,
+          0.028728,
+          0.063954,
+          0.041382,
+          -0.02565,
+          0.1444
+        ]
+      ],
+      "estimation": "versioned one-common-driver shrinkage fixture"
+    }
+  },
+  "riskViews": {
+    "normal": {
+      "expectedVolatility": 0.118511,
+      "factorVariance": 0.013092,
+      "specificVariance": 0.000953,
+      "contributions": [
+        {
+          "factorId": "equity",
+          "componentVariance": 0.008795,
+          "netPctOfTotalVariance": 0.62617,
+          "absoluteContributionPct": 0.67175,
+          "direction": "risk_adding"
+        },
+        {
+          "factorId": "nominal_duration",
+          "componentVariance": 0.00083,
+          "netPctOfTotalVariance": 0.059061,
+          "absoluteContributionPct": 0.06336,
+          "direction": "risk_adding"
+        },
+        {
+          "factorId": "real_rate",
+          "componentVariance": 0.000865,
+          "netPctOfTotalVariance": 0.061571,
+          "absoluteContributionPct": 0.066053,
+          "direction": "risk_adding"
+        },
+        {
+          "factorId": "credit",
+          "componentVariance": 0.000417,
+          "netPctOfTotalVariance": 0.029684,
+          "absoluteContributionPct": 0.031845,
+          "direction": "risk_adding"
+        },
+        {
+          "factorId": "inflation_commodity",
+          "componentVariance": 0.000116,
+          "netPctOfTotalVariance": 0.008226,
+          "absoluteContributionPct": 0.008824,
+          "direction": "risk_adding"
+        },
+        {
+          "factorId": "usd",
+          "componentVariance": 0.000193,
+          "netPctOfTotalVariance": 0.013741,
+          "absoluteContributionPct": 0.014741,
+          "direction": "risk_adding"
+        },
+        {
+          "factorId": "china_equity",
+          "componentVariance": 0.001878,
+          "netPctOfTotalVariance": 0.133696,
+          "absoluteContributionPct": 0.143428,
+          "direction": "risk_adding"
+        }
+      ],
+      "specificRiskPctOfTotalVariance": 0.067851
+    },
+    "stress": {
+      "expectedVolatility": 0.263244,
+      "factorVariance": 0.068344,
+      "specificVariance": 0.000953,
+      "contributions": [
+        {
+          "factorId": "equity",
+          "componentVariance": 0.037225,
+          "netPctOfTotalVariance": 0.537173,
+          "absoluteContributionPct": 0.544663,
+          "direction": "risk_adding"
+        },
+        {
+          "factorId": "nominal_duration",
+          "componentVariance": 0.006548,
+          "netPctOfTotalVariance": 0.094491,
+          "absoluteContributionPct": 0.095809,
+          "direction": "risk_adding"
+        },
+        {
+          "factorId": "real_rate",
+          "componentVariance": 0.007402,
+          "netPctOfTotalVariance": 0.106813,
+          "absoluteContributionPct": 0.108303,
+          "direction": "risk_adding"
+        },
+        {
+          "factorId": "credit",
+          "componentVariance": 0.003866,
+          "netPctOfTotalVariance": 0.055793,
+          "absoluteContributionPct": 0.056571,
+          "direction": "risk_adding"
+        },
+        {
+          "factorId": "inflation_commodity",
+          "componentVariance": 0.00128,
+          "netPctOfTotalVariance": 0.018467,
+          "absoluteContributionPct": 0.018725,
+          "direction": "risk_adding"
+        },
+        {
+          "factorId": "usd",
+          "componentVariance": 0.001242,
+          "netPctOfTotalVariance": 0.01792,
+          "absoluteContributionPct": 0.01817,
+          "direction": "risk_adding"
+        },
+        {
+          "factorId": "china_equity",
+          "componentVariance": 0.010782,
+          "netPctOfTotalVariance": 0.155591,
+          "absoluteContributionPct": 0.15776,
+          "direction": "risk_adding"
+        }
+      ],
+      "specificRiskPctOfTotalVariance": 0.013752
+    }
+  },
+  "riskBudgets": [
+    {
+      "factorId": "equity",
+      "label": "权益系统风险",
+      "currentRiskContribution": 0.67175,
+      "policyMin": 0.25,
+      "policyTarget": 0.38,
+      "policyMax": 0.5,
+      "status": "above_max",
+      "confidence": 0.8294
+    },
+    {
+      "factorId": "nominal_duration",
+      "label": "名义久期",
+      "currentRiskContribution": 0.06336,
+      "policyMin": 0.05,
+      "policyTarget": 0.12,
+      "policyMax": 0.22,
+      "status": "within_band",
+      "confidence": 0.8294
+    },
+    {
+      "factorId": "real_rate",
+      "label": "实际利率下行",
+      "currentRiskContribution": 0.066053,
+      "policyMin": 0.06,
+      "policyTarget": 0.14,
+      "policyMax": 0.25,
+      "status": "within_band",
+      "confidence": 0.8294
+    },
+    {
+      "factorId": "credit",
+      "label": "信用风险",
+      "currentRiskContribution": 0.031845,
+      "policyMin": 0.02,
+      "policyTarget": 0.08,
+      "policyMax": 0.16,
+      "status": "within_band",
+      "confidence": 0.8294
+    },
+    {
+      "factorId": "inflation_commodity",
+      "label": "通胀 / 商品",
+      "currentRiskContribution": 0.008824,
+      "policyMin": 0.05,
+      "policyTarget": 0.12,
+      "policyMax": 0.24,
+      "status": "below_min",
+      "confidence": 0.8294
+    },
+    {
+      "factorId": "usd",
+      "label": "美元",
+      "currentRiskContribution": 0.014741,
+      "policyMin": 0.0,
+      "policyTarget": 0.06,
+      "policyMax": 0.14,
+      "status": "within_band",
+      "confidence": 0.8294
+    },
+    {
+      "factorId": "china_equity",
+      "label": "中国权益特异风险",
+      "currentRiskContribution": 0.143428,
+      "policyMin": 0.02,
+      "policyTarget": 0.1,
+      "policyMax": 0.2,
+      "status": "within_band",
+      "confidence": 0.8294
+    }
+  ],
+  "scenarioStress": [
+    {
+      "scenarioId": "soft_landing",
+      "title": "低速增长，通胀缓慢回落",
+      "scenarioType": "primary",
+      "suggestedProbability": 0.32,
+      "approvalStatus": "pending_human_review",
+      "lossRange": {
+        "low": 0.01298,
+        "high": 0.06298,
+        "mode": "factor_stress_research_assumption"
+      },
+      "pointEstimate": 0.03798,
+      "liquidityHaircut": -0.005,
+      "leadingLossFactor": "inflation_commodity",
+      "factorContributions": {
+        "equity": 0.02832,
+        "nominal_duration": 0.0044,
+        "real_rate": 0.00308,
+        "credit": 0.00168,
+        "inflation_commodity": -0.00084,
+        "usd": 0.0013,
+        "china_equity": 0.00504
+      }
+    },
+    {
+      "scenarioId": "credit_contraction",
+      "title": "需求收缩触发信用压力",
+      "scenarioType": "primary",
+      "suggestedProbability": 0.2869,
+      "approvalStatus": "pending_human_review",
+      "lossRange": {
+        "low": -0.19117,
+        "high": -0.12117,
+        "mode": "factor_stress_research_assumption"
+      },
+      "pointEstimate": -0.15617,
+      "liquidityHaircut": -0.025,
+      "leadingLossFactor": "equity",
+      "factorContributions": {
+        "equity": -0.10384,
+        "nominal_duration": 0.0132,
+        "real_rate": 0.01232,
+        "credit": -0.01512,
+        "inflation_commodity": -0.00168,
+        "usd": -0.00455,
+        "china_equity": -0.0315
+      }
+    },
+    {
+      "scenarioId": "stagflation",
+      "title": "增长减速，价格压力再起",
+      "scenarioType": "primary",
+      "suggestedProbability": 0.3931,
+      "approvalStatus": "pending_human_review",
+      "lossRange": {
+        "low": -0.19045,
+        "high": -0.13045,
+        "mode": "factor_stress_research_assumption"
+      },
+      "pointEstimate": -0.16045,
+      "liquidityHaircut": -0.02,
+      "leadingLossFactor": "equity",
+      "factorContributions": {
+        "equity": -0.05664,
+        "nominal_duration": -0.033,
+        "real_rate": -0.0308,
+        "credit": -0.00672,
+        "inflation_commodity": 0.00756,
+        "usd": -0.00195,
+        "china_equity": -0.0189
+      }
+    },
+    {
+      "scenarioId": "productivity_upside",
+      "title": "生产率上行超预期",
+      "scenarioType": "overlay",
+      "suggestedProbability": 0.25,
+      "approvalStatus": "pending_human_review",
+      "lossRange": {
+        "low": 0.04987,
+        "high": 0.11987,
+        "mode": "factor_stress_research_assumption"
+      },
+      "pointEstimate": 0.08487,
+      "liquidityHaircut": 0.0,
+      "leadingLossFactor": "nominal_duration",
+      "factorContributions": {
+        "equity": 0.07552,
+        "nominal_duration": -0.0066,
+        "real_rate": -0.00616,
+        "credit": 0.00672,
+        "inflation_commodity": -0.00168,
+        "usd": 0.00195,
+        "china_equity": 0.01512
+      }
+    },
+    {
+      "scenarioId": "order_shock",
+      "title": "秩序与供应链冲击",
+      "scenarioType": "overlay",
+      "suggestedProbability": 0.2963,
+      "approvalStatus": "pending_human_review",
+      "lossRange": {
+        "low": -0.1971,
+        "high": -0.1171,
+        "mode": "factor_stress_research_assumption"
+      },
+      "pointEstimate": -0.1571,
+      "liquidityHaircut": -0.04,
+      "leadingLossFactor": "equity",
+      "factorContributions": {
+        "equity": -0.08496,
+        "nominal_duration": -0.0176,
+        "real_rate": 0.02464,
+        "credit": -0.01008,
+        "inflation_commodity": 0.0063,
+        "usd": -0.0039,
+        "china_equity": -0.0315
+      }
+    }
+  ],
+  "constraints": {
+    "policy": {
+      "volatilityTarget": {
+        "min": 0.08,
+        "max": 0.12
+      },
+      "tailLossFloor": -0.18,
+      "maxSingleAssetWeight": 0.5,
+      "maxLiquidityDays": 15,
+      "liquidWithinDays": {
+        "days": 3,
+        "minimumWeight": 0.9
+      }
+    },
+    "hardChecks": [
+      {
+        "id": "tail_loss",
+        "label": "情景尾部损失",
+        "value": -0.1971,
+        "limit": -0.18,
+        "status": "breach"
+      },
+      {
+        "id": "single_asset",
+        "label": "单一资产权重",
+        "value": 0.44,
+        "limit": 0.5,
+        "status": "pass"
+      },
+      {
+        "id": "liquidity",
+        "label": "3日内流动性",
+        "value": 0.92,
+        "limit": 0.9,
+        "status": "pass"
+      }
+    ],
+    "liquidWeight": 0.92,
+    "worstTailLoss": -0.1971
+  },
+  "proposal": {
+    "proposalType": "RISK_BUDGET_REVIEW",
+    "status": "review_required",
+    "reasons": [
+      "权益系统风险 高于上限",
+      "通胀 / 商品 低于下限",
+      "情景尾部损失"
+    ],
+    "nonExecutable": true,
+    "requiresHumanApproval": true,
+    "orderPayload": null,
+    "boundary": "risk review only; no target weights or trade instructions"
+  },
+  "modelConfidence": 0.8294,
+  "riskClaim": "factor exposure and scenario research support; not investment advice",
+  "modelVersion": "portfolio-risk-0.4.0"
+}

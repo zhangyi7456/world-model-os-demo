@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "0.1.0",
+  "siteRelease": "site-v0.5.0",
+  "snapshotId": "demo-multi-2026-09-11T16:00:00+08:00",
+  "dataModeComposition": {
+    "worldState": "DEMO_FIXTURE",
+    "causalMap": "RESEARCH_CANDIDATE",
+    "scenarios": "RESEARCH_SCENARIOS",
+    "portfolio": "REFERENCE_PORTFOLIO"
+  },
+  "decisionAsOf": "2026-09-11T16:00:00+08:00",
+  "dataCutoff": "2026-09-11T16:00:00+08:00",
+  "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
+  "modelVersions": {
+    "state": "state-regime-0.2.0",
+    "causal": "causal-binding-0.3.0",
+    "scenario": "scenario-suggestion-0.3.0",
+    "portfolio": "portfolio-risk-0.4.0"
+  },
+  "schemaVersions": {
+    "worldState": "0.2.0",
+    "causalMap": "0.3.0",
+    "scenarios": "0.3.0",
+    "portfolio": "0.4.0"
+  },
+  "sourceCommit": "8b620ae6b2e2758a9c6d5968734673edc3f11c43",
+  "workingTreeDirty": false,
+  "artifactHashes": {
+    "worldState": "7c92fca50a1548656f4177b35f5ab2fe3e6339f97eb22089a6570cedede96b1d",
+    "causalMap": "2672e6f5c5e98ea86393107ab18c00c2f870d3de21b44532392e84509998e0a7",
+    "scenarios": "4303c73af1f4ea40a62eb61a0fbdce885666615133005797d4e0831bdfc91b07",
+    "referencePortfolio": "b84413947b27f16cdda3d3fbb749a96a89b55ad66123e5d77555d5c02303fda0"
+  },
+  "lastSuccessfulBuild": "2026-09-11T16:00:00+08:00",
+  "approvalStatus": "demo_reviewed",
+  "degradationFlags": [
+    "DEMO_FIXTURE",
+    "SCENARIO_PENDING_HUMAN_REVIEW",
+    "CAUSAL_EDGES_RESEARCH_CANDIDATE"
+  ],
+  "publicFieldPolicyVersion": "public-allowlist-0.1.0",
+  "readOnly": true
+}

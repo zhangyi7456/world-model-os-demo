@@ -1,156 +1,290 @@
-const fallbackStates = [
-  {code:'G · GROWTH', value:'−0.7', label:'增长放缓', trend:'↓ 0.3', cls:'down', pos:32, conf:'84%', driver:'消费与新订单'},
-  {code:'I · INFLATION', value:'+0.8', label:'压力偏高', trend:'↑ 0.2', cls:'up', pos:70, conf:'79%', driver:'工资与能源'},
-  {code:'L · LIQUIDITY', value:'−0.6', label:'金融条件偏紧', trend:'→ 0.0', cls:'flat', pos:35, conf:'90%', driver:'实际利率'},
-  {code:'F · FRAGILITY', value:'+0.9', label:'脆弱性上升', trend:'↑ 0.2', cls:'up', pos:73, conf:'72%', driver:'财政利息负担'},
-  {code:'O · ORDER', value:'+1.2', label:'秩序压力高', trend:'↑ 0.1', cls:'up', pos:80, conf:'61%', driver:'贸易与能源通道'}
-];
-let runtimeData = null;
-let causalData = null;
-let scenarioData = null;
-let portfolioData = null;
-let selectedEntity = 'US';
+const stateMeta = {
+  growth: { code: "G", name: "增长", driver: "需求与生产", risk: (v) => v < -0.2 ? "增长承压" : v > 0.2 ? "增长偏强" : "增长中性" },
+  inflation: { code: "I", name: "通胀", driver: "核心价格与供给", risk: (v) => v > 0.2 ? "价格压力偏高" : v < -0.2 ? "通缩压力" : "价格中性" },
+  liquidity: { code: "L", name: "流动性", driver: "政策、信用、市场", risk: (v) => v < -0.2 ? "金融条件偏紧" : v > 0.2 ? "流动性宽松" : "流动性中性" },
+  fragility: { code: "F", name: "脆弱性", driver: "债务与利息负担", risk: (v) => v > 0.25 ? "脆弱性偏高" : "资产负债表较稳健" },
+  order: { code: "O", name: "秩序", driver: "贸易与地缘秩序", risk: (v) => v > 0.75 ? "秩序压力高" : v > 0.25 ? "秩序压力上升" : "秩序相对稳定" },
+};
+const entityLabels = { US: "美国", CN: "中国", GLOBAL: "全球" };
+const factorLabels = {
+  equity: "权益系统风险",
+  nominal_duration: "名义久期",
+  real_rate: "实际利率下行",
+  credit: "信用风险",
+  inflation_commodity: "通胀 / 商品",
+  usd: "美元",
+  china_equity: "中国权益特异风险",
+};
+const qualityLabels = { fresh: "正常", stale: "陈旧", estimated: "估算", missing: "缺失", bad: "拒绝" };
+const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null };
+let selectedEntity = "US";
 let selectedPathId = null;
 let selectedEdgeId = null;
-const entityLabels = {US:'美国', CN:'中国', GLOBAL:'全球'};
-const selectedState = () => runtimeData?.entities?.[selectedEntity] || runtimeData;
-const dimensionMeta = {
-  growth: {code:'G · GROWTH', label:v=>v<-.2?'增长放缓':v>.2?'增长偏强':'增长中性', driver:'消费与新订单'},
-  inflation: {code:'I · INFLATION', label:v=>v>.2?'压力偏高':v<-.2?'通缩压力':'价格中性', driver:'核心价格与供给'},
-  liquidity: {code:'L · LIQUIDITY', label:v=>v<-.2?'金融条件偏紧':v>.2?'流动性宽松':'流动性中性', driver:'政策、信用、市场'},
-  fragility: {code:'F · FRAGILITY', label:v=>v>.25?'脆弱性上升':'资产负债表稳健', driver:'信用与财政负担'},
-  order: {code:'O · ORDER', label:v=>v>.75?'秩序压力高':v>.25?'秩序压力上升':'秩序稳定', driver:'贸易与地缘秩序'}
-};
-const signed = v => `${v>=0?'+':'−'}${Math.abs(v).toFixed(1)}`;
-const matrixValue = (entity,key) => {const d=runtimeData?.entities?.[entity]?.dimensions?.[key];return d?`${signed(d.level)} ${d.trend==='up'?'↑':d.trend==='down'?'↓':'→'}`:'—';};
-const currentStates = () => {
-  const state=selectedState();
-  if (!state?.dimensions) return fallbackStates;
-  return Object.entries(dimensionMeta).map(([key,meta])=>{
-    const d=state.dimensions[key];
-    return {code:meta.code,value:signed(d.level),label:meta.label(d.level),trend:`${d.trend==='up'?'↑':d.trend==='down'?'↓':'→'} ${Math.abs(d.momentum).toFixed(1)}`,cls:d.trend, pos:Math.max(2,Math.min(98,50+d.level*25)),conf:`${Math.round(d.confidence*100)}%`,driver:meta.driver,freshness:d.freshness};
-  });
-};
-const stateStrip = () => `<section class="status-strip">${currentStates().map(s=>`<article class="state"><div class="state-top"><span class="state-code">${s.code}</span><span class="trend ${s.cls}">${s.trend}</span></div><div class="state-value"><b>${s.value}</b><span>${s.label}</span></div><div class="bar"><i style="left:${s.pos}%"></i></div><div class="state-foot"><span>${s.driver}</span><span class="${s.freshness==='stale'?'stale':''}">${s.freshness==='stale'?'STALE · ':''}CONF ${s.conf}</span></div></article>`).join('')}</section>`;
-const head = (n,title,desc,right='') => `<header class="page-head"><div><p class="eyebrow">0${n} / WORLD MODEL OS</p><h1>${title}</h1><p>${desc}</p></div>${right}</header>`;
+let selectedIndicatorId = null;
 
-const historySvg = () => {
-  const points=runtimeData?.history?.points||[];
-  if(!points.length)return '<div class="history-empty">等待累计可比快照</div>';
-  const series=key=>points.map((row,index)=>{const x=points.length===1?500:index*(1000/(points.length-1));const value=row[selectedEntity]?.[key]??0;const y=60-value*38;return `${x.toFixed(1)},${Math.max(4,Math.min(116,y)).toFixed(1)}`;}).join(' ');
-  return `<svg viewBox="0 0 1000 120" preserveAspectRatio="none"><line x1="0" x2="1000" y1="60" y2="60" stroke="rgba(180,210,212,.12)"/><polyline fill="none" stroke="#63d7cf" stroke-width="2" points="${series('growth')}"/><polyline fill="none" stroke="#e5b86b" stroke-width="1.5" points="${series('inflation')}"/></svg>`;
-};
+const $ = (selector) => document.querySelector(selector);
+const pct = (value) => `${Math.round(Number(value || 0) * 100)}%`;
+const signed = (value, digits = 1) => `${Number(value) >= 0 ? "+" : "−"}${Math.abs(Number(value || 0)).toFixed(digits)}`;
+const arrow = (trend) => trend === "up" ? "↑" : trend === "down" ? "↓" : "→";
+const escapeHtml = (value) => String(value ?? "—").replace(/[&<>'"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char]);
+const state = () => model.world?.entities?.[selectedEntity];
+const graph = () => model.causal?.entities?.[selectedEntity];
+const scenarioSet = () => model.scenario?.entities?.[selectedEntity];
+const brief = () => model.brief?.entities?.[selectedEntity];
+const currentRoute = () => location.hash.slice(1) || "latest";
 
-const dynamicDrivers = state => (state?.drivers||[]).slice(0,4).map((driver,index)=>`<div class="driver"><b>${String(index+1).padStart(2,'0')}</b><p>${driver.label}<br><small>${driver.explanation} · 来源能力 ${driver.sourceCapability}</small></p><em class="${driver.impact<0?'loss':''}">${driver.impact>=0?'+':''}${driver.impact.toFixed(3)} ${driver.dimension[0].toUpperCase()}</em></div>`).join('');
-
-function worldV2(){
-  const state=selectedState();
-  const regime=state?.regime;
-  const regimeText={stagflation:'增长放缓 × 通胀上行',contraction:'增长与通胀同步回落',goldilocks:'增长改善 × 通胀回落',overheating:'增长与通胀同步上行',mixed_transition:'混合过渡状态'}[regime?.label]||'数据不足';
-  const conf=regime?.confidence?Math.round(regime.confidence*100):0;
-  const rows=['US','CN','GLOBAL'].map(entity=>`<tr data-entity="${entity}" class="${selectedEntity===entity?'selected':''}" tabindex="0"><td><i class="dot ${entity==='US'?'d-accent':entity==='CN'?'d-warn':'d-good'}"></i>${entityLabels[entity]}</td>${['growth','inflation','liquidity','fragility','order'].map(key=>`<td>${matrixValue(entity,key)}</td>`).join('')}</tr>`).join('');
-  const history=runtimeData?.history?.points||[];
-  const range=history.length?`${history[0].period} — ${history[history.length-1].period}`:'NO HISTORY';
-  return `<div class="view">${head(1,'世界状态',`${entityLabels[selectedEntity]} · 现实、方向、约束与置信度。点击经济体行切换主视图；当前结论不构成交易指令。`,`<div class="regime"><p class="kicker">CURRENT REGIME · ${conf}% CONF</p><strong>${regimeText}</strong><small>${state?.overlays?.order==='high'?'高秩序压力覆盖层':'秩序压力中低'} · ${runtimeData?.dataMode||'LOADING'}</small></div>`)}${stateStrip()}
-  <div class="grid-2"><section class="section"><div class="section-title"><h2>经济体状态错位</h2><span>ENGINE OUTPUT · CLICK TO FOCUS</span></div><table class="matrix interactive"><thead><tr><th>实体</th><th>增长</th><th>通胀</th><th>政策流动性</th><th>脆弱性</th><th>秩序</th></tr></thead><tbody>${rows}</tbody></table></section>
-  <section class="section"><div class="section-title"><h2>主要变化贡献</h2><span>${selectedEntity} · MOMENTUM PROXY</span></div><div class="drivers">${dynamicDrivers(state)||'<p class="empty-copy">当前没有有效驱动数据。</p>'}</div></section></div>
-  <section class="timeline"><div class="section-title"><h2>状态轨迹</h2><span>DEMO HISTORY · ${range}</span></div><div class="line-chart">${historySvg()}</div><div class="legend"><span><i style="background:#63d7cf"></i>Growth</span><span><i style="background:#e5b86b"></i>Inflation</span><span>当前实体：${entityLabels[selectedEntity]}</span></div></section></div>`;
+function pageHead(number, title, description, context = "") {
+  return `<header class="page-head"><div><p class="eyebrow">${String(number).padStart(2, "0")} / WORLD MODEL OS</p><h1>${title}</h1><p>${description}</p></div>${context}</header>`;
 }
 
-const causalForEntity = () => causalData?.entities?.[selectedEntity];
-const scenarioForEntity = () => scenarioData?.entities?.[selectedEntity];
-const layerMeta = {
-  structure:['STRUCTURE','5—30Y'],cycle:['CYCLE','1M—3Y'],balance_sheet:['BALANCE SHEET','1Q—10Y'],
-  policy:['POLICY','EVENT—3Y'],order:['ORDER','1M—10Y'],expectations:['EXPECTATIONS','1D—2Y'],portfolio:['PORTFOLIO','NOW']
-};
-const nodeById = (graph,id) => graph?.nodes?.find(node=>node.id===id);
-
-function causal(){
-  const graph=causalForEntity();
-  if(!graph)return `<div class="view">${head(2,'因果地图','等待版本化因果图产物。')}</div>`;
-  const path=graph.paths.find(item=>item.id===(selectedPathId||graph.primaryPathId))||graph.paths[0];
-  selectedPathId=path?.id||null;
-  const pathEdges=(path?.edgeIds||[]).map(id=>graph.edges.find(edge=>edge.id===id)).filter(Boolean);
-  const edge=graph.edges.find(item=>item.id===selectedEdgeId)||pathEdges[0]||graph.edges[0];
-  selectedEdgeId=edge?.id||null;
-  const activeNodes=new Set(pathEdges.flatMap(item=>[item.source,item.target]));
-  const lanes=Object.entries(layerMeta).map(([key,meta])=>[key,...meta,graph.nodes.filter(node=>node.layer===key)]);
-  const source=nodeById(graph,edge?.source),target=nodeById(graph,edge?.target);
-  const pathTabs=graph.paths.map(item=>`<button data-path="${item.id}" class="${item.id===path.id?'active':''}">${item.label}<span>${Math.round(item.activityScore*100)}</span></button>`).join('');
-  return `<div class="view">${head(2,'因果地图',`${entityLabels[selectedEntity]} · 当前主导路径来自状态绑定与研究机制，不构成因果识别。`,`<div class="regime"><span class="badge">RESEARCH CANDIDATE</span><strong>${path?.label||'暂无主路径'}</strong><small>活动度 ${Math.round((path?.activityScore||0)*100)}% · 所有边待研究审批</small></div>`)}
-  <div class="path-tabs">${pathTabs}</div><div class="causal-layout"><section class="causal-stage">${lanes.map(([key,label,horizon,nodes])=>`<div class="lane"><div class="lane-label"><b>${label}</b><small>${horizon}</small></div><div class="nodes">${nodes.map((node,index)=>{const state=node.state||{};const observed=state.bindingStatus==='observed_model_state';const score=state.score==null?'UNOBSERVED':signed(Number(state.score));return `<button class="node ${activeNodes.has(node.id)?'hot':''}" title="${observed?'绑定模型状态':'研究假设，尚无观测绑定'}"><b>${node.label}</b><span>${score}${observed?` · CONF ${Math.round(state.confidence*100)}%`:' · ASSUMPTION'}</span></button>${index<nodes.length-1?'<span class="arrow">→</span>':''}`}).join('')||'<span class="empty-copy">本层暂无节点</span>'}</div></div>`).join('')}</section>
-  <aside class="inspector"><p class="eyebrow">SELECTED EDGE · ${edge?.runtimeStatus||'—'}</p><h3>${source?.label||'—'} → ${target?.label||'—'}</h3><p>${edge?.conditions?.join('；')||'未配置适用条件'}</p><div class="edge-picker">${pathEdges.map(item=>`<button data-edge="${item.id}" class="${item.id===edge?.id?'active':''}">${nodeById(graph,item.source)?.label} → ${nodeById(graph,item.target)?.label}</button>`).join('')}</div><div class="evidence"><article><span class="grade">GRADE ${edge?.evidenceGrade||'D'}</span><b>证据状态</b><p>${edge?.status==='approved'?'已审批':'研究候选；不得解释为已验证因果关系'}</p></article><article><span class="grade">LAG</span><b>机制与时滞</b><p>${edge?.sign||'—'} / ${edge?.shape||'—'}；${edge?.lag?.minDays||0}—${edge?.lag?.maxDays||0} 天，典型 ${edge?.lag?.modeDays||0} 天。</p></article><article><span class="grade">CHALLENGE</span><b>反证条件</b><p>${edge?.invalidation||'未配置'}</p></article><article><span class="grade">COMPETING</span><b>竞争假设</b><p>${graph.hypotheses.map(h=>`${h.id} ${h.title}（${Math.round(h.confidence*100)}%）`).join('<br>')}</p></article></div></aside></div></div>`;
+function statusBadge(status) {
+  const cls = String(status).toLowerCase().replaceAll("_", "-");
+  return `<span class="badge ${cls}">${escapeHtml(status)}</span>`;
 }
 
-const percentRange = range => `${Math.round(range.low*100)}% ~ ${range.high>=0?'+':''}${Math.round(range.high*100)}%`;
-const featureLabels={
-  'growth.momentum':'增长动量','inflation.momentum':'通胀动量','liquidity.level':'金融条件',
-  'fragility.level':'脆弱性','order.level':'秩序压力'
-};
-
-function scenario(){
-  const set=scenarioForEntity();
-  if(!set)return `<div class="view">${head(3,'情景推演','等待版本化情景建议产物。')}</div>`;
-  const lead=[...set.scenarios].sort((a,b)=>Math.abs(b.deltaPp)-Math.abs(a.deltaPp))[0];
-  const cards=set.scenarios.map(item=>`<article class="scenario"><p class="eyebrow">${item.slot} · PENDING REVIEW</p><div class="prob">${Math.round(item.suggestedProbability*100)}%</div><span class="delta ${item.deltaPp<0?'loss':''}">${item.deltaPp>=0?'+':''}${item.deltaPp.toFixed(1)}pp / PRIOR</span><h2>${item.title}</h2><p>${item.definition}</p><dl><dt>进入条件</dt><dd>${item.trigger}</dd><dt>失效条件</dt><dd>${item.invalidation}</dd><dt>组合压力</dt><dd class="${item.impactRange.low<-.05?'loss':''}">${percentRange(item.impactRange)} · 假设</dd></dl></article>`).join('');
-  const overlays=set.overlays.map((item,index)=>`<article class="overlay"><div><p class="eyebrow">OVERLAY 0${index+1} · PENDING</p><h3>${item.title}</h3><p>${item.definition} · 触发：${item.trigger}</p></div><strong>${Math.round(item.suggestedProbability*100)}%</strong></article>`).join('');
-  const evidence=set.evidence.slice(0,5).map(item=>`<div class="trace-row"><span>${featureLabels[item.feature]||item.feature}</span><div class="trace-bar"><i style="width:${Math.min(100,Math.abs(item.impact)*120)}%"></i></div><span>${item.impact>=0?'+':''}${item.impact.toFixed(3)} → ${item.scenarioId}</span></div>`).join('');
-  return `<div class="view">${head(3,'情景推演',`${entityLabels[selectedEntity]} · 三个互斥主路径与两个独立覆盖层；概率仅为有边界的机器建议。`,`<div class="regime"><p class="kicker">HORIZON · ${set.horizon.toUpperCase()}</p><strong>机器建议：${lead.slot} ${lead.deltaPp>=0?'+':''}${lead.deltaPp.toFixed(1)}pp</strong><small>PENDING HUMAN REVIEW · 单期上限 ${Math.round(set.constraints.maxSingleRunShift*100)}pp</small></div>`)}<section class="scenario-grid">${cards}</section><section class="overlay-row">${overlays}</section><section class="prob-trace"><div class="section-title"><h2>本期建议的主要证据贡献</h2><span>STATE FEATURES · CLUSTER DISCOUNT</span></div>${evidence}<p class="model-boundary">模型输出是研究判断支持，不是客观后验；批准前不会进入组合风险预算。</p></section></div>`;
+function stateStrip({ compact = false } = {}) {
+  const dimensions = state()?.dimensions || {};
+  return `<section class="status-strip ${compact ? "compact" : ""}">${Object.entries(stateMeta).map(([key, meta]) => {
+    const value = dimensions[key] || { level: 0, momentum: 0, pressure: 0, confidence: 0, coverage: 0, trend: "flat", freshness: "missing" };
+    const position = Math.max(2, Math.min(98, 50 + value.level * 25));
+    return `<button class="state" data-dimension="${key}" aria-label="查看${meta.name}证据">
+      <div class="state-top"><span class="state-code">${meta.code} · ${meta.name.toUpperCase()}</span><span class="trend">${arrow(value.trend)} ${Math.abs(value.momentum).toFixed(2)}</span></div>
+      <div class="state-value"><b>${signed(value.level)}</b><span>${meta.risk(value.level)}</span></div>
+      <div class="bar"><i style="left:${position}%"></i></div>
+      <div class="state-metrics"><span>PRESS ${signed(value.pressure)}</span><span>COVER ${pct(value.coverage)}</span></div>
+      <div class="state-foot"><span>${meta.driver}</span><span class="quality-${value.freshness}">${String(value.freshness).toUpperCase()} · MODEL ${pct(value.confidence)}</span></div>
+    </button>`;
+  }).join("")}</section>`;
 }
 
-const pct = value => `${Math.round(Number(value)*100)}%`;
-const portfolioFactorLabels = {
-  equity:'权益系统风险',nominal_duration:'名义久期',real_rate:'实际利率下行',credit:'信用风险',
-  inflation_commodity:'通胀 / 商品',usd:'美元',china_equity:'中国权益特异风险'
-};
-
-function portfolio(){
-  const data=portfolioData;
-  if(!data)return `<div class="view">${head(4,'组合暴露','等待七因子组合风险产物。')}</div>`;
-  const normal=data.riskViews.normal,stress=data.riskViews.stress;
-  const top=[...normal.contributions].sort((a,b)=>b.absoluteContributionPct-a.absoluteContributionPct)[0];
-  const topBudget=data.riskBudgets.find(item=>item.factorId===top.factorId);
-  const tail=data.constraints.worstTailLoss;
-  const capital=data.capitalWeights.map(item=>`<div class="risk-row"><span>${item.label}</span><div class="riskbar"><i style="width:${item.weight*100}%"></i></div><b>${pct(item.weight)}</b></div>`).join('');
-  const riskRows=[...normal.contributions].sort((a,b)=>b.absoluteContributionPct-a.absoluteContributionPct).map(item=>{const budget=data.riskBudgets.find(row=>row.factorId===item.factorId);const cls=budget.status==='within_band'?'':'outside';return `<div class="risk-row ${cls}"><span>${portfolioFactorLabels[item.factorId]||item.factorId}</span><div class="riskbar"><i style="width:${item.absoluteContributionPct*100}%"></i><u style="left:${budget.policyMax*100}%"></u></div><b>${pct(item.absoluteContributionPct)}</b></div>`}).join('');
-  const scenarios=data.scenarioStress.map(item=>{const isLoss=item.lossRange.low<0;const limit=data.constraints.policy.tailLossFloor;const status=item.lossRange.low<limit?'breach':item.lossRange.low<limit+0.06?'review':'pass';const statusText={pass:'通过',review:'复核',breach:'突破'}[status];const dot={pass:'d-good',review:'d-warn',breach:'d-bad'}[status];return `<tr><td>${item.title}<small>${item.scenarioType==='overlay'?'OVERLAY':'PRIMARY'} · ${item.approvalStatus==='pending_human_review'?'待审批':'已审批'}</small></td><td>${item.suggestedProbability==null?'独立':pct(item.suggestedProbability)}</td><td class="${isLoss?'loss':''}">${percentRange(item.lossRange)}</td><td>${portfolioFactorLabels[item.leadingLossFactor]||item.leadingLossFactor}</td><td><i class="dot ${dot}"></i>${statusText}</td></tr>`}).join('');
-  const checks=data.constraints.hardChecks.map(item=>`<span class="check ${item.status}"><i></i>${item.label} · ${item.status==='pass'?'通过':'突破'}</span>`).join('');
-  const reasons=data.proposal.reasons.join('；')||'当前风险预算位于政策带内';
-  return `<div class="view">${head(4,'组合暴露','资金分散不等于风险分散。用七个风险因子、压力相关性与硬约束审查组合；不输出交易指令。',`<div class="regime"><p class="kicker">PORTFOLIO · ${data.portfolioId.toUpperCase()}</p><strong>${data.proposal.status==='review_required'?'需复核：风险预算偏离':'风险预算位于政策带内'}</strong><small>${data.dataMode} · ${data.modelVersion}</small></div>`)}<section class="portfolio-hero"><div class="thesis"><p class="eyebrow">PRIMARY RISK · NORMAL MATRIX</p><h2>${pct(top.absoluteContributionPct)} 的绝对风险贡献来自${portfolioFactorLabels[top.factorId]}，政策上限为 ${pct(topBudget.policyMax)}。</h2><p>${reasons}。压力矩阵下预计波动升至 ${pct(stress.expectedVolatility)}；这是只读研究产物，不是目标权重或交易建议。</p><div class="checks">${checks}</div></div><div class="constraint"><div class="metric"><span>正常预计波动</span><b>${pct(normal.expectedVolatility)}</b><span>目标 ${pct(data.constraints.policy.volatilityTarget.min)}—${pct(data.constraints.policy.volatilityTarget.max)}</span></div><div class="metric"><span>最差情景下界</span><b class="${tail<data.constraints.policy.tailLossFloor?'loss':''}">${pct(tail)}</b><span>硬下限 ${pct(data.constraints.policy.tailLossFloor)}</span></div><div class="metric"><span>3日内流动性</span><b>${pct(data.constraints.liquidWeight)}</b><span>最低 ${pct(data.constraints.policy.liquidWithinDays.minimumWeight)}</span></div></div></section><section class="risk-compare"><div class="risk-col"><div class="section-title"><h2>资金权重</h2><span>CAPITAL · 100%</span></div>${capital}</div><div class="risk-col"><div class="section-title"><h2>七因子绝对风险贡献</h2><span>竖线 = POLICY MAX</span></div>${riskRows}<p class="risk-note">同时保留净贡献与绝对贡献；本图使用绝对贡献，避免正负抵消造成集中度错觉。</p></div></section><section class="section"><div class="section-title"><h2>情景压力</h2><span>FACTOR SHOCK + LIQUIDITY HAIRCUT · RESEARCH ASSUMPTION</span></div><table class="stress-table"><thead><tr><th>情景</th><th>建议概率</th><th>组合区间</th><th>最大损失来源</th><th>约束</th></tr></thead><tbody>${scenarios}</tbody></table></section><div class="review-action"><p><b>只读 Proposal：${reasons}</b><small>模型置信度 ${pct(data.modelConfidence)} · 待人工审批 · orderPayload = null</small></p><button disabled aria-disabled="true">不生成交易指令</button></div></div>`;
+function releaseContext() {
+  const publication = model.publication;
+  if (!publication) return "";
+  return `<div class="release-context"><p class="kicker">${escapeHtml(publication.siteRelease)}</p><strong>${escapeHtml(publication.approvalStatus.replaceAll("_", " "))}</strong><small>${escapeHtml(publication.snapshotId)}</small></div>`;
 }
 
-const views={world:worldV2,causal,scenario,portfolio};
-function render(){const route=location.hash.slice(1)||'world';document.querySelectorAll('[data-route]').forEach(a=>a.classList.toggle('active',a.dataset.route===route));document.querySelector('#app').innerHTML=(views[route]||worldV2)();document.title=`WMOS · ${route}`;}
-function renderDrawer(){
-  const state=selectedState();
-  const rows=state?.dataHealth?.indicators||[];
-  const counts=state?.dataHealth?.statusCounts||{};
-  const statusLabel={fresh:'正常',stale:'陈旧',estimated:'估算',missing:'缺失',bad:'拒绝'};
-  document.querySelector('#drawer-content').innerHTML=`<div class="health-summary"><div><span>当前实体</span><b>${entityLabels[selectedEntity]}</b></div><div><span>有效输入</span><b>${state?.quality?.observationCount||0}/${state?.quality?.catalogCount||0}</b></div><div><span>降级项</span><b>${(counts.stale||0)+(counts.estimated||0)+(counts.missing||0)}</b></div></div><div class="health-legend">${Object.entries(statusLabel).map(([key,label])=>`<span class="q-${key}">${label} ${counts[key]||0}</span>`).join('')}</div><div class="health-list">${rows.map(row=>`<article><div class="health-name"><i class="q-dot q-${row.qualityStatus}"></i><div><b>${row.label}</b><small>${row.indicatorId} · ${row.dimension}</small></div><span class="source-grade">${row.sourceCapability||'D'}</span></div><dl><dt>状态</dt><dd>${statusLabel[row.qualityStatus]||row.qualityStatus}</dd><dt>观察期</dt><dd>${row.observationPeriod||'—'}</dd><dt>发布时间</dt><dd>${row.releaseTime?row.releaseTime.slice(0,10):'—'}</dd><dt>版本</dt><dd>${row.vintageId||'—'}</dd><dt>来源</dt><dd>${row.source||'—'}</dd><dt>置信度</dt><dd>${Math.round((row.confidence||0)*100)}%</dd></dl>${row.releaseTimeBasis==='retrieval_time_proxy'?'<p class="health-note">发布时间使用抓取时间代理，不得用于精确历史回放。</p>':''}</article>`).join('')}</div>`;
+function latest() {
+  const item = brief();
+  if (!item) return loadingView(1, "最新简报");
+  const topPath = graph()?.paths?.find((path) => path.id === item.primaryPath.id) || item.primaryPath;
+  const topRisk = model.brief.referencePortfolio.topRiskFactor;
+  const worst = model.brief.referencePortfolio.worstScenario;
+  const changes = item.changes.map((change, index) => `<button class="change-row" data-indicator="${change.id}">
+    <span>${String(index + 1).padStart(2, "0")}</span><div><b>${escapeHtml(change.label)}</b><small>${escapeHtml(change.explanation)} · 来源 ${change.sourceCapability} · ${qualityLabels[change.qualityStatus] || change.qualityStatus}</small></div><em class="impact ${change.impact < 0 ? "negative" : "positive"}">${signed(change.impact, 3)}</em>
+  </button>`).join("");
+  const scenarios = [...scenarioSet().scenarios].sort((a, b) => b.suggestedProbability - a.suggestedProbability);
+  const probabilityBar = scenarios.map((scenario) => `<i style="width:${scenario.suggestedProbability * 100}%" title="${escapeHtml(scenario.title)} ${pct(scenario.suggestedProbability)}"></i>`).join("");
+  const scenarioLegend = scenarios.map((scenario) => `<button data-route-link="scenario"><span>${scenario.slot}</span><b>${pct(scenario.suggestedProbability)}</b><small>${signed(scenario.deltaPp, 1)}pp</small></button>`).join("");
+  return `<div class="view latest-view">
+    ${pageHead(1, "最新简报", `${entityLabels[selectedEntity]} · 本期状态变化、主导机制、情景分布与参考组合风险。`, releaseContext())}
+    <section class="brief-thesis">
+      <div><p class="eyebrow">CURRENT READING · MACHINE GENERATED DEMO</p><h2>${escapeHtml(item.summary)}</h2><p>这是结构化研究摘要，不是预测、投资建议或人工批准结论。</p></div>
+      <div class="regime-read"><span>STATISTICAL REGIME</span><b>${escapeHtml(item.regime.label.replaceAll("_", " "))}</b><small>Score share ${pct(Math.max(...Object.values(item.regime.probabilities || {})))} · Model confidence ${pct(item.regime.confidence)}</small></div>
+    </section>
+    ${stateStrip({ compact: true })}
+    <section class="brief-grid">
+      <div class="brief-column"><div class="section-title"><h2>自上期最重要的变化</h2><span>TOP CONTRIBUTIONS · NOT CAUSAL</span></div><div class="changes">${changes}</div></div>
+      <div class="brief-column"><div class="section-title"><h2>当前主导机制</h2>${statusBadge("RESEARCH_CANDIDATE")}</div><button class="dominant-path" data-route-link="causal"><span>${escapeHtml(topPath.label)}</span><b>${Math.round(topPath.activityScore * 100)}</b><small>活动度 · Evidence ${topPath.evidenceGrade}</small></button><p class="boundary-copy">活动度只表示当前状态与研究路径相符，不代表因果关系已经识别。</p></div>
+    </section>
+    <section class="brief-grid lower">
+      <div class="brief-column"><div class="section-title"><h2>情景分布</h2><span>SUGGESTED · PENDING REVIEW</span></div><div class="probability-stack">${probabilityBar}</div><div class="scenario-legend">${scenarioLegend}</div></div>
+      <div class="brief-column"><div class="section-title"><h2>参考组合风险镜头</h2>${statusBadge("SYNTHETIC")}</div><div class="risk-lens"><div><span>最大风险来源</span><b>${factorLabels[topRisk.factorId] || topRisk.factorId}</b><strong>${pct(topRisk.absoluteContributionPct)}</strong></div><div><span>最差研究情景</span><b>${escapeHtml(worst.title)}</b><strong class="negative">${formatRange(worst.impactRange)}</strong></div></div><a class="text-link" href="#portfolio">查看风险归因 →</a></div>
+    </section>
+    <section class="uncertainty"><div><p class="eyebrow">KNOWN LIMITS</p><h2>当前最大的限制，是数据可信度而非覆盖率。</h2></div><p>${model.publication.degradationFlags.map((flag) => escapeHtml(flag.replaceAll("_", " "))).join(" · ")}。所有模块在公开站分别声明数据模式。</p><a href="#evidence">检查证据链 →</a></section>
+  </div>`;
 }
-function openDrawer(){renderDrawer();document.querySelector('#drawer-backdrop').hidden=false;requestAnimationFrame(()=>document.body.classList.add('drawer-open'));document.querySelector('#data-drawer').setAttribute('aria-hidden','false');document.querySelector('#drawer-close').focus();}
-function closeDrawer(){document.body.classList.remove('drawer-open');document.querySelector('#data-drawer').setAttribute('aria-hidden','true');setTimeout(()=>{document.querySelector('#drawer-backdrop').hidden=true;},220);document.querySelector('#data-health-trigger').focus();}
-function selectEntity(entity){if(!runtimeData?.entities?.[entity])return;selectedEntity=entity;selectedPathId=null;selectedEdgeId=null;document.querySelector('#entity-cycle').textContent=`PRIMARY · ${entity}⌄`;render();if(document.body.classList.contains('drawer-open'))renderDrawer();}
-async function loadRuntimeData(){
-  try{
-    const responses=await Promise.all(['world-state.json','causal-map.json','scenario-set.json','portfolio-risk.json'].map(name=>fetch(`./data/${name}`,{cache:'no-store'})));
-    if(responses.some(response=>!response.ok))throw new Error('one or more model artifacts are unavailable');
-    [runtimeData,causalData,scenarioData,portfolioData]=await Promise.all(responses.map(response=>response.json()));
-    selectedEntity=runtimeData.primaryEntity||'US';
-    document.querySelector('#entity-cycle').textContent=`PRIMARY · ${selectedEntity}⌄`;
-    document.querySelector('#model-version').textContent='MODEL WMOS 0.4';
-    document.querySelector('#data-mode').textContent=runtimeData.isDemo?'DEMO FIXTURE':'VERIFIED DATA';
-    document.querySelector('#as-of-time').textContent=`AS OF ${runtimeData.asOf.slice(0,10)}`;
-    document.querySelector('#snapshot-date').textContent=runtimeData.asOf.slice(0,10).replaceAll('-',' · ');
-    const degraded=(runtimeData.quality.statusCounts?.stale||0)+(runtimeData.quality.statusCounts?.estimated||0)+(runtimeData.quality.statusCounts?.missing||0);
-    document.querySelector('#data-health').textContent=`${runtimeData.quality.observationCount} 项输入 · ${degraded} 项降级`;
+
+function world() {
+  const current = state();
+  if (!current) return loadingView(2, "世界状态");
+  const regime = current.regime;
+  const matrixRows = ["US", "CN", "GLOBAL"].map((entity) => `<button class="matrix-row ${selectedEntity === entity ? "selected" : ""}" data-entity="${entity}"><b>${entityLabels[entity]}</b>${Object.keys(stateMeta).map((key) => { const d = model.world.entities[entity].dimensions[key]; return `<span>${signed(d.level)} ${arrow(d.trend)}</span>`; }).join("")}</button>`).join("");
+  const drivers = current.drivers.slice(0, 5).map((driver, index) => `<button class="driver" data-indicator="${driver.indicatorId}"><span>${String(index + 1).padStart(2, "0")}</span><p><b>${escapeHtml(driver.label)}</b><small>${escapeHtml(driver.explanation)} · ${driver.sourceCapability}</small></p><em class="${driver.impact < 0 ? "negative" : "positive"}">${signed(driver.impact, 3)}</em></button>`).join("");
+  return `<div class="view">
+    ${pageHead(2, "世界状态", `${entityLabels[selectedEntity]} · Level、Momentum、Pressure 与可信度；颜色不替代方向语义。`, `<div class="release-context"><p class="kicker">STATISTICAL STATE</p><strong>${escapeHtml(regime.label.replaceAll("_", " "))}</strong><small>未经样本外校准，分布仅称 score share</small></div>`)}
+    ${stateStrip()}
+    <section class="world-grid">
+      <div class="matrix-panel"><div class="section-title"><h2>经济体错位</h2><span>CLICK TO FOCUS</span></div><div class="matrix-head"><span>实体</span>${Object.values(stateMeta).map((meta) => `<span>${meta.code}</span>`).join("")}</div>${matrixRows}</div>
+      <div class="drivers-panel"><div class="section-title"><h2>状态变化贡献</h2><span>PROXY · NOT CAUSAL</span></div>${drivers}</div>
+    </section>
+    <section class="expectation-gap"><div><p class="eyebrow">REALITY MAP</p><h3>真实状态</h3><strong>${stateMeta.growth.risk(current.dimensions.growth.level)} · ${stateMeta.inflation.risk(current.dimensions.inflation.level)}</strong><small>来自当前 Demo 指标聚合</small></div><i>≠</i><div><p class="eyebrow">EXPECTATION MAP</p><h3>市场隐含预期</h3><strong>尚未接入正式价格隐含序列</strong><small>Phase 5.1 接入后才能计算 Surprise Gap</small></div></section>
+    <section class="timeline-panel"><div class="section-title"><h2>状态轨迹</h2><span>G / I · DEMO HISTORY</span></div>${historyChart()}</section>
+  </div>`;
+}
+
+function historyChart() {
+  const points = model.world?.history?.points || [];
+  if (!points.length) return `<p class="empty">等待可比快照。</p>`;
+  const path = (key) => points.map((row, index) => { const x = points.length === 1 ? 500 : index * (1000 / (points.length - 1)); const y = 65 - (row[selectedEntity]?.[key] || 0) * 38; return `${x.toFixed(1)},${Math.max(6, Math.min(124, y)).toFixed(1)}`; }).join(" ");
+  return `<div class="chart-wrap"><svg viewBox="0 0 1000 130" preserveAspectRatio="none" aria-label="增长和通胀状态历史"><line x1="0" y1="65" x2="1000" y2="65"/><polyline class="growth-line" points="${path("growth")}"/><polyline class="inflation-line" points="${path("inflation")}"/></svg></div><div class="legend"><span><i class="growth-key"></i>增长</span><span><i class="inflation-key"></i>通胀</span><span>${escapeHtml(points[0].period)} — ${escapeHtml(points.at(-1).period)}</span></div>`;
+}
+
+function causal() {
+  const current = graph();
+  if (!current) return loadingView(3, "因果地图");
+  const path = current.paths.find((item) => item.id === (selectedPathId || current.primaryPathId)) || current.paths[0];
+  selectedPathId = path.id;
+  const edges = path.edgeIds.map((id) => current.edges.find((edge) => edge.id === id)).filter(Boolean);
+  const edge = edges.find((item) => item.id === selectedEdgeId) || edges[0];
+  selectedEdgeId = edge?.id || null;
+  const node = (id) => current.nodes.find((item) => item.id === id);
+  const pathNodes = [];
+  edges.forEach((item) => { if (!pathNodes.includes(item.source)) pathNodes.push(item.source); if (!pathNodes.includes(item.target)) pathNodes.push(item.target); });
+  const flow = pathNodes.map((id, index) => `<button class="flow-node"><span>${escapeHtml(node(id)?.layer || "node")}</span><b>${escapeHtml(node(id)?.label || id)}</b><small>${node(id)?.state?.bindingStatus === "observed_model_state" ? `${signed(node(id).state.score)} · ${pct(node(id).state.confidence)}` : "RESEARCH ASSUMPTION"}</small></button>${index < pathNodes.length - 1 ? `<button class="flow-edge ${edges[index]?.id === edge?.id ? "active" : ""}" data-edge="${edges[index]?.id}" aria-label="查看因果边证据">→<small>${edges[index]?.evidenceGrade}</small></button>` : ""}`).join("");
+  const tabs = current.paths.map((item) => `<button data-path="${item.id}" class="${item.id === path.id ? "active" : ""}">${escapeHtml(item.label)}<span>${Math.round(item.activityScore * 100)}</span></button>`).join("");
+  const source = node(edge?.source); const target = node(edge?.target);
+  return `<div class="view">
+    ${pageHead(3, "因果地图", `${entityLabels[selectedEntity]} · 只绘制契约中真实存在的边；所有机制仍是研究候选。`, `<div class="release-context">${statusBadge("RESEARCH_CANDIDATE")}<strong>${escapeHtml(path.label)}</strong><small>Evidence ${path.evidenceGrade} · 活动度 ${Math.round(path.activityScore * 100)}</small></div>`)}
+    <div class="path-tabs">${tabs}</div>
+    <section class="causal-workspace"><div class="causal-canvas"><p class="eyebrow">CURRENT DOMINANT PATH</p><div class="causal-flow">${flow}</div><p class="boundary-copy">节点之间仅在数据契约存在 edge 时显示箭头；活动度不等于因果强度。</p></div>
+    <aside class="inspector"><p class="eyebrow">SELECTED EDGE · ${escapeHtml(edge?.runtimeStatus)}</p><h2>${escapeHtml(source?.label)} → ${escapeHtml(target?.label)}</h2><p>${escapeHtml(edge?.conditions?.join("；") || "未配置适用条件")}</p><div class="edge-picker">${edges.map((item) => `<button data-edge="${item.id}" class="${item.id === edge?.id ? "active" : ""}">${escapeHtml(node(item.source)?.label)} → ${escapeHtml(node(item.target)?.label)}</button>`).join("")}</div><dl class="evidence-list"><div><dt>证据等级</dt><dd>${escapeHtml(edge?.evidenceGrade)}</dd></div><div><dt>方向 / 形状</dt><dd>${escapeHtml(edge?.sign)} / ${escapeHtml(edge?.shape)}</dd></div><div><dt>时滞</dt><dd>${edge?.lag?.minDays || 0}—${edge?.lag?.maxDays || 0} 天；典型 ${edge?.lag?.modeDays || 0} 天</dd></div><div><dt>反证条件</dt><dd>${escapeHtml(edge?.invalidation)}</dd></div><div><dt>审批边界</dt><dd>候选机制；不得描述为已验证因果</dd></div></dl></aside></section>
+  </div>`;
+}
+
+function scenario() {
+  const set = scenarioSet();
+  if (!set) return loadingView(4, "情景推演");
+  const scenarios = set.scenarios;
+  const rows = scenarios.map((item) => `<article class="scenario-row"><div><p class="eyebrow">${item.slot} · ${escapeHtml(item.approvalStatus)}</p><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.definition)}</p></div><div class="probability-steps"><span><small>PRIOR</small><b>${pct(item.priorProbability)}</b></span><i>→</i><span><small>SUGGESTED</small><b>${pct(item.suggestedProbability)}</b></span><i>→</i><span class="pending"><small>APPROVED</small><b>—</b></span></div><dl><dt>进入条件</dt><dd>${escapeHtml(item.trigger)}</dd><dt>失效条件</dt><dd>${escapeHtml(item.invalidation)}</dd><dt>影响区间</dt><dd class="${item.impactRange.low < 0 ? "negative" : "positive"}">${formatRange(item.impactRange)} · 假设</dd></dl></article>`).join("");
+  const evidence = set.evidence.slice(0, 6).map((item) => `<div class="waterfall-row"><span>${escapeHtml(item.feature)}</span><div><i style="width:${Math.min(100, Math.abs(item.impact) * 120)}%"></i></div><b>${signed(item.impact, 3)}</b><small>${escapeHtml(item.scenarioId)}</small></div>`).join("");
+  return `<div class="view">
+    ${pageHead(4, "情景推演", `${entityLabels[selectedEntity]} · 三个互斥主路径；展示先验、机器建议与人工批准的严格边界。`, `<div class="release-context"><p class="kicker">HORIZON · ${escapeHtml(set.horizon)}</p><strong>PENDING HUMAN REVIEW</strong><small>单次建议变化上限 ${Math.round(set.constraints.maxSingleRunShift * 100)}pp</small></div>`)}
+    <section class="scenario-list">${rows}</section>
+    <section class="scenario-analysis"><div><div class="section-title"><h2>证据贡献</h2><span>CLUSTER DISCOUNT · DEMO</span></div>${evidence}</div><div><div class="section-title"><h2>独立覆盖层</h2><span>NOT ADDED TO 100%</span></div>${set.overlays.map((item) => `<article class="overlay-row"><div><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.trigger)}</small></div><strong>${pct(item.suggestedProbability)}</strong></article>`).join("")}<p class="boundary-copy">覆盖层是条件事件，不与三个主路径概率直接相加。</p></div></section>
+  </div>`;
+}
+
+function formatRange(range) {
+  return `${Math.round(Number(range.low) * 100)}% 至 ${Number(range.high) >= 0 ? "+" : ""}${Math.round(Number(range.high) * 100)}%`;
+}
+
+function portfolio() {
+  const data = model.portfolio;
+  if (!data) return loadingView(5, "组合风险");
+  const normal = data.riskViews.normal; const stress = data.riskViews.stress;
+  const contributions = [...normal.contributions].sort((a, b) => b.absoluteContributionPct - a.absoluteContributionPct);
+  const top = contributions[0]; const budget = data.riskBudgets.find((item) => item.factorId === top.factorId);
+  const capital = data.capitalWeights.map((item) => exposureRow(item.label, item.weight)).join("");
+  const risks = contributions.map((item) => { const policy = data.riskBudgets.find((row) => row.factorId === item.factorId); return exposureRow(factorLabels[item.factorId] || item.factorId, item.absoluteContributionPct, policy.policyMax, policy.status); }).join("");
+  const stresses = data.scenarioStress.map((item) => `<tr><td>${escapeHtml(item.title)}<small>${item.scenarioType.toUpperCase()} · ${escapeHtml(item.approvalStatus)}</small></td><td>${item.suggestedProbability == null ? "条件事件" : pct(item.suggestedProbability)}</td><td class="negative">${formatRange(item.lossRange)}</td><td>${escapeHtml(factorLabels[item.leadingLossFactor] || item.leadingLossFactor)}</td></tr>`).join("");
+  return `<div class="view">
+    ${pageHead(5, "组合风险", "公开合成参考组合 · 用七个风险因子与压力情景检查集中度，不生成目标权重或订单。", `<div class="release-context">${statusBadge("PUBLIC_SYNTHETIC_REFERENCE")}<strong>${escapeHtml(data.proposal.status.replaceAll("_", " "))}</strong><small>${escapeHtml(data.modelVersion)} · NON-EXECUTABLE</small></div>`)}
+    <section class="portfolio-thesis"><div><p class="eyebrow">PRIMARY RISK · NORMAL VIEW</p><h2>${pct(top.absoluteContributionPct)} 的绝对风险贡献来自${escapeHtml(factorLabels[top.factorId])}。</h2><p>政策上限 ${pct(budget.policyMax)}。该组合是公开研究夹具，不代表任何用户真实账户。</p></div><div class="portfolio-metrics"><span><small>正常波动</small><b>${pct(normal.expectedVolatility)}</b></span><span><small>压力波动</small><b>${pct(stress.expectedVolatility)}</b></span><span><small>最差下界</small><b class="negative">${pct(data.constraints.worstTailLoss)}</b></span></div></section>
+    <section class="exposure-grid"><div><div class="section-title"><h2>资金权重</h2><span>CAPITAL · 100%</span></div>${capital}</div><div><div class="section-title"><h2>绝对风险贡献</h2><span>MARKER = POLICY MAX</span></div>${risks}<p class="boundary-copy">当前 Fixture 未把 specific risk 纳入同一风险分母；正式版上线前必须补齐。</p></div></section>
+    <section class="stress-panel"><div class="section-title"><h2>情景压力</h2><span>RESEARCH ASSUMPTIONS</span></div><div class="table-scroll"><table><thead><tr><th>情景</th><th>建议概率</th><th>影响区间</th><th>最大损失来源</th></tr></thead><tbody>${stresses}</tbody></table></div></section>
+    <section class="proposal"><div><p class="eyebrow">READ-ONLY PROPOSAL</p><b>${escapeHtml(data.proposal.reasons.join("；"))}</b><small>requiresHumanApproval = true · orderPayload = null</small></div><button disabled>不生成交易指令</button></section>
+  </div>`;
+}
+
+function exposureRow(label, value, marker = null, status = "") {
+  return `<div class="exposure-row ${status === "within_band" ? "" : status}"><span>${escapeHtml(label)}</span><div><i style="width:${Math.min(100, value * 100)}%"></i>${marker == null ? "" : `<u style="left:${marker * 100}%"></u>`}</div><b>${pct(value)}</b></div>`;
+}
+
+function evidence() {
+  const current = state();
+  if (!current) return loadingView(6, "证据与数据");
+  const indicators = current.dataHealth.indicators;
+  const selected = indicators.find((item) => item.indicatorId === selectedIndicatorId) || indicators[0];
+  selectedIndicatorId = selected?.indicatorId || null;
+  const counts = current.dataHealth.statusCounts;
+  const registry = indicators.map((item) => `<button class="indicator-row ${item.indicatorId === selectedIndicatorId ? "selected" : ""}" data-indicator-select="${item.indicatorId}"><i class="quality-dot quality-${item.qualityStatus}"></i><span><b>${escapeHtml(item.label)}</b><small>${escapeHtml(item.indicatorId)} · ${escapeHtml(item.dimension)}</small></span><em>${escapeHtml(item.value)} ${escapeHtml(item.unit)}</em><u>${escapeHtml(item.sourceCapability)}</u></button>`).join("");
+  const sourceLink = selected?.sourceUrl ? `<a href="${escapeHtml(selected.sourceUrl)}" target="_blank" rel="noreferrer">打开原始来源 ↗</a>` : `<span>无公开来源链接</span>`;
+  return `<div class="view">
+    ${pageHead(6, "证据与数据", `${entityLabels[selectedEntity]} · 检查数据模式、来源、发布时间、vintage、变换入口与状态贡献。`, releaseContext())}
+    <section class="data-mode-strip">${Object.entries(model.publication.dataModeComposition).map(([key, value]) => `<div><span>${escapeHtml(key)}</span><b>${escapeHtml(value)}</b></div>`).join("")}</section>
+    <section class="health-strip"><div><span>有效输入</span><b>${current.quality.observationCount}/${current.quality.catalogCount}</b></div>${Object.entries(qualityLabels).map(([key, label]) => `<div><span>${label}</span><b class="quality-${key}">${counts[key] || 0}</b></div>`).join("")}</section>
+    <section class="evidence-workspace"><div class="indicator-registry"><div class="section-title"><h2>指标目录</h2><span>${indicators.length} SERIES</span></div>${registry}</div><article class="indicator-detail"><div class="indicator-title"><div><p class="eyebrow">${escapeHtml(selected?.indicatorId)} · ${escapeHtml(selected?.dimension)}</p><h2>${escapeHtml(selected?.label)}</h2></div>${statusBadge(String(selected?.qualityStatus || "missing").toUpperCase())}</div><div class="observation-value"><strong>${escapeHtml(selected?.value)}</strong><span>${escapeHtml(selected?.unit)}</span></div><dl class="detail-grid"><div><dt>观察期</dt><dd>${escapeHtml(selected?.observationPeriod)}</dd></div><div><dt>发布时间</dt><dd>${escapeHtml(selected?.releaseTime)}</dd></div><div><dt>Vintage</dt><dd>${escapeHtml(selected?.vintageId)}</dd></div><div><dt>来源能力</dt><dd>${escapeHtml(selected?.sourceCapability)}</dd></div><div><dt>质量状态</dt><dd>${escapeHtml(selected?.qualityStatus)}</dd></div><div><dt>模型置信</dt><dd>${pct(selected?.confidence)}</dd></div><div><dt>发布时间依据</dt><dd>${escapeHtml(selected?.releaseTimeBasis)}</dd></div><div><dt>来源</dt><dd>${escapeHtml(selected?.source)}</dd></div></dl><div class="source-action">${sourceLink}<button data-open-manifest>查看 Run Manifest</button></div><div class="lineage"><p class="eyebrow">PUBLIC LINEAGE</p><div><span>SOURCE<small>${escapeHtml(selected?.source)}</small></span><i>→</i><span>RAW<small>${escapeHtml(selected?.vintageId)}</small></span><i>→</i><span>TRANSFORM<small>CATALOG VERSIONED</small></span><i>→</i><span>STATE<small>${escapeHtml(selected?.dimension)}</small></span></div></div>${selected?.releaseTimeBasis === "retrieval_time_proxy" ? `<p class="warning">发布时间使用抓取时间代理，不能用于精确历史回放。</p>` : ""}</article></section>
+    <section class="release-download"><div><p class="eyebrow">REPRODUCIBILITY</p><h2>同一快照由版本、提交与内容哈希固定。</h2><p>${escapeHtml(model.publication.snapshotId)} · ${escapeHtml(model.publication.sourceCommit.slice(0, 12))}</p></div><button data-open-manifest>查看完整发布清单</button></section>
+  </div>`;
+}
+
+function loadingView(number, title) {
+  return `<div class="view">${pageHead(number, title, "正在读取不可变研究快照。")}</div>`;
+}
+
+const views = { latest, world, causal, scenario, portfolio, evidence };
+
+function render() {
+  const route = views[currentRoute()] ? currentRoute() : "latest";
+  document.querySelectorAll("[data-route]").forEach((link) => link.classList.toggle("active", link.dataset.route === route));
+  $("#app").innerHTML = views[route]();
+  document.title = `WMOS · ${route}`;
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+function renderManifest() {
+  const item = model.publication;
+  if (!item) return;
+  $("#drawer-eyebrow").textContent = "RELEASE MANIFEST";
+  $("#drawer-title").textContent = "发布清单";
+  const modes = Object.entries(item.dataModeComposition).map(([key, value]) => `<div><dt>${escapeHtml(key)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
+  const versions = Object.entries(item.modelVersions).map(([key, value]) => `<div><dt>${escapeHtml(key)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
+  const hashes = Object.entries(item.artifactHashes).map(([key, value]) => `<div><dt>${escapeHtml(key)}</dt><dd title="${escapeHtml(value)}">${escapeHtml(value.slice(0, 16))}…</dd></div>`).join("");
+  $("#drawer-content").innerHTML = `<section class="drawer-section"><div class="manifest-hero"><span>${escapeHtml(item.siteRelease)}</span><b>${escapeHtml(item.approvalStatus)}</b><small>READ ONLY · ${item.workingTreeDirty ? "LOCAL BUILD" : "COMMITTED BUILD"}</small></div></section><section class="drawer-section"><h3>数据模式</h3><dl class="manifest-list">${modes}</dl></section><section class="drawer-section"><h3>不可变上下文</h3><dl class="manifest-list"><div><dt>Snapshot</dt><dd>${escapeHtml(item.snapshotId)}</dd></div><div><dt>Decision as-of</dt><dd>${escapeHtml(item.decisionAsOf)}</dd></div><div><dt>Data cutoff</dt><dd>${escapeHtml(item.dataCutoff)}</dd></div><div><dt>Source commit</dt><dd>${escapeHtml(item.sourceCommit)}</dd></div></dl></section><section class="drawer-section"><h3>模型版本</h3><dl class="manifest-list">${versions}</dl></section><section class="drawer-section"><h3>产物哈希</h3><dl class="manifest-list hashes">${hashes}</dl></section><section class="drawer-section"><h3>降级与边界</h3><ul>${item.degradationFlags.map((flag) => `<li>${escapeHtml(flag)}</li>`).join("")}</ul><p>公开页面是研究快照，不是交易系统；所有写入和审批均在私有环境中完成。</p></section>`;
+}
+
+function openDrawer() {
+  renderManifest();
+  $("#drawer-backdrop").hidden = false;
+  requestAnimationFrame(() => document.body.classList.add("drawer-open"));
+  $("#detail-drawer").setAttribute("aria-hidden", "false");
+  $("#drawer-close").focus();
+}
+
+function closeDrawer() {
+  document.body.classList.remove("drawer-open");
+  $("#detail-drawer").setAttribute("aria-hidden", "true");
+  setTimeout(() => { $("#drawer-backdrop").hidden = true; }, 180);
+}
+
+function selectEntity(entity) {
+  if (!model.world?.entities?.[entity]) return;
+  selectedEntity = entity;
+  selectedPathId = null; selectedEdgeId = null; selectedIndicatorId = null;
+  $("#entity-select").value = entity;
+  render();
+}
+
+async function loadData() {
+  try {
+    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief"];
+    const responses = await Promise.all(names.map((name) => fetch(`./data/${name}.json`, { cache: "no-store" })));
+    if (responses.some((response) => !response.ok)) throw new Error("required public artifacts are unavailable");
+    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData] = await Promise.all(responses.map((response) => response.json()));
+    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData });
+    selectedEntity = worldData.primaryEntity || "US";
+    $("#entity-select").value = selectedEntity;
+    $("#data-mode").textContent = publicationData.dataModeComposition.worldState;
+    $("#site-release").textContent = publicationData.siteRelease.toUpperCase();
+    $("#as-of-time").textContent = `AS OF ${worldData.asOf.slice(0, 10)}`;
+    $("#snapshot-date").textContent = worldData.asOf.slice(0, 10).replaceAll("-", " · ");
+    const counts = worldData.quality.statusCounts;
+    const degraded = (counts.stale || 0) + (counts.estimated || 0) + (counts.missing || 0) + (counts.bad || 0);
+    $("#data-health").textContent = `${worldData.quality.observationCount} 项输入 · ${degraded} 项降级`;
     render();
-  }catch(error){
-    document.querySelector('#data-mode').textContent='DATA UNAVAILABLE';
-    document.querySelector('#data-mode').classList.add('confidence-low');
-    document.querySelector('#data-health').textContent='产物读取失败';
+  } catch (error) {
+    $("#data-mode").textContent = "DATA UNAVAILABLE";
+    $("#data-mode").classList.add("quality-bad");
+    $("#data-health").textContent = "公开产物读取失败";
+    $("#app").innerHTML = `<div class="fatal"><p class="eyebrow">PUBLIC SNAPSHOT ERROR</p><h1>无法读取当前发布。</h1><p>${escapeHtml(error.message)}</p></div>`;
   }
 }
-document.addEventListener('click',event=>{const row=event.target.closest('[data-entity]');if(row)selectEntity(row.dataset.entity);const path=event.target.closest('[data-path]');if(path){selectedPathId=path.dataset.path;selectedEdgeId=null;render();}const edge=event.target.closest('[data-edge]');if(edge){selectedEdgeId=edge.dataset.edge;render();}if(event.target.closest('#data-health-trigger'))openDrawer();if(event.target.closest('#drawer-close')||event.target.id==='drawer-backdrop')closeDrawer();if(event.target.closest('#entity-cycle')){const entities=['US','CN','GLOBAL'];selectEntity(entities[(entities.indexOf(selectedEntity)+1)%entities.length]);}});
-document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.body.classList.contains('drawer-open'))closeDrawer();if((event.key==='Enter'||event.key===' ')&&event.target.matches('[data-entity]'))selectEntity(event.target.dataset.entity);});
-addEventListener('hashchange',render);render();loadRuntimeData();
+
+document.addEventListener("click", (event) => {
+  const entity = event.target.closest("[data-entity]"); if (entity) selectEntity(entity.dataset.entity);
+  const path = event.target.closest("[data-path]"); if (path) { selectedPathId = path.dataset.path; selectedEdgeId = null; render(); }
+  const edge = event.target.closest("[data-edge]"); if (edge) { selectedEdgeId = edge.dataset.edge; render(); }
+  const indicator = event.target.closest("[data-indicator]"); if (indicator) { selectedIndicatorId = indicator.dataset.indicator; location.hash = "evidence"; render(); }
+  const indicatorSelect = event.target.closest("[data-indicator-select]"); if (indicatorSelect) { selectedIndicatorId = indicatorSelect.dataset.indicatorSelect; render(); }
+  const dimension = event.target.closest("[data-dimension]"); if (dimension) { const found = state()?.dataHealth?.indicators?.find((item) => item.dimension.startsWith(dimension.dataset.dimension)); selectedIndicatorId = found?.indicatorId || null; location.hash = "evidence"; render(); }
+  const routeLink = event.target.closest("[data-route-link]"); if (routeLink) location.hash = routeLink.dataset.routeLink;
+  if (event.target.closest("#release-trigger, #manifest-trigger, [data-open-manifest]")) openDrawer();
+  if (event.target.closest("#drawer-close") || event.target.id === "drawer-backdrop") closeDrawer();
+});
+$("#entity-select").addEventListener("change", (event) => selectEntity(event.target.value));
+$("#loop-select").addEventListener("change", render);
+$("#vintage-select").addEventListener("change", render);
+document.addEventListener("keydown", (event) => { if (event.key === "Escape" && document.body.classList.contains("drawer-open")) closeDrawer(); });
+addEventListener("hashchange", render);
+render();
+loadData();

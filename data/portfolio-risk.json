@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.4.0",
-  "portfolioId": "household-core",
+  "portfolioId": "reference-portfolio",
   "portfolioVersion": "0.1.0",
   "asOf": "2026-09-11T16:00:00+08:00",
   "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
@@ -737,5 +737,6 @@
   },
   "modelConfidence": 0.8294,
   "riskClaim": "factor exposure and scenario research support; not investment advice",
-  "modelVersion": "portfolio-risk-0.4.0"
+  "modelVersion": "portfolio-risk-0.4.0",
+  "publicClassification": "PUBLIC_SYNTHETIC_REFERENCE"
 }

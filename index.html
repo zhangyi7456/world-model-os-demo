@@ -3,57 +3,74 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>World Model OS — Design Demo</title>
-    <meta name="description" content="把宏观状态、因果机制、情景概率与组合风险预算连接成一个可验证、可追溯的研究系统。" />
+    <title>World Model OS — Public Research</title>
+    <meta name="description" content="将世界状态、因果机制、情景概率与组合风险连接为可验证、可追溯、可复现的公开研究系统。" />
     <meta property="og:title" content="World Model OS" />
-    <meta property="og:description" content="State · Causal · Scenario · Risk — 只读研究 Demo" />
+    <meta property="og:description" content="State · Evidence · Scenario · Risk — 只读公开研究快照" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://zhangyi7456.github.io/world-model-os-demo/" />
-    <meta property="og:image" content="https://zhangyi7456.github.io/world-model-os-demo/og.png" />
+    <meta property="og:image" content="https://zhangyi7456.github.io/world-model-os-demo/og-v2.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://zhangyi7456.github.io/world-model-os-demo/og.png" />
+    <meta name="twitter:image" content="https://zhangyi7456.github.io/world-model-os-demo/og-v2.png" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <div class="shell">
       <aside class="rail" aria-label="主导航">
-        <a class="brand" href="#world" aria-label="World Model OS">
+        <a class="brand" href="#latest" aria-label="World Model OS 最新简报">
           <span class="brand-mark">W</span>
-          <span><b>WORLD MODEL</b><small>OPERATING SYSTEM</small></span>
+          <span><b>WORLD MODEL</b><small>PUBLIC RESEARCH OS</small></span>
         </a>
         <nav>
-          <a href="#world" data-route="world"><span>01</span>世界状态</a>
-          <a href="#causal" data-route="causal"><span>02</span>因果地图</a>
-          <a href="#scenario" data-route="scenario"><span>03</span>情景推演</a>
-          <a href="#portfolio" data-route="portfolio"><span>04</span>组合暴露</a>
+          <a href="#latest" data-route="latest"><span>01</span>最新简报</a>
+          <a href="#world" data-route="world"><span>02</span>世界状态</a>
+          <a href="#causal" data-route="causal"><span>03</span>因果地图</a>
+          <a href="#scenario" data-route="scenario"><span>04</span>情景推演</a>
+          <a href="#portfolio" data-route="portfolio"><span>05</span>组合风险</a>
+          <a href="#evidence" data-route="evidence"><span>06</span>证据与数据</a>
         </nav>
+        <div class="rail-secondary">
+          <button type="button" id="manifest-trigger">发布清单</button>
+          <a href="https://github.com/zhangyi7456/world-model-os-demo/issues" target="_blank" rel="noreferrer">反馈与挑战 ↗</a>
+        </div>
         <div class="rail-foot">
-          <p>DATA SNAPSHOT</p>
-          <strong id="snapshot-date">2026 · 09 · 11</strong>
+          <p>IMMUTABLE SNAPSHOT</p>
+          <strong id="snapshot-date">—</strong>
           <span class="health"><i></i><span id="data-health">等待模型产物</span></span>
-          <small class="release-boundary">只读研究 Demo<br />不构成投资建议</small>
+          <small class="release-boundary">公开只读研究<br />非投资建议 · 不连接交易</small>
         </div>
       </aside>
 
       <main>
         <header class="topbar">
-          <div class="mobile-brand">WMOS</div>
+          <a class="mobile-brand" href="#latest">WMOS</a>
           <div class="context">
-            <button class="select-like" id="entity-cycle" title="切换当前分析实体">PRIMARY · US⌄</button>
-            <button class="select-like">MEDIUM LOOP⌄</button>
-            <button class="select-like">FIRST RELEASE⌄</button>
+            <label><span>实体</span><select id="entity-select" aria-label="选择分析实体"><option value="US">美国</option><option value="CN">中国</option><option value="GLOBAL">全球</option></select></label>
+            <label><span>循环</span><select id="loop-select" aria-label="选择更新循环"><option value="medium">MEDIUM</option><option value="fast">FAST</option><option value="slow">SLOW</option></select></label>
+            <label><span>版本</span><select id="vintage-select" aria-label="选择数据版本"><option value="first-release">FIRST RELEASE</option><option value="latest-revised" disabled>LATEST REVISED · 待接入</option></select></label>
           </div>
-          <div class="meta"><span id="data-mode" class="stale">DEMO FIXTURE</span><span id="model-version">MODEL —</span><span id="as-of-time">AS OF —</span><button id="data-health-trigger" aria-haspopup="dialog" aria-controls="data-drawer">数据健康</button></div>
+          <div class="meta">
+            <button type="button" id="release-trigger" aria-haspopup="dialog" aria-controls="detail-drawer"><span id="data-mode" class="mode-badge">LOADING</span><span id="site-release">SITE —</span><span id="as-of-time">AS OF —</span></button>
+          </div>
         </header>
         <div id="app" aria-live="polite"></div>
       </main>
     </div>
+
+    <nav class="mobile-nav" aria-label="移动端主导航">
+      <a href="#latest" data-route="latest">简报</a>
+      <a href="#world" data-route="world">状态</a>
+      <a href="#scenario" data-route="scenario">情景</a>
+      <a href="#portfolio" data-route="portfolio">组合</a>
+      <a href="#evidence" data-route="evidence">证据</a>
+    </nav>
+
     <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
-    <aside class="data-drawer" id="data-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" aria-hidden="true">
+    <aside class="data-drawer" id="detail-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" aria-hidden="true">
       <header>
-        <div><p class="eyebrow">DATA LINEAGE</p><h2 id="drawer-title">数据健康</h2></div>
-        <button id="drawer-close" aria-label="关闭数据健康面板">×</button>
+        <div><p class="eyebrow" id="drawer-eyebrow">RELEASE MANIFEST</p><h2 id="drawer-title">发布清单</h2></div>
+        <button id="drawer-close" aria-label="关闭详情面板">×</button>
       </header>
       <div id="drawer-content"></div>
     </aside>

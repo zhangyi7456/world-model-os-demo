@@ -1,0 +1,283 @@
+{
+  "schemaVersion": "0.1.0",
+  "asOf": "2026-09-11T16:00:00+08:00",
+  "snapshotId": "demo-multi-2026-09-11T16:00:00+08:00",
+  "dataMode": "DEMO_FIXTURE",
+  "isDemo": true,
+  "primaryEntity": "US",
+  "entities": {
+    "US": {
+      "summary": "增长动量走弱，价格压力上行",
+      "summaryStatus": "machine_generated_demo",
+      "regime": {
+        "label": "stagflation",
+        "status": "confirmed",
+        "confidence": 0.9112,
+        "probabilities": {
+          "goldilocks": 0.0458,
+          "overheating": 0.1242,
+          "contraction": 0.2596,
+          "stagflation": 0.5704
+        }
+      },
+      "changes": [
+        {
+          "id": "US_L_CREDIT",
+          "label": "银行信贷条件",
+          "dimension": "liquiditycredit",
+          "impact": -0.1877,
+          "qualityStatus": "fresh",
+          "sourceCapability": "A",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "id": "US_F_INTEREST",
+          "label": "财政利息负担",
+          "dimension": "fragility",
+          "impact": 0.1844,
+          "qualityStatus": "fresh",
+          "sourceCapability": "A",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "id": "US_L_MARKET",
+          "label": "市场金融条件",
+          "dimension": "liquiditymarket",
+          "impact": -0.135,
+          "qualityStatus": "fresh",
+          "sourceCapability": "A",
+          "explanation": "动量贡献代理（非因果归因）"
+        }
+      ],
+      "primaryPath": {
+        "id": "path.credit_contraction",
+        "label": "金融收紧 → 脆弱性 → 增长",
+        "edgeIds": [
+          "e.liquidity.fragility",
+          "e.fragility.growth",
+          "e.growth.equity"
+        ],
+        "activityScore": 0.3574,
+        "evidenceGrade": "C"
+      },
+      "scenarioChanges": [
+        {
+          "id": "soft_landing",
+          "slot": "BASE",
+          "title": "低速增长，通胀缓慢回落",
+          "priorProbability": 0.4,
+          "suggestedProbability": 0.32,
+          "deltaPp": -8.0,
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "stagflation",
+          "slot": "REINFLATION",
+          "title": "增长减速，价格压力再起",
+          "priorProbability": 0.35,
+          "suggestedProbability": 0.3931,
+          "deltaPp": 4.3,
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "credit_contraction",
+          "slot": "BEAR",
+          "title": "需求收缩触发信用压力",
+          "priorProbability": 0.25,
+          "suggestedProbability": 0.2869,
+          "deltaPp": 3.7,
+          "approvalStatus": "pending_human_review"
+        }
+      ]
+    },
+    "CN": {
+      "summary": "增长动量走弱，价格压力上行",
+      "summaryStatus": "machine_generated_demo",
+      "regime": {
+        "label": "stagflation",
+        "status": "confirmed",
+        "confidence": 0.8844,
+        "probabilities": {
+          "goldilocks": 0.0788,
+          "overheating": 0.3205,
+          "contraction": 0.1021,
+          "stagflation": 0.4986
+        }
+      },
+      "changes": [
+        {
+          "id": "CN_L_POLICY",
+          "label": "政策流动性",
+          "dimension": "liquiditypolicy",
+          "impact": 0.2816,
+          "qualityStatus": "fresh",
+          "sourceCapability": "B",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "id": "CN_L_CREDIT",
+          "label": "社会融资信用脉冲",
+          "dimension": "liquiditycredit",
+          "impact": 0.2273,
+          "qualityStatus": "fresh",
+          "sourceCapability": "B",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "id": "CN_I_PPI",
+          "label": "生产者价格",
+          "dimension": "inflation",
+          "impact": 0.1591,
+          "qualityStatus": "fresh",
+          "sourceCapability": "B",
+          "explanation": "动量贡献代理（非因果归因）"
+        }
+      ],
+      "primaryPath": {
+        "id": "path.supply_policy",
+        "label": "供给冲击 → 政策约束",
+        "edgeIds": [
+          "e.order.inflation",
+          "e.inflation.liquidity",
+          "e.liquidity.growth"
+        ],
+        "activityScore": 0.3473,
+        "evidenceGrade": "C"
+      },
+      "scenarioChanges": [
+        {
+          "id": "soft_landing",
+          "slot": "BASE",
+          "title": "低速增长，通胀缓慢回落",
+          "priorProbability": 0.4,
+          "suggestedProbability": 0.32,
+          "deltaPp": -8.0,
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "stagflation",
+          "slot": "REINFLATION",
+          "title": "增长减速，价格压力再起",
+          "priorProbability": 0.35,
+          "suggestedProbability": 0.4211,
+          "deltaPp": 7.1,
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "credit_contraction",
+          "slot": "BEAR",
+          "title": "需求收缩触发信用压力",
+          "priorProbability": 0.25,
+          "suggestedProbability": 0.2589,
+          "deltaPp": 0.9,
+          "approvalStatus": "pending_human_review"
+        }
+      ]
+    },
+    "GLOBAL": {
+      "summary": "增长动量走弱，价格压力上行",
+      "summaryStatus": "machine_generated_demo",
+      "regime": {
+        "label": "stagflation",
+        "status": "confirmed",
+        "confidence": 0.8309,
+        "probabilities": {
+          "goldilocks": 0.0714,
+          "overheating": 0.176,
+          "contraction": 0.2294,
+          "stagflation": 0.5233
+        }
+      },
+      "changes": [
+        {
+          "id": "GL_I_ENERGY",
+          "label": "全球能源价格",
+          "dimension": "inflation",
+          "impact": 0.1274,
+          "qualityStatus": "fresh",
+          "sourceCapability": "B",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "id": "GL_O_CONFLICT",
+          "label": "地缘冲突压力",
+          "dimension": "order",
+          "impact": 0.1134,
+          "qualityStatus": "estimated",
+          "sourceCapability": "D",
+          "explanation": "动量贡献代理（非因果归因）"
+        },
+        {
+          "id": "GL_G_TRADE",
+          "label": "全球贸易量",
+          "dimension": "growth",
+          "impact": -0.0812,
+          "qualityStatus": "fresh",
+          "sourceCapability": "B",
+          "explanation": "动量贡献代理（非因果归因）"
+        }
+      ],
+      "primaryPath": {
+        "id": "path.credit_contraction",
+        "label": "金融收紧 → 脆弱性 → 增长",
+        "edgeIds": [
+          "e.liquidity.fragility",
+          "e.fragility.growth",
+          "e.growth.equity"
+        ],
+        "activityScore": 0.3136,
+        "evidenceGrade": "C"
+      },
+      "scenarioChanges": [
+        {
+          "id": "soft_landing",
+          "slot": "BASE",
+          "title": "低速增长，通胀缓慢回落",
+          "priorProbability": 0.4,
+          "suggestedProbability": 0.32,
+          "deltaPp": -8.0,
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "stagflation",
+          "slot": "REINFLATION",
+          "title": "增长减速，价格压力再起",
+          "priorProbability": 0.35,
+          "suggestedProbability": 0.4024,
+          "deltaPp": 5.2,
+          "approvalStatus": "pending_human_review"
+        },
+        {
+          "id": "credit_contraction",
+          "slot": "BEAR",
+          "title": "需求收缩触发信用压力",
+          "priorProbability": 0.25,
+          "suggestedProbability": 0.2776,
+          "deltaPp": 2.8,
+          "approvalStatus": "pending_human_review"
+        }
+      ]
+    }
+  },
+  "referencePortfolio": {
+    "classification": "PUBLIC_SYNTHETIC_REFERENCE",
+    "topRiskFactor": {
+      "factorId": "equity",
+      "componentVariance": 0.008795,
+      "netPctOfTotalVariance": 0.62617,
+      "absoluteContributionPct": 0.67175,
+      "direction": "risk_adding"
+    },
+    "worstScenario": {
+      "id": "order_shock",
+      "title": "秩序与供应链冲击",
+      "impactRange": {
+        "low": -0.1971,
+        "high": -0.1171,
+        "mode": "factor_stress_research_assumption"
+      }
+    },
+    "proposalStatus": "review_required",
+    "nonExecutable": true
+  }
+}

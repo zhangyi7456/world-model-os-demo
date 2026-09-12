@@ -1,12 +1,13 @@
 {
-  "schemaVersion": "0.1.0",
-  "siteRelease": "site-v0.5.0",
+  "schemaVersion": "0.2.0",
+  "siteRelease": "site-v0.6.0",
   "snapshotId": "demo-multi-2026-09-11T16:00:00+08:00",
   "dataModeComposition": {
     "worldState": "DEMO_FIXTURE",
     "causalMap": "RESEARCH_CANDIDATE",
     "scenarios": "RESEARCH_SCENARIOS",
-    "portfolio": "REFERENCE_PORTFOLIO"
+    "portfolio": "REFERENCE_PORTFOLIO",
+    "releaseCalendar": "CANDIDATE_REGISTRY"
   },
   "decisionAsOf": "2026-09-11T16:00:00+08:00",
   "dataCutoff": "2026-09-11T16:00:00+08:00",
@@ -23,18 +24,20 @@
     "scenarios": "0.3.0",
     "portfolio": "0.4.0"
   },
-  "sourceCommit": "8b620ae6b2e2758a9c6d5968734673edc3f11c43",
+  "sourceCommit": "a4fbd7ea971181726778fb8c6bb79838bfb9743c",
   "workingTreeDirty": false,
   "artifactHashes": {
-    "worldState": "7c92fca50a1548656f4177b35f5ab2fe3e6339f97eb22089a6570cedede96b1d",
+    "worldState": "8dcf91e8f38f8535208b880f09c3938277175412ef459115079eaf6b5cfafe55",
     "causalMap": "2672e6f5c5e98ea86393107ab18c00c2f870d3de21b44532392e84509998e0a7",
     "scenarios": "4303c73af1f4ea40a62eb61a0fbdce885666615133005797d4e0831bdfc91b07",
-    "referencePortfolio": "b84413947b27f16cdda3d3fbb749a96a89b55ad66123e5d77555d5c02303fda0"
+    "referencePortfolio": "b84413947b27f16cdda3d3fbb749a96a89b55ad66123e5d77555d5c02303fda0",
+    "releaseCalendar": "c640e37375dc7ba74a16c8b15a9bc022cae475615ff788fb47a03810a3a64940"
   },
   "lastSuccessfulBuild": "2026-09-11T16:00:00+08:00",
   "approvalStatus": "demo_reviewed",
   "degradationFlags": [
     "DEMO_FIXTURE",
+    "PIT_INGESTION_PENDING_CREDENTIALS",
     "SCENARIO_PENDING_HUMAN_REVIEW",
     "CAUSAL_EDGES_RESEARCH_CANDIDATE"
   ],

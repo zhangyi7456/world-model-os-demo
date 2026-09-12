@@ -20,6 +20,11 @@
           "pressure": 0.3632,
           "trend": "down",
           "confidence": 0.9202,
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.949,
+            "modelConfidence": 0.984
+          },
           "coverage": 1.0,
           "freshness": "fresh"
         },
@@ -29,6 +34,11 @@
           "pressure": 0.5218,
           "trend": "up",
           "confidence": 0.9112,
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.911,
+            "modelConfidence": 0.986
+          },
           "coverage": 1.0,
           "freshness": "fresh"
         },
@@ -38,6 +48,11 @@
           "pressure": 0.4461,
           "trend": "up",
           "confidence": 0.8867,
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.874,
+            "modelConfidence": 0.9325
+          },
           "coverage": 1.0,
           "freshness": "fresh"
         },
@@ -47,6 +62,11 @@
           "pressure": 0.7095,
           "trend": "up",
           "confidence": 0.7916,
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.6635,
+            "modelConfidence": 0.9981
+          },
           "coverage": 1.0,
           "freshness": "stale"
         },
@@ -58,6 +78,11 @@
           "coverage": 1.0,
           "trend": "flat",
           "freshness": "fresh",
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.925,
+            "modelConfidence": 1.0
+          },
           "subdimensions": {
             "policy": {
               "level": -0.5246,
@@ -65,6 +90,11 @@
               "pressure": 0.3148,
               "trend": "flat",
               "confidence": 0.9325,
+              "confidenceComponents": {
+                "dataCoverage": 1.0,
+                "sourceReliability": 0.98,
+                "modelConfidence": 1.0
+              },
               "coverage": 1.0,
               "freshness": "fresh"
             },
@@ -74,6 +104,11 @@
               "pressure": 0.3551,
               "trend": "down",
               "confidence": 0.9075,
+              "confidenceComponents": {
+                "dataCoverage": 1.0,
+                "sourceReliability": 0.88,
+                "modelConfidence": 1.0
+              },
               "coverage": 1.0,
               "freshness": "fresh"
             },
@@ -83,6 +118,11 @@
               "pressure": 0.3015,
               "trend": "flat",
               "confidence": 0.9175,
+              "confidenceComponents": {
+                "dataCoverage": 1.0,
+                "sourceReliability": 0.92,
+                "modelConfidence": 1.0
+              },
               "coverage": 1.0,
               "freshness": "fresh"
             }
@@ -178,6 +218,7 @@
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.95,
+            "sourceConfidence": 0.95,
             "releaseTime": "2026-09-05T13:15:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-05",
@@ -189,18 +230,19 @@
           },
           {
             "indicatorId": "US_G_RETAIL",
-            "label": "实际零售需求",
+            "label": "实际零售与餐饮销售",
             "entity": "US",
             "dimension": "growth",
             "value": 99.4,
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.93,
+            "sourceConfidence": 0.93,
             "releaseTime": "2026-09-04T12:30:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-04",
-            "source": "FRED/ALFRED:RSAFS",
-            "sourceUrl": "https://fred.stlouisfed.org/series/RSAFS",
+            "source": "FRED/ALFRED:RRSFS",
+            "sourceUrl": "https://fred.stlouisfed.org/series/RRSFS",
             "sourceCapability": "A",
             "releaseTimeBasis": "official",
             "isEstimated": false
@@ -214,6 +256,7 @@
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.96,
+            "sourceConfidence": 0.96,
             "releaseTime": "2026-09-04T12:30:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-04",
@@ -232,6 +275,7 @@
             "unit": "percent",
             "qualityStatus": "fresh",
             "confidence": 0.96,
+            "sourceConfidence": 0.96,
             "releaseTime": "2026-09-04T12:30:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-04",
@@ -250,6 +294,7 @@
             "unit": "percent_yoy",
             "qualityStatus": "fresh",
             "confidence": 0.96,
+            "sourceConfidence": 0.96,
             "releaseTime": "2026-08-28T12:30:00Z",
             "observationPeriod": "2026-07",
             "vintageId": "2026-08-28",
@@ -261,18 +306,19 @@
           },
           {
             "indicatorId": "US_I_WAGE",
-            "label": "工资增长",
+            "label": "雇佣成本指数",
             "entity": "US",
             "dimension": "inflation",
             "value": 4.0,
             "unit": "percent_yoy",
             "qualityStatus": "fresh",
             "confidence": 0.94,
+            "sourceConfidence": 0.94,
             "releaseTime": "2026-09-04T12:30:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-04",
-            "source": "FRED/ALFRED:CES0500000003",
-            "sourceUrl": "https://fred.stlouisfed.org/series/CES0500000003",
+            "source": "FRED/ALFRED:ECIALLCIV",
+            "sourceUrl": "https://fred.stlouisfed.org/series/ECIALLCIV",
             "sourceCapability": "A",
             "releaseTimeBasis": "official",
             "isEstimated": false
@@ -286,6 +332,7 @@
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.75,
+            "sourceConfidence": 0.75,
             "releaseTime": "2026-09-10T21:00:00Z",
             "observationPeriod": "2026-09-10",
             "vintageId": "2026-09-10",
@@ -304,6 +351,7 @@
             "unit": "percent",
             "qualityStatus": "fresh",
             "confidence": 0.98,
+            "sourceConfidence": 0.98,
             "releaseTime": "2026-09-10T20:00:00Z",
             "observationPeriod": "2026-09-10",
             "vintageId": "2026-09-10",
@@ -322,11 +370,12 @@
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.88,
+            "sourceConfidence": 0.88,
             "releaseTime": "2026-08-15T14:00:00Z",
             "observationPeriod": "2026-Q2",
             "vintageId": "2026-08-15",
-            "source": "FED:SLOOS",
-            "sourceUrl": null,
+            "source": "FRED/ALFRED:DRTSCILM",
+            "sourceUrl": "https://fred.stlouisfed.org/series/DRTSCILM",
             "sourceCapability": "A",
             "releaseTimeBasis": "official",
             "isEstimated": false
@@ -340,6 +389,7 @@
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.92,
+            "sourceConfidence": 0.92,
             "releaseTime": "2026-09-08T12:00:00Z",
             "observationPeriod": "2026-09-04",
             "vintageId": "2026-09-08",
@@ -358,6 +408,7 @@
             "unit": "percent",
             "qualityStatus": "fresh",
             "confidence": 0.9,
+            "sourceConfidence": 0.9,
             "releaseTime": "2026-09-10T21:00:00Z",
             "observationPeriod": "2026-09-10",
             "vintageId": "2026-09-10",
@@ -376,6 +427,7 @@
             "unit": "percent_gdp",
             "qualityStatus": "fresh",
             "confidence": 0.91,
+            "sourceConfidence": 0.91,
             "releaseTime": "2026-08-30T12:00:00Z",
             "observationPeriod": "2026-Q2",
             "vintageId": "2026-08-30",
@@ -394,6 +446,7 @@
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.78,
+            "sourceConfidence": 0.78,
             "releaseTime": "2026-08-31T12:00:00Z",
             "observationPeriod": "2026-07",
             "vintageId": "2026-08-31",
@@ -412,6 +465,7 @@
             "unit": "index",
             "qualityStatus": "stale",
             "confidence": 0.374,
+            "sourceConfidence": 0.68,
             "releaseTime": "2026-08-25T12:00:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-08-25",
@@ -430,6 +484,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.455,
+            "sourceConfidence": 0.65,
             "releaseTime": "2026-09-09T12:00:00Z",
             "observationPeriod": "2026-09-08",
             "vintageId": "2026-09-09",
@@ -462,6 +517,11 @@
           "pressure": 0.2954,
           "trend": "flat",
           "confidence": 0.8951,
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.874,
+            "modelConfidence": 0.962
+          },
           "coverage": 1.0,
           "freshness": "fresh"
         },
@@ -471,6 +531,11 @@
           "pressure": -0.1591,
           "trend": "up",
           "confidence": 0.8844,
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.844,
+            "modelConfidence": 0.9875
+          },
           "coverage": 1.0,
           "freshness": "fresh"
         },
@@ -480,6 +545,11 @@
           "pressure": 0.4468,
           "trend": "flat",
           "confidence": 0.8284,
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.762,
+            "modelConfidence": 0.9675
+          },
           "coverage": 1.0,
           "freshness": "stale"
         },
@@ -489,6 +559,11 @@
           "pressure": 0.7095,
           "trend": "up",
           "confidence": 0.7916,
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.6635,
+            "modelConfidence": 0.9981
+          },
           "coverage": 1.0,
           "freshness": "stale"
         },
@@ -500,6 +575,11 @@
           "coverage": 1.0,
           "trend": "up",
           "freshness": "fresh",
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.84,
+            "modelConfidence": 1.0
+          },
           "subdimensions": {
             "policy": {
               "level": 0.5139,
@@ -507,6 +587,11 @@
               "pressure": -0.4363,
               "trend": "up",
               "confidence": 0.9075,
+              "confidenceComponents": {
+                "dataCoverage": 1.0,
+                "sourceReliability": 0.88,
+                "modelConfidence": 1.0
+              },
               "coverage": 1.0,
               "freshness": "fresh"
             },
@@ -516,6 +601,11 @@
               "pressure": -0.3394,
               "trend": "up",
               "confidence": 0.9075,
+              "confidenceComponents": {
+                "dataCoverage": 1.0,
+                "sourceReliability": 0.88,
+                "modelConfidence": 1.0
+              },
               "coverage": 1.0,
               "freshness": "fresh"
             },
@@ -525,6 +615,11 @@
               "pressure": -0.2439,
               "trend": "flat",
               "confidence": 0.8135,
+              "confidenceComponents": {
+                "dataCoverage": 1.0,
+                "sourceReliability": 0.72,
+                "modelConfidence": 1.0
+              },
               "coverage": 1.0,
               "freshness": "fresh"
             }
@@ -620,6 +715,7 @@
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.88,
+            "sourceConfidence": 0.88,
             "releaseTime": "2026-08-31T01:30:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-08-31",
@@ -638,6 +734,7 @@
             "unit": "percent_yoy",
             "qualityStatus": "fresh",
             "confidence": 0.88,
+            "sourceConfidence": 0.88,
             "releaseTime": "2026-08-15T02:00:00Z",
             "observationPeriod": "2026-07",
             "vintageId": "2026-08-15",
@@ -656,6 +753,7 @@
             "unit": "percent_yoy",
             "qualityStatus": "fresh",
             "confidence": 0.88,
+            "sourceConfidence": 0.88,
             "releaseTime": "2026-08-15T02:00:00Z",
             "observationPeriod": "2026-07",
             "vintageId": "2026-08-15",
@@ -674,6 +772,7 @@
             "unit": "percent",
             "qualityStatus": "fresh",
             "confidence": 0.85,
+            "sourceConfidence": 0.85,
             "releaseTime": "2026-08-15T02:00:00Z",
             "observationPeriod": "2026-07",
             "vintageId": "2026-08-15",
@@ -692,6 +791,7 @@
             "unit": "percent_yoy",
             "qualityStatus": "fresh",
             "confidence": 0.88,
+            "sourceConfidence": 0.88,
             "releaseTime": "2026-09-09T01:30:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-09",
@@ -710,6 +810,7 @@
             "unit": "percent_yoy",
             "qualityStatus": "fresh",
             "confidence": 0.88,
+            "sourceConfidence": 0.88,
             "releaseTime": "2026-09-09T01:30:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-09",
@@ -728,6 +829,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.49,
+            "sourceConfidence": 0.7,
             "releaseTime": "2026-08-20T02:00:00Z",
             "observationPeriod": "2026-Q2",
             "vintageId": "2026-08-20",
@@ -746,6 +848,7 @@
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.88,
+            "sourceConfidence": 0.88,
             "releaseTime": "2026-09-05T09:00:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-05",
@@ -764,6 +867,7 @@
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.88,
+            "sourceConfidence": 0.88,
             "releaseTime": "2026-09-11T08:00:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-11",
@@ -782,6 +886,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.504,
+            "sourceConfidence": 0.72,
             "releaseTime": "2026-09-10T09:00:00Z",
             "observationPeriod": "2026-09-10",
             "vintageId": "2026-09-10",
@@ -800,6 +905,7 @@
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.86,
+            "sourceConfidence": 0.86,
             "releaseTime": "2026-08-15T02:00:00Z",
             "observationPeriod": "2026-07",
             "vintageId": "2026-08-15",
@@ -818,6 +924,7 @@
             "unit": "index",
             "qualityStatus": "stale",
             "confidence": 0.374,
+            "sourceConfidence": 0.68,
             "releaseTime": "2026-08-19T02:00:00Z",
             "observationPeriod": "2026-Q2",
             "vintageId": "2026-08-19",
@@ -836,6 +943,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.504,
+            "sourceConfidence": 0.72,
             "releaseTime": "2026-09-05T09:00:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-05",
@@ -854,6 +962,7 @@
             "unit": "index",
             "qualityStatus": "stale",
             "confidence": 0.374,
+            "sourceConfidence": 0.68,
             "releaseTime": "2026-08-25T12:00:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-08-25",
@@ -872,6 +981,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.455,
+            "sourceConfidence": 0.65,
             "releaseTime": "2026-09-09T12:00:00Z",
             "observationPeriod": "2026-09-08",
             "vintageId": "2026-09-09",
@@ -904,6 +1014,11 @@
           "pressure": 0.3323,
           "trend": "down",
           "confidence": 0.8309,
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.75,
+            "modelConfidence": 0.9873
+          },
           "coverage": 1.0,
           "freshness": "fresh"
         },
@@ -913,6 +1028,11 @@
           "pressure": 0.4218,
           "trend": "up",
           "confidence": 0.8394,
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.765,
+            "modelConfidence": 0.986
+          },
           "coverage": 1.0,
           "freshness": "fresh"
         },
@@ -922,6 +1042,11 @@
           "pressure": 0.3852,
           "trend": "up",
           "confidence": 0.8027,
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.69,
+            "modelConfidence": 0.9806
+          },
           "coverage": 1.0,
           "freshness": "fresh"
         },
@@ -931,6 +1056,11 @@
           "pressure": 0.7095,
           "trend": "up",
           "confidence": 0.7916,
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.6635,
+            "modelConfidence": 0.9981
+          },
           "coverage": 1.0,
           "freshness": "stale"
         },
@@ -942,6 +1072,11 @@
           "coverage": 1.0,
           "trend": "flat",
           "freshness": "fresh",
+          "confidenceComponents": {
+            "dataCoverage": 1.0,
+            "sourceReliability": 0.712,
+            "modelConfidence": 1.0
+          },
           "subdimensions": {
             "policy": {
               "level": -0.2998,
@@ -949,6 +1084,11 @@
               "pressure": 0.2012,
               "trend": "flat",
               "confidence": 0.8135,
+              "confidenceComponents": {
+                "dataCoverage": 1.0,
+                "sourceReliability": 0.72,
+                "modelConfidence": 1.0
+              },
               "coverage": 1.0,
               "freshness": "fresh"
             },
@@ -958,6 +1098,11 @@
               "pressure": 0.1006,
               "trend": "flat",
               "confidence": 0.81,
+              "confidenceComponents": {
+                "dataCoverage": 1.0,
+                "sourceReliability": 0.7,
+                "modelConfidence": 1.0
+              },
               "coverage": 1.0,
               "freshness": "fresh"
             },
@@ -967,6 +1112,11 @@
               "pressure": 0.0539,
               "trend": "flat",
               "confidence": 0.8135,
+              "confidenceComponents": {
+                "dataCoverage": 1.0,
+                "sourceReliability": 0.72,
+                "modelConfidence": 1.0
+              },
               "coverage": 1.0,
               "freshness": "fresh"
             }
@@ -1062,6 +1212,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.525,
+            "sourceConfidence": 0.75,
             "releaseTime": "2026-09-01T00:00:00Z",
             "observationPeriod": "2026-07",
             "vintageId": "2026-09-01",
@@ -1080,6 +1231,7 @@
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.84,
+            "sourceConfidence": 0.84,
             "releaseTime": "2026-08-30T00:00:00Z",
             "observationPeriod": "2026-07",
             "vintageId": "2026-08-30",
@@ -1098,6 +1250,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.49,
+            "sourceConfidence": 0.7,
             "releaseTime": "2026-09-05T00:00:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-05",
@@ -1116,6 +1269,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.49,
+            "sourceConfidence": 0.7,
             "releaseTime": "2026-08-25T00:00:00Z",
             "observationPeriod": "2026-Q2",
             "vintageId": "2026-08-25",
@@ -1134,6 +1288,7 @@
             "unit": "percent_yoy",
             "qualityStatus": "estimated",
             "confidence": 0.518,
+            "sourceConfidence": 0.74,
             "releaseTime": "2026-09-01T00:00:00Z",
             "observationPeriod": "2026-07",
             "vintageId": "2026-09-01",
@@ -1152,6 +1307,7 @@
             "unit": "index",
             "qualityStatus": "fresh",
             "confidence": 0.84,
+            "sourceConfidence": 0.84,
             "releaseTime": "2026-09-05T00:00:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-05",
@@ -1170,6 +1326,7 @@
             "unit": "percent_yoy",
             "qualityStatus": "estimated",
             "confidence": 0.49,
+            "sourceConfidence": 0.7,
             "releaseTime": "2026-08-25T00:00:00Z",
             "observationPeriod": "2026-Q2",
             "vintageId": "2026-08-25",
@@ -1188,6 +1345,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.504,
+            "sourceConfidence": 0.72,
             "releaseTime": "2026-09-01T00:00:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-09-01",
@@ -1206,6 +1364,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.49,
+            "sourceConfidence": 0.7,
             "releaseTime": "2026-08-20T00:00:00Z",
             "observationPeriod": "2026-Q2",
             "vintageId": "2026-08-20",
@@ -1224,6 +1383,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.504,
+            "sourceConfidence": 0.72,
             "releaseTime": "2026-09-08T00:00:00Z",
             "observationPeriod": "2026-09-05",
             "vintageId": "2026-09-08",
@@ -1242,6 +1402,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.504,
+            "sourceConfidence": 0.72,
             "releaseTime": "2026-08-20T00:00:00Z",
             "observationPeriod": "2026-Q2",
             "vintageId": "2026-08-20",
@@ -1260,6 +1421,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.504,
+            "sourceConfidence": 0.72,
             "releaseTime": "2026-09-08T00:00:00Z",
             "observationPeriod": "2026-09-05",
             "vintageId": "2026-09-08",
@@ -1278,6 +1440,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.42,
+            "sourceConfidence": 0.6,
             "releaseTime": "2026-08-28T00:00:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-08-28",
@@ -1296,6 +1459,7 @@
             "unit": "index",
             "qualityStatus": "stale",
             "confidence": 0.374,
+            "sourceConfidence": 0.68,
             "releaseTime": "2026-08-25T12:00:00Z",
             "observationPeriod": "2026-08",
             "vintageId": "2026-08-25",
@@ -1314,6 +1478,7 @@
             "unit": "index",
             "qualityStatus": "estimated",
             "confidence": 0.455,
+            "sourceConfidence": 0.65,
             "releaseTime": "2026-09-09T12:00:00Z",
             "observationPeriod": "2026-09-08",
             "vintageId": "2026-09-09",

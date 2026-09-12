@@ -16,7 +16,7 @@ const factorLabels = {
   china_equity: "中国权益特异风险",
 };
 const qualityLabels = { fresh: "正常", stale: "陈旧", estimated: "估算", missing: "缺失", bad: "拒绝" };
-const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null };
+const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null, releaseCalendar: null };
 let selectedEntity = "US";
 let selectedPathId = null;
 let selectedEdgeId = null;
@@ -46,13 +46,14 @@ function stateStrip({ compact = false } = {}) {
   const dimensions = state()?.dimensions || {};
   return `<section class="status-strip ${compact ? "compact" : ""}">${Object.entries(stateMeta).map(([key, meta]) => {
     const value = dimensions[key] || { level: 0, momentum: 0, pressure: 0, confidence: 0, coverage: 0, trend: "flat", freshness: "missing" };
+    const confidence = value.confidenceComponents || { dataCoverage: value.coverage, sourceReliability: value.confidence, modelConfidence: value.confidence };
     const position = Math.max(2, Math.min(98, 50 + value.level * 25));
     return `<button class="state" data-dimension="${key}" aria-label="查看${meta.name}证据">
       <div class="state-top"><span class="state-code">${meta.code} · ${meta.name.toUpperCase()}</span><span class="trend">${arrow(value.trend)} ${Math.abs(value.momentum).toFixed(2)}</span></div>
       <div class="state-value"><b>${signed(value.level)}</b><span>${meta.risk(value.level)}</span></div>
       <div class="bar"><i style="left:${position}%"></i></div>
-      <div class="state-metrics"><span>PRESS ${signed(value.pressure)}</span><span>COVER ${pct(value.coverage)}</span></div>
-      <div class="state-foot"><span>${meta.driver}</span><span class="quality-${value.freshness}">${String(value.freshness).toUpperCase()} · MODEL ${pct(value.confidence)}</span></div>
+      <div class="state-metrics"><span>PRESS ${signed(value.pressure)}</span><span>COV ${pct(confidence.dataCoverage)}</span><span>SRC ${pct(confidence.sourceReliability)}</span><span>MOD ${pct(confidence.modelConfidence)}</span></div>
+      <div class="state-foot"><span>${meta.driver}</span><span class="quality-${value.freshness}">${String(value.freshness).toUpperCase()} · AGG ${pct(value.confidence)}</span></div>
     </button>`;
   }).join("")}</section>`;
 }
@@ -187,15 +188,24 @@ function evidence() {
   const selected = indicators.find((item) => item.indicatorId === selectedIndicatorId) || indicators[0];
   selectedIndicatorId = selected?.indicatorId || null;
   const counts = current.dataHealth.statusCounts;
+  const calendar = selectedEntity === "US" ? (model.releaseCalendar?.series || []) : [];
+  const selectedRelease = calendar.find((item) => item.indicatorId === selected?.indicatorId);
   const registry = indicators.map((item) => `<button class="indicator-row ${item.indicatorId === selectedIndicatorId ? "selected" : ""}" data-indicator-select="${item.indicatorId}"><i class="quality-dot quality-${item.qualityStatus}"></i><span><b>${escapeHtml(item.label)}</b><small>${escapeHtml(item.indicatorId)} · ${escapeHtml(item.dimension)}</small></span><em>${escapeHtml(item.value)} ${escapeHtml(item.unit)}</em><u>${escapeHtml(item.sourceCapability)}</u></button>`).join("");
   const sourceLink = selected?.sourceUrl ? `<a href="${escapeHtml(selected.sourceUrl)}" target="_blank" rel="noreferrer">打开原始来源 ↗</a>` : `<span>无公开来源链接</span>`;
   return `<div class="view">
     ${pageHead(6, "证据与数据", `${entityLabels[selectedEntity]} · 检查数据模式、来源、发布时间、vintage、变换入口与状态贡献。`, releaseContext())}
     <section class="data-mode-strip">${Object.entries(model.publication.dataModeComposition).map(([key, value]) => `<div><span>${escapeHtml(key)}</span><b>${escapeHtml(value)}</b></div>`).join("")}</section>
     <section class="health-strip"><div><span>有效输入</span><b>${current.quality.observationCount}/${current.quality.catalogCount}</b></div>${Object.entries(qualityLabels).map(([key, label]) => `<div><span>${label}</span><b class="quality-${key}">${counts[key] || 0}</b></div>`).join("")}</section>
-    <section class="evidence-workspace"><div class="indicator-registry"><div class="section-title"><h2>指标目录</h2><span>${indicators.length} SERIES</span></div>${registry}</div><article class="indicator-detail"><div class="indicator-title"><div><p class="eyebrow">${escapeHtml(selected?.indicatorId)} · ${escapeHtml(selected?.dimension)}</p><h2>${escapeHtml(selected?.label)}</h2></div>${statusBadge(String(selected?.qualityStatus || "missing").toUpperCase())}</div><div class="observation-value"><strong>${escapeHtml(selected?.value)}</strong><span>${escapeHtml(selected?.unit)}</span></div><dl class="detail-grid"><div><dt>观察期</dt><dd>${escapeHtml(selected?.observationPeriod)}</dd></div><div><dt>发布时间</dt><dd>${escapeHtml(selected?.releaseTime)}</dd></div><div><dt>Vintage</dt><dd>${escapeHtml(selected?.vintageId)}</dd></div><div><dt>来源能力</dt><dd>${escapeHtml(selected?.sourceCapability)}</dd></div><div><dt>质量状态</dt><dd>${escapeHtml(selected?.qualityStatus)}</dd></div><div><dt>模型置信</dt><dd>${pct(selected?.confidence)}</dd></div><div><dt>发布时间依据</dt><dd>${escapeHtml(selected?.releaseTimeBasis)}</dd></div><div><dt>来源</dt><dd>${escapeHtml(selected?.source)}</dd></div></dl><div class="source-action">${sourceLink}<button data-open-manifest>查看 Run Manifest</button></div><div class="lineage"><p class="eyebrow">PUBLIC LINEAGE</p><div><span>SOURCE<small>${escapeHtml(selected?.source)}</small></span><i>→</i><span>RAW<small>${escapeHtml(selected?.vintageId)}</small></span><i>→</i><span>TRANSFORM<small>CATALOG VERSIONED</small></span><i>→</i><span>STATE<small>${escapeHtml(selected?.dimension)}</small></span></div></div>${selected?.releaseTimeBasis === "retrieval_time_proxy" ? `<p class="warning">发布时间使用抓取时间代理，不能用于精确历史回放。</p>` : ""}</article></section>
+    <section class="evidence-workspace"><div class="indicator-registry"><div class="section-title"><h2>指标目录</h2><span>${indicators.length} SERIES</span></div>${registry}</div><article class="indicator-detail"><div class="indicator-title"><div><p class="eyebrow">${escapeHtml(selected?.indicatorId)} · ${escapeHtml(selected?.dimension)}</p><h2>${escapeHtml(selected?.label)}</h2></div>${statusBadge(String(selected?.qualityStatus || "missing").toUpperCase())}</div><div class="observation-value"><strong>${escapeHtml(selected?.value)}</strong><span>${escapeHtml(selected?.unit)}</span></div><dl class="detail-grid"><div><dt>观察期</dt><dd>${escapeHtml(selected?.observationPeriod)}</dd></div><div><dt>发布时间</dt><dd>${escapeHtml(selected?.releaseTime)}</dd></div><div><dt>Vintage</dt><dd>${escapeHtml(selected?.vintageId)}</dd></div><div><dt>来源能力</dt><dd>${escapeHtml(selected?.sourceCapability)}</dd></div><div><dt>质量状态</dt><dd>${escapeHtml(selected?.qualityStatus)}</dd></div><div><dt>聚合置信</dt><dd>${pct(selected?.confidence)}</dd></div><div><dt>来源置信</dt><dd>${pct(selected?.sourceConfidence ?? selected?.confidence)}</dd></div><div><dt>发布时间依据</dt><dd>${escapeHtml(selected?.releaseTimeBasis)}</dd></div><div><dt>来源</dt><dd>${escapeHtml(selected?.source)}</dd></div><div><dt>PIT 状态</dt><dd>${escapeHtml(selectedRelease?.pitAvailability || "NOT IN US CANDIDATE REGISTRY")}</dd></div></dl><div class="source-action">${sourceLink}<button data-open-manifest>查看 Run Manifest</button></div><div class="lineage"><p class="eyebrow">PUBLIC LINEAGE</p><div><span>SOURCE<small>${escapeHtml(selected?.source)}</small></span><i>→</i><span>RAW<small>${escapeHtml(selected?.vintageId)}</small></span><i>→</i><span>TRANSFORM<small>CATALOG VERSIONED</small></span><i>→</i><span>STATE<small>${escapeHtml(selected?.dimension)}</small></span></div></div>${selected?.releaseTimeBasis === "retrieval_time_proxy" ? `<p class="warning">发布时间使用抓取时间代理，不能用于精确历史回放。</p>` : ""}${selectedRelease ? `<p class="warning neutral">该序列已进入 US PIT 候选注册表；首次发布/最新修订账本契约已实现，但正式历史数据尚未装载。</p>` : ""}</article></section>
+    ${releaseCalendarPanel(calendar)}
     <section class="release-download"><div><p class="eyebrow">REPRODUCIBILITY</p><h2>同一快照由版本、提交与内容哈希固定。</h2><p>${escapeHtml(model.publication.snapshotId)} · ${escapeHtml(model.publication.sourceCommit.slice(0, 12))}</p></div><button data-open-manifest>查看完整发布清单</button></section>
   </div>`;
+}
+
+function releaseCalendarPanel(calendar) {
+  if (!calendar.length) return `<section class="release-calendar"><p class="empty">当前实体尚无公开 PIT 候选注册表。</p></section>`;
+  const rows = calendar.map((item) => `<tr><td><b>${escapeHtml(item.label)}</b><small>${escapeHtml(item.seriesId)}</small></td><td>${escapeHtml(item.frequency)}</td><td>${item.expectedCadenceDays} + ${item.graceDays} 天</td><td>${escapeHtml(item.fixtureFreshness?.status || "missing")}</td><td>${escapeHtml(item.pitAvailability)}</td></tr>`).join("");
+  return `<section class="release-calendar"><div class="section-title"><h2>US 发布日历与修订视图</h2><span>CANDIDATE REGISTRY · ${escapeHtml(model.releaseCalendar?.timeZone)}</span></div><div class="table-scroll"><table><thead><tr><th>序列</th><th>频率</th><th>预期周期 + 宽限</th><th>Fixture 新鲜度</th><th>PIT 装载</th></tr></thead><tbody>${rows}</tbody></table></div><p class="boundary-copy">新鲜度从来源发布时间计算；当前时间列来自 Demo fixture。正式凭据接入前，不将该注册表标记为 REAL_STATE_PIT。</p></section>`;
 }
 
 function loadingView(number, title) {
@@ -247,11 +257,11 @@ function selectEntity(entity) {
 
 async function loadData() {
   try {
-    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief"];
+    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief", "release-calendar"];
     const responses = await Promise.all(names.map((name) => fetch(`./data/${name}.json`, { cache: "no-store" })));
     if (responses.some((response) => !response.ok)) throw new Error("required public artifacts are unavailable");
-    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData] = await Promise.all(responses.map((response) => response.json()));
-    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData });
+    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData, releaseCalendarData] = await Promise.all(responses.map((response) => response.json()));
+    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData, releaseCalendar: releaseCalendarData });
     selectedEntity = worldData.primaryEntity || "US";
     $("#entity-select").value = selectedEntity;
     $("#data-mode").textContent = publicationData.dataModeComposition.worldState;

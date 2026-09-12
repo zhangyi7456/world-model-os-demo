@@ -92,7 +92,7 @@ main { grid-column: 2; min-height: 100vh; }
 .state-value span { font-size: 10px; }
 .bar { position: relative; height: 2px; background: #223235; }
 .bar i { position: absolute; top: -2px; width: 5px; height: 6px; background: var(--accent); box-shadow: 0 0 10px rgba(98, 213, 204, 0.6); }
-.state-metrics { margin-top: 9px; }
+.state-metrics { margin-top: 9px; flex-wrap: wrap; justify-content: flex-start; column-gap: 12px; }
 .state-foot { margin-top: 8px; color: var(--muted); font-size: 8px; }
 .quality-fresh { color: var(--good) !important; }
 .quality-stale { color: var(--warn) !important; }
@@ -244,7 +244,7 @@ main { grid-column: 2; min-height: 100vh; }
 .proposal small { margin-top: 5px; color: var(--muted); font-size: 8px; }
 .proposal button { padding: 10px 14px; border: 0; color: #829497; background: #26383b; font-size: 9px; }
 
-.data-mode-strip { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+.data-mode-strip { display: grid; grid-template-columns: repeat(5, 1fr); border-bottom: 1px solid var(--line); }
 .data-mode-strip div { padding: 17px 18px; border-right: 1px solid var(--line); }
 .data-mode-strip div:last-child { border-right: 0; }
 .data-mode-strip span, .data-mode-strip b { display: block; }
@@ -285,6 +285,13 @@ main { grid-column: 2; min-height: 100vh; }
 .lineage span small { display: block; margin-top: 7px; overflow: hidden; color: var(--muted); font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
 .lineage i { color: #4c6265; font-style: normal; }
 .warning { margin-top: 18px; padding: 11px; border-left: 2px solid var(--warn); color: var(--warn); background: rgba(220, 179, 109, 0.06); font-size: 9px; }
+.warning.neutral { border-left-color: var(--blue); color: var(--blue); background: rgba(99, 143, 203, 0.06); }
+.release-calendar { padding: 24px 20px; border-bottom: 1px solid var(--line); }
+.release-calendar table { width: 100%; border-collapse: collapse; }
+.release-calendar th, .release-calendar td { padding: 11px 10px; border-bottom: 1px solid var(--line); text-align: left; font-size: 8px; }
+.release-calendar th { color: var(--muted); font-weight: 500; }
+.release-calendar td b, .release-calendar td small { display: block; }
+.release-calendar td small { margin-top: 4px; color: var(--muted); font: 7px ui-monospace, monospace; }
 .release-download { padding: 24px 20px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 30px; }
 .release-download h2 { margin: 7px 0; font: 400 19px Georgia, serif; }
 .release-download p { margin: 0; color: var(--muted); font: 8px ui-monospace, monospace; }

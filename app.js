@@ -21,6 +21,7 @@ let selectedEntity = "US";
 let selectedPathId = null;
 let selectedEdgeId = null;
 let selectedIndicatorId = null;
+let selectedHorizon = "6M";
 
 const $ = (selector) => document.querySelector(selector);
 const pct = (value) => `${Math.round(Number(value || 0) * 100)}%`;
@@ -155,13 +156,18 @@ function mechanismAudit(mechanism) {
 function scenario() {
   const set = scenarioSet();
   if (!set) return loadingView(4, "情景推演");
-  const scenarios = set.scenarios;
+  const forecast = set.forecasts?.find((item) => item.horizon === selectedHorizon) || set.forecasts?.[0];
+  const scenarios = forecast?.scenarios || set.scenarios;
   const rows = scenarios.map((item) => `<article class="scenario-row"><div><p class="eyebrow">${item.slot} · ${escapeHtml(item.approvalStatus)}</p><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.definition)}</p></div><div class="probability-steps"><span><small>PRIOR</small><b>${pct(item.priorProbability)}</b></span><i>→</i><span><small>SUGGESTED</small><b>${pct(item.suggestedProbability)}</b></span><i>→</i><span class="pending"><small>APPROVED</small><b>—</b></span></div><dl><dt>进入条件</dt><dd>${escapeHtml(item.trigger)}</dd><dt>失效条件</dt><dd>${escapeHtml(item.invalidation)}</dd><dt>影响区间</dt><dd class="${item.impactRange.low < 0 ? "negative" : "positive"}">${formatRange(item.impactRange)} · 假设</dd></dl></article>`).join("");
-  const evidence = set.evidence.slice(0, 6).map((item) => `<div class="waterfall-row"><span>${escapeHtml(item.feature)}</span><div><i style="width:${Math.min(100, Math.abs(item.impact) * 120)}%"></i></div><b>${signed(item.impact, 3)}</b><small>${escapeHtml(item.scenarioId)}</small></div>`).join("");
+  const evidence = (forecast?.waterfall || set.waterfall || []).slice(0, 8).map((item) => `<div class="waterfall-row"><span>${escapeHtml(item.cluster)}</span><div><i style="width:${Math.min(100, Math.abs(item.rawImpact) * 120)}%"></i></div><b>${signed(item.rawImpact, 3)} → ${signed(item.discountedImpact, 3)}</b><small>${escapeHtml(item.scenarioId)}</small></div>`).join("");
+  const horizonTabs = (set.forecasts || []).map((item) => `<button data-horizon="${item.horizon}" class="${item.horizon === forecast?.horizon ? "active" : ""}"><b>${item.horizon}</b><small>结算 ${escapeHtml(item.settlesAt.slice(0, 10))}</small></button>`).join("");
+  const jointBranches = [...(set.overlayTree || [])].sort((a, b) => b.jointProbability - a.jointProbability).slice(0, 6).map((item) => `<tr><td>${escapeHtml(item.baseScenarioId)}</td><td>${item.productivityUpside ? "ON" : "OFF"}</td><td>${item.orderShock ? "ON" : "OFF"}</td><td>${pct(item.jointProbability)}</td></tr>`).join("");
   return `<div class="view">
-    ${pageHead(4, "情景推演", `${entityLabels[selectedEntity]} · 三个互斥主路径；展示先验、机器建议与人工批准的严格边界。`, `<div class="release-context"><p class="kicker">HORIZON · ${escapeHtml(set.horizon)}</p><strong>PENDING HUMAN REVIEW</strong><small>单次建议变化上限 ${Math.round(set.constraints.maxSingleRunShift * 100)}pp</small></div>`)}
+    ${pageHead(4, "情景推演", `${entityLabels[selectedEntity]} · 3M/6M/12M 预测账本；展示先验、机器建议与人工批准的严格边界。`, `<div class="release-context"><p class="kicker">HORIZON · ${escapeHtml(forecast?.horizon)}</p><strong>PENDING HUMAN REVIEW</strong><small>结算 ${escapeHtml(forecast?.settlesAt.slice(0, 10))}</small></div>`)}
+    <section class="horizon-tabs">${horizonTabs}</section>
     <section class="scenario-list">${rows}</section>
-    <section class="scenario-analysis"><div><div class="section-title"><h2>证据贡献</h2><span>CLUSTER DISCOUNT · DEMO</span></div>${evidence}</div><div><div class="section-title"><h2>独立覆盖层</h2><span>NOT ADDED TO 100%</span></div>${set.overlays.map((item) => `<article class="overlay-row"><div><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.trigger)}</small></div><strong>${pct(item.suggestedProbability)}</strong></article>`).join("")}<p class="boundary-copy">覆盖层是条件事件，不与三个主路径概率直接相加。</p></div></section>
+    <section class="scenario-analysis"><div><div class="section-title"><h2>簇折扣 Waterfall</h2><span>RAW → DISCOUNTED</span></div>${evidence}<p class="boundary-copy">同一维度只保留一个主导信号，避免重复计数。</p></div><div><div class="section-title"><h2>独立覆盖层</h2><span>NOT ADDED TO 100%</span></div>${set.overlays.map((item) => `<article class="overlay-row"><div><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.trigger)}</small></div><strong>${pct(item.suggestedProbability)}</strong></article>`).join("")}<p class="boundary-copy">覆盖层通过下方联合树进入情景，不与主路径直接相加。</p></div></section>
+    <section class="overlay-tree"><div class="section-title"><h2>Overlay 联合树 · 最高分支</h2><span>CONDITIONAL INDEPENDENCE DEMO</span></div><div class="table-scroll"><table><thead><tr><th>主路径</th><th>生产率上行</th><th>秩序冲击</th><th>联合权重</th></tr></thead><tbody>${jointBranches}</tbody></table></div><p class="boundary-copy">这是结构演示，条件独立是假设，不是经校准的联合概率。</p></section>
   </div>`;
 }
 
@@ -297,6 +303,7 @@ document.addEventListener("click", (event) => {
   const indicator = event.target.closest("[data-indicator]"); if (indicator) { selectedIndicatorId = indicator.dataset.indicator; location.hash = "evidence"; render(); }
   const indicatorSelect = event.target.closest("[data-indicator-select]"); if (indicatorSelect) { selectedIndicatorId = indicatorSelect.dataset.indicatorSelect; render(); }
   const dimension = event.target.closest("[data-dimension]"); if (dimension) { const found = state()?.dataHealth?.indicators?.find((item) => item.dimension.startsWith(dimension.dataset.dimension)); selectedIndicatorId = found?.indicatorId || null; location.hash = "evidence"; render(); }
+  const horizon = event.target.closest("[data-horizon]"); if (horizon) { selectedHorizon = horizon.dataset.horizon; render(); }
   const routeLink = event.target.closest("[data-route-link]"); if (routeLink) location.hash = routeLink.dataset.routeLink;
   if (event.target.closest("#release-trigger, #manifest-trigger, [data-open-manifest]")) openDrawer();
   if (event.target.closest("#drawer-close") || event.target.id === "drawer-backdrop") closeDrawer();

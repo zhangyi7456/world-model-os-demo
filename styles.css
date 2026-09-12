@@ -205,6 +205,12 @@ main { grid-column: 2; min-height: 100vh; }
 .empty-audit { color: var(--muted); font-size: 8px; }
 
 .scenario-list { border-bottom: 1px solid var(--line); }
+.horizon-tabs { padding: 13px 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; border-bottom: 1px solid var(--line); }
+.horizon-tabs button { padding: 10px 12px; border: 1px solid var(--line); color: var(--muted); background: transparent; text-align: left; cursor: pointer; }
+.horizon-tabs button.active { border-color: rgba(98, 213, 204, 0.55); color: var(--ink); background: var(--accent-dim); }
+.horizon-tabs b, .horizon-tabs small { display: block; }
+.horizon-tabs b { font: 13px ui-monospace, monospace; }
+.horizon-tabs small { margin-top: 4px; font-size: 7px; }
 .scenario-row { padding: 25px 20px; display: grid; grid-template-columns: 1.2fr 0.9fr 1fr; gap: 32px; align-items: center; border-bottom: 1px solid var(--line); }
 .scenario-row:last-child { border-bottom: 0; }
 .scenario-row h2 { margin: 7px 0; font: 400 18px Georgia, serif; }
@@ -231,6 +237,10 @@ main { grid-column: 2; min-height: 100vh; }
 .overlay-row b { font-size: 10px; }
 .overlay-row small { margin-top: 6px; color: var(--muted); font-size: 8px; }
 .overlay-row strong { color: var(--warn); font: 400 24px Georgia, serif; }
+.overlay-tree { padding: 24px 20px; border-bottom: 1px solid var(--line); }
+.overlay-tree table { width: 100%; border-collapse: collapse; }
+.overlay-tree th, .overlay-tree td { padding: 10px; border-bottom: 1px solid var(--line); text-align: left; font-size: 8px; }
+.overlay-tree th { color: var(--muted); font-weight: 500; }
 
 .portfolio-thesis { min-height: 205px; display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--line); }
 .portfolio-thesis > div:first-child { padding: 30px 20px; border-right: 1px solid var(--line); }

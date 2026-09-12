@@ -18,6 +18,20 @@
           "overheating": 0.1242,
           "contraction": 0.2596,
           "stagflation": 0.5704
+        },
+        "transition": {
+          "candidateLabel": "stagflation",
+          "candidateRunLength": 3,
+          "minimumDuration": 2,
+          "persistenceMet": true,
+          "hysteresisBand": 0.12,
+          "publicationStatus": "research_persistent",
+          "calibrationStatus": "NOT_OOS_CALIBRATED",
+          "reasonCodes": [
+            "growth_momentum_down",
+            "inflation_momentum_up",
+            "minimum_duration_met"
+          ]
         }
       },
       "changes": [
@@ -102,6 +116,20 @@
           "overheating": 0.3205,
           "contraction": 0.1021,
           "stagflation": 0.4986
+        },
+        "transition": {
+          "candidateLabel": "stagflation",
+          "candidateRunLength": 1,
+          "minimumDuration": 2,
+          "persistenceMet": false,
+          "hysteresisBand": 0.12,
+          "publicationStatus": "research_transition",
+          "calibrationStatus": "NOT_OOS_CALIBRATED",
+          "reasonCodes": [
+            "growth_momentum_down",
+            "inflation_momentum_up",
+            "minimum_duration_not_met"
+          ]
         }
       },
       "changes": [
@@ -186,6 +214,20 @@
           "overheating": 0.176,
           "contraction": 0.2294,
           "stagflation": 0.5233
+        },
+        "transition": {
+          "candidateLabel": "stagflation",
+          "candidateRunLength": 3,
+          "minimumDuration": 2,
+          "persistenceMet": true,
+          "hysteresisBand": 0.12,
+          "publicationStatus": "research_persistent",
+          "calibrationStatus": "NOT_OOS_CALIBRATED",
+          "reasonCodes": [
+            "growth_momentum_down",
+            "inflation_momentum_up",
+            "minimum_duration_met"
+          ]
         }
       },
       "changes": [

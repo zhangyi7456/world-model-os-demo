@@ -1,37 +1,39 @@
 {
-  "schemaVersion": "0.2.0",
-  "siteRelease": "site-v0.6.0",
+  "schemaVersion": "0.3.0",
+  "siteRelease": "site-v0.7.0",
   "snapshotId": "demo-multi-2026-09-11T16:00:00+08:00",
   "dataModeComposition": {
     "worldState": "DEMO_FIXTURE",
     "causalMap": "RESEARCH_CANDIDATE",
     "scenarios": "RESEARCH_SCENARIOS",
     "portfolio": "REFERENCE_PORTFOLIO",
-    "releaseCalendar": "CANDIDATE_REGISTRY"
+    "releaseCalendar": "CANDIDATE_REGISTRY",
+    "historyReplay": "DEMO_STATE_HISTORY_NOT_PIT"
   },
   "decisionAsOf": "2026-09-11T16:00:00+08:00",
   "dataCutoff": "2026-09-11T16:00:00+08:00",
   "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
   "modelVersions": {
-    "state": "state-regime-0.2.0",
-    "causal": "causal-binding-0.3.0",
+    "state": "state-regime-0.3.0",
+    "causal": "causal-binding-0.4.0",
     "scenario": "scenario-suggestion-0.3.0",
     "portfolio": "portfolio-risk-0.4.0"
   },
   "schemaVersions": {
     "worldState": "0.2.0",
-    "causalMap": "0.3.0",
+    "causalMap": "0.4.0",
     "scenarios": "0.3.0",
     "portfolio": "0.4.0"
   },
-  "sourceCommit": "a4fbd7ea971181726778fb8c6bb79838bfb9743c",
+  "sourceCommit": "eea347ebfa23d6144fdc6069435145393adcc3bd",
   "workingTreeDirty": false,
   "artifactHashes": {
-    "worldState": "8dcf91e8f38f8535208b880f09c3938277175412ef459115079eaf6b5cfafe55",
-    "causalMap": "2672e6f5c5e98ea86393107ab18c00c2f870d3de21b44532392e84509998e0a7",
+    "worldState": "1f3f19ab96fba15efc6e3ce901fd357d52125cac08829c66d8cba321e547c179",
+    "causalMap": "27e141fd1f5044d1032242c4eaa2b9f69c029cac6d6fcb103d4f62f204caf1d9",
     "scenarios": "4303c73af1f4ea40a62eb61a0fbdce885666615133005797d4e0831bdfc91b07",
     "referencePortfolio": "b84413947b27f16cdda3d3fbb749a96a89b55ad66123e5d77555d5c02303fda0",
-    "releaseCalendar": "c640e37375dc7ba74a16c8b15a9bc022cae475615ff788fb47a03810a3a64940"
+    "releaseCalendar": "c640e37375dc7ba74a16c8b15a9bc022cae475615ff788fb47a03810a3a64940",
+    "historyReplay": "26e37d31a9f9f469d54d8504b6549ec0a12a3fdecfb91a1d048fc3e7943daa80"
   },
   "lastSuccessfulBuild": "2026-09-11T16:00:00+08:00",
   "approvalStatus": "demo_reviewed",

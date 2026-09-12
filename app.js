@@ -16,7 +16,7 @@ const factorLabels = {
   china_equity: "中国权益特异风险",
 };
 const qualityLabels = { fresh: "正常", stale: "陈旧", estimated: "估算", missing: "缺失", bad: "拒绝" };
-const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null, releaseCalendar: null };
+const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null, releaseCalendar: null, historyReplay: null };
 let selectedEntity = "US";
 let selectedPathId = null;
 let selectedEdgeId = null;
@@ -99,11 +99,13 @@ function world() {
   const current = state();
   if (!current) return loadingView(2, "世界状态");
   const regime = current.regime;
+  const transition = regime.transition;
   const matrixRows = ["US", "CN", "GLOBAL"].map((entity) => `<button class="matrix-row ${selectedEntity === entity ? "selected" : ""}" data-entity="${entity}"><b>${entityLabels[entity]}</b>${Object.keys(stateMeta).map((key) => { const d = model.world.entities[entity].dimensions[key]; return `<span>${signed(d.level)} ${arrow(d.trend)}</span>`; }).join("")}</button>`).join("");
   const drivers = current.drivers.slice(0, 5).map((driver, index) => `<button class="driver" data-indicator="${driver.indicatorId}"><span>${String(index + 1).padStart(2, "0")}</span><p><b>${escapeHtml(driver.label)}</b><small>${escapeHtml(driver.explanation)} · ${driver.sourceCapability}</small></p><em class="${driver.impact < 0 ? "negative" : "positive"}">${signed(driver.impact, 3)}</em></button>`).join("");
   return `<div class="view">
     ${pageHead(2, "世界状态", `${entityLabels[selectedEntity]} · Level、Momentum、Pressure 与可信度；颜色不替代方向语义。`, `<div class="release-context"><p class="kicker">STATISTICAL STATE</p><strong>${escapeHtml(regime.label.replaceAll("_", " "))}</strong><small>未经样本外校准，分布仅称 score share</small></div>`)}
     ${stateStrip()}
+    <section class="regime-guardrail"><div><p class="eyebrow">REGIME GUARDRAIL</p><h2>${escapeHtml(transition.candidateLabel.replaceAll("_", " "))}</h2><small>候选连续 ${transition.candidateRunLength}/${transition.minimumDuration} 期 · band ±${transition.hysteresisBand}</small></div><div><span>持续期</span><b>${transition.persistenceMet ? "满足" : "未满足"}</b></div><div><span>发布状态</span><b>${escapeHtml(transition.publicationStatus)}</b></div><div><span>校准状态</span><b>${escapeHtml(transition.calibrationStatus)}</b></div><p>${transition.reasonCodes.map((item) => escapeHtml(item.replaceAll("_", " "))).join(" · ")}。该层只抑制假切换，未完成样本外校准。</p></section>
     <section class="world-grid">
       <div class="matrix-panel"><div class="section-title"><h2>经济体错位</h2><span>CLICK TO FOCUS</span></div><div class="matrix-head"><span>实体</span>${Object.values(stateMeta).map((meta) => `<span>${meta.code}</span>`).join("")}</div>${matrixRows}</div>
       <div class="drivers-panel"><div class="section-title"><h2>状态变化贡献</h2><span>PROXY · NOT CAUSAL</span></div>${drivers}</div>
@@ -134,12 +136,20 @@ function causal() {
   const flow = pathNodes.map((id, index) => `<button class="flow-node"><span>${escapeHtml(node(id)?.layer || "node")}</span><b>${escapeHtml(node(id)?.label || id)}</b><small>${node(id)?.state?.bindingStatus === "observed_model_state" ? `${signed(node(id).state.score)} · ${pct(node(id).state.confidence)}` : "RESEARCH ASSUMPTION"}</small></button>${index < pathNodes.length - 1 ? `<button class="flow-edge ${edges[index]?.id === edge?.id ? "active" : ""}" data-edge="${edges[index]?.id}" aria-label="查看因果边证据">→<small>${edges[index]?.evidenceGrade}</small></button>` : ""}`).join("");
   const tabs = current.paths.map((item) => `<button data-path="${item.id}" class="${item.id === path.id ? "active" : ""}">${escapeHtml(item.label)}<span>${Math.round(item.activityScore * 100)}</span></button>`).join("");
   const source = node(edge?.source); const target = node(edge?.target);
+  const mechanism = current.mechanismContracts?.find((item) => item.id === edge?.mechanismId);
   return `<div class="view">
     ${pageHead(3, "因果地图", `${entityLabels[selectedEntity]} · 只绘制契约中真实存在的边；所有机制仍是研究候选。`, `<div class="release-context">${statusBadge("RESEARCH_CANDIDATE")}<strong>${escapeHtml(path.label)}</strong><small>Evidence ${path.evidenceGrade} · 活动度 ${Math.round(path.activityScore * 100)}</small></div>`)}
     <div class="path-tabs">${tabs}</div>
     <section class="causal-workspace"><div class="causal-canvas"><p class="eyebrow">CURRENT DOMINANT PATH</p><div class="causal-flow">${flow}</div><p class="boundary-copy">节点之间仅在数据契约存在 edge 时显示箭头；活动度不等于因果强度。</p></div>
-    <aside class="inspector"><p class="eyebrow">SELECTED EDGE · ${escapeHtml(edge?.runtimeStatus)}</p><h2>${escapeHtml(source?.label)} → ${escapeHtml(target?.label)}</h2><p>${escapeHtml(edge?.conditions?.join("；") || "未配置适用条件")}</p><div class="edge-picker">${edges.map((item) => `<button data-edge="${item.id}" class="${item.id === edge?.id ? "active" : ""}">${escapeHtml(node(item.source)?.label)} → ${escapeHtml(node(item.target)?.label)}</button>`).join("")}</div><dl class="evidence-list"><div><dt>证据等级</dt><dd>${escapeHtml(edge?.evidenceGrade)}</dd></div><div><dt>方向 / 形状</dt><dd>${escapeHtml(edge?.sign)} / ${escapeHtml(edge?.shape)}</dd></div><div><dt>时滞</dt><dd>${edge?.lag?.minDays || 0}—${edge?.lag?.maxDays || 0} 天；典型 ${edge?.lag?.modeDays || 0} 天</dd></div><div><dt>反证条件</dt><dd>${escapeHtml(edge?.invalidation)}</dd></div><div><dt>审批边界</dt><dd>候选机制；不得描述为已验证因果</dd></div></dl></aside></section>
+    <aside class="inspector"><p class="eyebrow">SELECTED EDGE · ${escapeHtml(edge?.runtimeStatus)}</p><h2>${escapeHtml(source?.label)} → ${escapeHtml(target?.label)}</h2><p>${escapeHtml(mechanism?.statement || edge?.conditions?.join("；") || "未配置适用条件")}</p><div class="edge-picker">${edges.map((item) => `<button data-edge="${item.id}" class="${item.id === edge?.id ? "active" : ""}">${escapeHtml(node(item.source)?.label)} → ${escapeHtml(node(item.target)?.label)}</button>`).join("")}</div><dl class="evidence-list"><div><dt>证据等级</dt><dd>${escapeHtml(edge?.evidenceGrade)}</dd></div><div><dt>方向 / 形状</dt><dd>${escapeHtml(edge?.sign)} / ${escapeHtml(edge?.shape)}</dd></div><div><dt>时滞</dt><dd>${edge?.lag?.minDays || 0}—${edge?.lag?.maxDays || 0} 天；典型 ${edge?.lag?.modeDays || 0} 天</dd></div><div><dt>反证条件</dt><dd>${escapeHtml(edge?.invalidation)}</dd></div><div><dt>审批边界</dt><dd>候选机制；不得描述为已验证因果</dd></div></dl>${mechanismAudit(mechanism)}</aside></section>
   </div>`;
+}
+
+function mechanismAudit(mechanism) {
+  if (!mechanism) return `<div class="mechanism-audit empty-audit"><p>该边尚未进入首批 Mechanism Contract。</p></div>`;
+  const evaluation = mechanism.falsificationEvaluation;
+  const readings = evaluation.featureReadings.map((item) => `<li><span>${escapeHtml(item.feature)} ${escapeHtml(item.operator)} ${item.threshold}</span><b class="${item.matches ? "negative" : "positive"}">${signed(item.value)} · ${item.matches ? "MATCH" : "NO"}</b></li>`).join("");
+  return `<div class="mechanism-audit"><p class="eyebrow">MECHANISM CONTRACT · ${escapeHtml(mechanism.version)}</p><div class="mechanism-status"><span>反证监控</span><b>${escapeHtml(evaluation.status)}</b><small>${evaluation.observationsAvailable}/${evaluation.observationsRequired} 期 · ${escapeHtml(evaluation.historyBoundary)}</small></div><ul>${readings}</ul><div class="evidence-sides"><div><span>支持</span><b>${escapeHtml(mechanism.supportingEvidence[0].title)}</b></div><div><span>反对</span><b>${escapeHtml(mechanism.opposingEvidence[0].title)}</b></div></div></div>`;
 }
 
 function scenario() {
@@ -257,11 +267,11 @@ function selectEntity(entity) {
 
 async function loadData() {
   try {
-    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief", "release-calendar"];
+    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief", "release-calendar", "history-replay"];
     const responses = await Promise.all(names.map((name) => fetch(`./data/${name}.json`, { cache: "no-store" })));
     if (responses.some((response) => !response.ok)) throw new Error("required public artifacts are unavailable");
-    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData, releaseCalendarData] = await Promise.all(responses.map((response) => response.json()));
-    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData, releaseCalendar: releaseCalendarData });
+    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData, releaseCalendarData, historyReplayData] = await Promise.all(responses.map((response) => response.json()));
+    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData, releaseCalendar: releaseCalendarData, historyReplay: historyReplayData });
     selectedEntity = worldData.primaryEntity || "US";
     $("#entity-select").value = selectedEntity;
     $("#data-mode").textContent = publicationData.dataModeComposition.worldState;

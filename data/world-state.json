@@ -138,6 +138,20 @@
           "overheating": 0.1242,
           "contraction": 0.2596,
           "stagflation": 0.5704
+        },
+        "transition": {
+          "candidateLabel": "stagflation",
+          "candidateRunLength": 3,
+          "minimumDuration": 2,
+          "persistenceMet": true,
+          "hysteresisBand": 0.12,
+          "publicationStatus": "research_persistent",
+          "calibrationStatus": "NOT_OOS_CALIBRATED",
+          "reasonCodes": [
+            "growth_momentum_down",
+            "inflation_momentum_up",
+            "minimum_duration_met"
+          ]
         }
       },
       "overlays": {
@@ -635,6 +649,20 @@
           "overheating": 0.3205,
           "contraction": 0.1021,
           "stagflation": 0.4986
+        },
+        "transition": {
+          "candidateLabel": "stagflation",
+          "candidateRunLength": 1,
+          "minimumDuration": 2,
+          "persistenceMet": false,
+          "hysteresisBand": 0.12,
+          "publicationStatus": "research_transition",
+          "calibrationStatus": "NOT_OOS_CALIBRATED",
+          "reasonCodes": [
+            "growth_momentum_down",
+            "inflation_momentum_up",
+            "minimum_duration_not_met"
+          ]
         }
       },
       "overlays": {
@@ -1132,6 +1160,20 @@
           "overheating": 0.176,
           "contraction": 0.2294,
           "stagflation": 0.5233
+        },
+        "transition": {
+          "candidateLabel": "stagflation",
+          "candidateRunLength": 3,
+          "minimumDuration": 2,
+          "persistenceMet": true,
+          "hysteresisBand": 0.12,
+          "publicationStatus": "research_persistent",
+          "calibrationStatus": "NOT_OOS_CALIBRATED",
+          "reasonCodes": [
+            "growth_momentum_down",
+            "inflation_momentum_up",
+            "minimum_duration_met"
+          ]
         }
       },
       "overlays": {
@@ -1683,6 +1725,399 @@
       }
     ]
   },
+  "historyReplay": {
+    "schemaVersion": "0.1.0",
+    "dataMode": "DEMO_STATE_HISTORY_NOT_PIT",
+    "calibrationStatus": "NOT_OOS_CALIBRATED",
+    "scoreSemantics": "quadrant research classification; not probability",
+    "minimumDuration": 2,
+    "points": [
+      {
+        "period": "2025-10",
+        "entities": {
+          "US": {
+            "growth": 0.2,
+            "inflation": 0.45,
+            "candidateLabel": "overheating",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          },
+          "CN": {
+            "growth": -0.55,
+            "inflation": -0.8,
+            "candidateLabel": "contraction",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          },
+          "GLOBAL": {
+            "growth": 0.05,
+            "inflation": 0.3,
+            "candidateLabel": "transition_zone",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          }
+        }
+      },
+      {
+        "period": "2025-11",
+        "entities": {
+          "US": {
+            "growth": 0.32,
+            "inflation": 0.32,
+            "candidateLabel": "overheating",
+            "candidateRunLength": 2,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "CN": {
+            "growth": -0.48,
+            "inflation": -0.76,
+            "candidateLabel": "contraction",
+            "candidateRunLength": 2,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "GLOBAL": {
+            "growth": 0.12,
+            "inflation": 0.22,
+            "candidateLabel": "overheating",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          }
+        }
+      },
+      {
+        "period": "2025-12",
+        "entities": {
+          "US": {
+            "growth": 0.12,
+            "inflation": 0.22,
+            "candidateLabel": "overheating",
+            "candidateRunLength": 3,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "CN": {
+            "growth": -0.42,
+            "inflation": -0.7,
+            "candidateLabel": "contraction",
+            "candidateRunLength": 3,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "GLOBAL": {
+            "growth": 0.02,
+            "inflation": 0.18,
+            "candidateLabel": "transition_zone",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          }
+        }
+      },
+      {
+        "period": "2026-01",
+        "entities": {
+          "US": {
+            "growth": 0.42,
+            "inflation": 0.02,
+            "candidateLabel": "transition_zone",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          },
+          "CN": {
+            "growth": -0.35,
+            "inflation": -0.66,
+            "candidateLabel": "contraction",
+            "candidateRunLength": 4,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "GLOBAL": {
+            "growth": 0.2,
+            "inflation": 0.05,
+            "candidateLabel": "transition_zone",
+            "candidateRunLength": 2,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          }
+        }
+      },
+      {
+        "period": "2026-02",
+        "entities": {
+          "US": {
+            "growth": 0.62,
+            "inflation": -0.12,
+            "candidateLabel": "goldilocks",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          },
+          "CN": {
+            "growth": -0.32,
+            "inflation": -0.6,
+            "candidateLabel": "contraction",
+            "candidateRunLength": 5,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "GLOBAL": {
+            "growth": 0.34,
+            "inflation": -0.05,
+            "candidateLabel": "transition_zone",
+            "candidateRunLength": 3,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          }
+        }
+      },
+      {
+        "period": "2026-03",
+        "entities": {
+          "US": {
+            "growth": 0.48,
+            "inflation": 0.02,
+            "candidateLabel": "transition_zone",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          },
+          "CN": {
+            "growth": -0.26,
+            "inflation": -0.5,
+            "candidateLabel": "contraction",
+            "candidateRunLength": 6,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "GLOBAL": {
+            "growth": 0.25,
+            "inflation": 0.04,
+            "candidateLabel": "transition_zone",
+            "candidateRunLength": 4,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          }
+        }
+      },
+      {
+        "period": "2026-04",
+        "entities": {
+          "US": {
+            "growth": 0.66,
+            "inflation": 0.16,
+            "candidateLabel": "overheating",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          },
+          "CN": {
+            "growth": -0.24,
+            "inflation": -0.44,
+            "candidateLabel": "contraction",
+            "candidateRunLength": 7,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "GLOBAL": {
+            "growth": 0.4,
+            "inflation": 0.12,
+            "candidateLabel": "overheating",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          }
+        }
+      },
+      {
+        "period": "2026-05",
+        "entities": {
+          "US": {
+            "growth": 0.38,
+            "inflation": 0.28,
+            "candidateLabel": "overheating",
+            "candidateRunLength": 2,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "CN": {
+            "growth": -0.3,
+            "inflation": -0.36,
+            "candidateLabel": "contraction",
+            "candidateRunLength": 8,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "GLOBAL": {
+            "growth": 0.22,
+            "inflation": 0.24,
+            "candidateLabel": "overheating",
+            "candidateRunLength": 2,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          }
+        }
+      },
+      {
+        "period": "2026-06",
+        "entities": {
+          "US": {
+            "growth": 0.08,
+            "inflation": 0.18,
+            "candidateLabel": "transition_zone",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          },
+          "CN": {
+            "growth": -0.38,
+            "inflation": -0.3,
+            "candidateLabel": "contraction",
+            "candidateRunLength": 9,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "GLOBAL": {
+            "growth": -0.02,
+            "inflation": 0.2,
+            "candidateLabel": "transition_zone",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          }
+        }
+      },
+      {
+        "period": "2026-07",
+        "entities": {
+          "US": {
+            "growth": -0.18,
+            "inflation": 0.42,
+            "candidateLabel": "stagflation",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          },
+          "CN": {
+            "growth": -0.44,
+            "inflation": -0.22,
+            "candidateLabel": "contraction",
+            "candidateRunLength": 10,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "GLOBAL": {
+            "growth": -0.18,
+            "inflation": 0.36,
+            "candidateLabel": "stagflation",
+            "candidateRunLength": 1,
+            "minimumDuration": 2,
+            "persistenceMet": false,
+            "publicationStatus": "research_transition"
+          }
+        }
+      },
+      {
+        "period": "2026-08",
+        "entities": {
+          "US": {
+            "growth": -0.12,
+            "inflation": 0.52,
+            "candidateLabel": "stagflation",
+            "candidateRunLength": 2,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "CN": {
+            "growth": -0.46,
+            "inflation": -0.16,
+            "candidateLabel": "contraction",
+            "candidateRunLength": 11,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "GLOBAL": {
+            "growth": -0.22,
+            "inflation": 0.44,
+            "candidateLabel": "stagflation",
+            "candidateRunLength": 2,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          }
+        }
+      },
+      {
+        "period": "2026-09",
+        "entities": {
+          "US": {
+            "growth": -0.4,
+            "inflation": 0.7,
+            "candidateLabel": "stagflation",
+            "candidateRunLength": 3,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "CN": {
+            "growth": -0.55,
+            "inflation": -0.55,
+            "candidateLabel": "contraction",
+            "candidateRunLength": 12,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          },
+          "GLOBAL": {
+            "growth": -0.48,
+            "inflation": 0.66,
+            "candidateLabel": "stagflation",
+            "candidateRunLength": 3,
+            "minimumDuration": 2,
+            "persistenceMet": true,
+            "publicationStatus": "research_persistent"
+          }
+        }
+      }
+    ]
+  },
   "quality": {
     "observationCount": 41,
     "catalogCount": 41,
@@ -1695,5 +2130,5 @@
       "bad": 0
     }
   },
-  "modelVersion": "state-regime-0.2.0"
+  "modelVersion": "state-regime-0.3.0"
 }

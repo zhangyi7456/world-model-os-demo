@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.3.0",
+  "schemaVersion": "0.4.0",
   "asOf": "2026-09-11T16:00:00+08:00",
   "dataVintage": "demo-multi-2026-09-11T16:00:00+08:00",
   "dataMode": "DEMO_FIXTURE",
@@ -7,7 +7,7 @@
   "primaryEntity": "US",
   "entities": {
     "US": {
-      "schemaVersion": "0.3.0",
+      "schemaVersion": "0.4.0",
       "graphId": "wmos.core.us",
       "graphVersion": "0.3.0",
       "asOf": "2026-09-11T16:00:00+08:00",
@@ -254,7 +254,8 @@
           "invalidation": "核心价格与工资动量持续回落且供给冲击消退",
           "status": "research_candidate",
           "activityScore": 0.3317,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": "mc.order_supply_inflation"
         },
         {
           "id": "e.inflation.liquidity",
@@ -280,7 +281,8 @@
           "invalidation": "政策明确转向增长或金融稳定目标且通胀容忍度上升",
           "status": "research_candidate",
           "activityScore": 0.3696,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": "mc.inflation_policy"
         },
         {
           "id": "e.liquidity.growth",
@@ -306,7 +308,8 @@
           "invalidation": "金融条件收紧但信用、需求和就业持续改善",
           "status": "research_candidate",
           "activityScore": 0.369,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": "mc.liquidity_growth"
         },
         {
           "id": "e.liquidity.fragility",
@@ -332,7 +335,8 @@
           "invalidation": "偿债负担与违约指标在高利率环境下持续改善",
           "status": "research_candidate",
           "activityScore": 0.3559,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.fragility.growth",
@@ -358,7 +362,8 @@
           "invalidation": "高脆弱性未伴随贷款标准、信用利差或支出恶化",
           "status": "research_candidate",
           "activityScore": 0.3571,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.growth.equity",
@@ -384,7 +389,8 @@
           "invalidation": "盈利与权益风险溢价显著脱离增长状态",
           "status": "research_candidate",
           "activityScore": 0.3592,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.fragility.credit",
@@ -410,7 +416,8 @@
           "invalidation": "信用压力代理与脆弱性长期反向变化",
           "status": "research_candidate",
           "activityScore": 0.3653,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.inflation.factor",
@@ -436,7 +443,8 @@
           "invalidation": "通胀风险资产未对持续通胀意外产生正向敏感度",
           "status": "research_candidate",
           "activityScore": 0.3301,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.liquidity.realrate",
@@ -462,7 +470,8 @@
           "invalidation": "政策金融条件与实际利率风险长期脱钩",
           "status": "research_candidate",
           "activityScore": 0.3788,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.order.insurance",
@@ -488,7 +497,8 @@
           "invalidation": "秩序压力上升未伴随储备多元化或保险需求",
           "status": "research_candidate",
           "activityScore": 0.304,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         }
       ],
       "paths": [
@@ -548,10 +558,298 @@
           "falsification": "信用、就业和消费连续两个观察期同步恶化"
         }
       ],
-      "modelVersion": "causal-binding-0.3.0"
+      "mechanismContracts": [
+        {
+          "id": "mc.inflation_policy",
+          "edgeIds": [
+            "e.inflation.liquidity"
+          ],
+          "statement": "持续通胀压力提高政策约束，并倾向收紧政策与金融条件。",
+          "inputFeatures": [
+            "inflation.momentum",
+            "liquidity.momentum"
+          ],
+          "expectedSign": "negative",
+          "shape": "conditional",
+          "lagDistribution": {
+            "minDays": 0,
+            "modeDays": 60,
+            "maxDays": 270
+          },
+          "mediators": [
+            "policy_tolerance",
+            "employment_mandate",
+            "financial_stability"
+          ],
+          "activationConditions": [
+            "inflation_above_policy_tolerance"
+          ],
+          "applicableRegimes": [
+            "overheating",
+            "stagflation"
+          ],
+          "supportingEvidence": [
+            {
+              "id": "support.ip.1",
+              "title": "政策反应函数研究假设",
+              "kind": "research_synthesis",
+              "reference": "research:policy-reaction-function"
+            }
+          ],
+          "opposingEvidence": [
+            {
+              "id": "oppose.ip.1",
+              "title": "金融稳定约束可能覆盖价格目标",
+              "kind": "competing_hypothesis",
+              "reference": "research:financial-stability-dominance"
+            }
+          ],
+          "falsificationRule": {
+            "version": "1",
+            "all": [
+              {
+                "feature": "inflation.momentum",
+                "operator": "gte",
+                "threshold": 0.2
+              },
+              {
+                "feature": "liquidity.momentum",
+                "operator": "gte",
+                "threshold": 0.2
+              }
+            ],
+            "persistencePeriods": 2,
+            "evaluationWindowDays": 180
+          },
+          "evidenceGrade": "C",
+          "status": "research_candidate",
+          "ownerRole": "macro_research",
+          "version": "0.1.0",
+          "validFrom": "2026-09-12T00:00:00Z",
+          "validTo": null,
+          "falsificationEvaluation": {
+            "status": "not_triggered",
+            "currentMatch": false,
+            "observationsAvailable": 1,
+            "observationsRequired": 2,
+            "persistenceSatisfied": false,
+            "featureReadings": [
+              {
+                "feature": "inflation.momentum",
+                "value": 0.274,
+                "operator": "gte",
+                "threshold": 0.2,
+                "matches": true
+              },
+              {
+                "feature": "liquidity.momentum",
+                "value": -0.122,
+                "operator": "gte",
+                "threshold": 0.2,
+                "matches": false
+              }
+            ],
+            "lastEvaluatedAt": "2026-09-11T16:00:00+08:00",
+            "historyBoundary": "current_snapshot_only",
+            "ruleVersion": "1"
+          }
+        },
+        {
+          "id": "mc.liquidity_growth",
+          "edgeIds": [
+            "e.liquidity.growth"
+          ],
+          "statement": "金融条件变化通过信用传导影响需求、就业与增长动量。",
+          "inputFeatures": [
+            "liquidity.level",
+            "growth.momentum"
+          ],
+          "expectedSign": "positive",
+          "shape": "conditional",
+          "lagDistribution": {
+            "minDays": 60,
+            "modeDays": 180,
+            "maxDays": 540
+          },
+          "mediators": [
+            "bank_credit",
+            "refinancing_cost",
+            "private_demand"
+          ],
+          "activationConditions": [
+            "credit_transmission_operates"
+          ],
+          "applicableRegimes": [
+            "goldilocks",
+            "contraction",
+            "stagflation"
+          ],
+          "supportingEvidence": [
+            {
+              "id": "support.lg.1",
+              "title": "信用传导研究假设",
+              "kind": "research_synthesis",
+              "reference": "research:credit-transmission"
+            }
+          ],
+          "opposingEvidence": [
+            {
+              "id": "oppose.lg.1",
+              "title": "财政扩张或高现金储备可延迟传导",
+              "kind": "competing_hypothesis",
+              "reference": "research:transmission-offsets"
+            }
+          ],
+          "falsificationRule": {
+            "version": "1",
+            "all": [
+              {
+                "feature": "liquidity.level",
+                "operator": "lte",
+                "threshold": -0.2
+              },
+              {
+                "feature": "growth.momentum",
+                "operator": "gte",
+                "threshold": 0.3
+              }
+            ],
+            "persistencePeriods": 3,
+            "evaluationWindowDays": 270
+          },
+          "evidenceGrade": "C",
+          "status": "research_candidate",
+          "ownerRole": "macro_research",
+          "version": "0.1.0",
+          "validFrom": "2026-09-12T00:00:00Z",
+          "validTo": null,
+          "falsificationEvaluation": {
+            "status": "not_triggered",
+            "currentMatch": false,
+            "observationsAvailable": 1,
+            "observationsRequired": 3,
+            "persistenceSatisfied": false,
+            "featureReadings": [
+              {
+                "feature": "liquidity.level",
+                "value": -0.4647,
+                "operator": "lte",
+                "threshold": -0.2,
+                "matches": true
+              },
+              {
+                "feature": "growth.momentum",
+                "value": -0.3601,
+                "operator": "gte",
+                "threshold": 0.3,
+                "matches": false
+              }
+            ],
+            "lastEvaluatedAt": "2026-09-11T16:00:00+08:00",
+            "historyBoundary": "current_snapshot_only",
+            "ruleVersion": "1"
+          }
+        },
+        {
+          "id": "mc.order_supply_inflation",
+          "edgeIds": [
+            "e.order.inflation"
+          ],
+          "statement": "持续的贸易、能源或秩序冲击可通过供给渠道抬高通胀压力并压缩政策空间。",
+          "inputFeatures": [
+            "order.level",
+            "inflation.momentum"
+          ],
+          "expectedSign": "positive",
+          "shape": "conditional",
+          "lagDistribution": {
+            "minDays": 14,
+            "modeDays": 90,
+            "maxDays": 365
+          },
+          "mediators": [
+            "energy_cost",
+            "trade_cost",
+            "supply_chain_reconfiguration"
+          ],
+          "activationConditions": [
+            "supply_or_trade_shock_persists"
+          ],
+          "applicableRegimes": [
+            "overheating",
+            "stagflation"
+          ],
+          "supportingEvidence": [
+            {
+              "id": "support.osi.1",
+              "title": "秩序与供给渠道研究假设",
+              "kind": "research_synthesis",
+              "reference": "research:dalio-order-supply-channel"
+            }
+          ],
+          "opposingEvidence": [
+            {
+              "id": "oppose.osi.1",
+              "title": "需求破坏可能抵消供给价格冲击",
+              "kind": "competing_hypothesis",
+              "reference": "research:demand-destruction-offset"
+            }
+          ],
+          "falsificationRule": {
+            "version": "1",
+            "all": [
+              {
+                "feature": "order.level",
+                "operator": "gte",
+                "threshold": 0.5
+              },
+              {
+                "feature": "inflation.momentum",
+                "operator": "lte",
+                "threshold": -0.2
+              }
+            ],
+            "persistencePeriods": 3,
+            "evaluationWindowDays": 365
+          },
+          "evidenceGrade": "C",
+          "status": "research_candidate",
+          "ownerRole": "macro_research",
+          "version": "0.1.0",
+          "validFrom": "2026-09-12T00:00:00Z",
+          "validTo": null,
+          "falsificationEvaluation": {
+            "status": "not_triggered",
+            "currentMatch": false,
+            "observationsAvailable": 1,
+            "observationsRequired": 3,
+            "persistenceSatisfied": false,
+            "featureReadings": [
+              {
+                "feature": "order.level",
+                "value": 0.8308,
+                "operator": "gte",
+                "threshold": 0.5,
+                "matches": true
+              },
+              {
+                "feature": "inflation.momentum",
+                "value": 0.274,
+                "operator": "lte",
+                "threshold": -0.2,
+                "matches": false
+              }
+            ],
+            "lastEvaluatedAt": "2026-09-11T16:00:00+08:00",
+            "historyBoundary": "current_snapshot_only",
+            "ruleVersion": "1"
+          }
+        }
+      ],
+      "modelVersion": "causal-binding-0.4.0"
     },
     "CN": {
-      "schemaVersion": "0.3.0",
+      "schemaVersion": "0.4.0",
       "graphId": "wmos.core.cn",
       "graphVersion": "0.3.0",
       "asOf": "2026-09-11T16:00:00+08:00",
@@ -798,7 +1096,8 @@
           "invalidation": "核心价格与工资动量持续回落且供给冲击消退",
           "status": "research_candidate",
           "activityScore": 0.3384,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": "mc.order_supply_inflation"
         },
         {
           "id": "e.inflation.liquidity",
@@ -824,7 +1123,8 @@
           "invalidation": "政策明确转向增长或金融稳定目标且通胀容忍度上升",
           "status": "research_candidate",
           "activityScore": 0.3666,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": "mc.inflation_policy"
         },
         {
           "id": "e.liquidity.growth",
@@ -850,7 +1150,8 @@
           "invalidation": "金融条件收紧但信用、需求和就业持续改善",
           "status": "research_candidate",
           "activityScore": 0.3369,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": "mc.liquidity_growth"
         },
         {
           "id": "e.liquidity.fragility",
@@ -876,7 +1177,8 @@
           "invalidation": "偿债负担与违约指标在高利率环境下持续改善",
           "status": "research_candidate",
           "activityScore": 0.3462,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.fragility.growth",
@@ -902,7 +1204,8 @@
           "invalidation": "高脆弱性未伴随贷款标准、信用利差或支出恶化",
           "status": "research_candidate",
           "activityScore": 0.3364,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.growth.equity",
@@ -928,7 +1231,8 @@
           "invalidation": "盈利与权益风险溢价显著脱离增长状态",
           "status": "research_candidate",
           "activityScore": 0.3159,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.fragility.credit",
@@ -954,7 +1258,8 @@
           "invalidation": "信用压力代理与脆弱性长期反向变化",
           "status": "research_candidate",
           "activityScore": 0.3658,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.inflation.factor",
@@ -980,7 +1285,8 @@
           "invalidation": "通胀风险资产未对持续通胀意外产生正向敏感度",
           "status": "research_candidate",
           "activityScore": 0.3448,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.liquidity.realrate",
@@ -1006,7 +1312,8 @@
           "invalidation": "政策金融条件与实际利率风险长期脱钩",
           "status": "research_candidate",
           "activityScore": 0.3578,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.order.insurance",
@@ -1032,7 +1339,8 @@
           "invalidation": "秩序压力上升未伴随储备多元化或保险需求",
           "status": "research_candidate",
           "activityScore": 0.304,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         }
       ],
       "paths": [
@@ -1092,10 +1400,298 @@
           "falsification": "信用、就业和消费连续两个观察期同步恶化"
         }
       ],
-      "modelVersion": "causal-binding-0.3.0"
+      "mechanismContracts": [
+        {
+          "id": "mc.inflation_policy",
+          "edgeIds": [
+            "e.inflation.liquidity"
+          ],
+          "statement": "持续通胀压力提高政策约束，并倾向收紧政策与金融条件。",
+          "inputFeatures": [
+            "inflation.momentum",
+            "liquidity.momentum"
+          ],
+          "expectedSign": "negative",
+          "shape": "conditional",
+          "lagDistribution": {
+            "minDays": 0,
+            "modeDays": 60,
+            "maxDays": 270
+          },
+          "mediators": [
+            "policy_tolerance",
+            "employment_mandate",
+            "financial_stability"
+          ],
+          "activationConditions": [
+            "inflation_above_policy_tolerance"
+          ],
+          "applicableRegimes": [
+            "overheating",
+            "stagflation"
+          ],
+          "supportingEvidence": [
+            {
+              "id": "support.ip.1",
+              "title": "政策反应函数研究假设",
+              "kind": "research_synthesis",
+              "reference": "research:policy-reaction-function"
+            }
+          ],
+          "opposingEvidence": [
+            {
+              "id": "oppose.ip.1",
+              "title": "金融稳定约束可能覆盖价格目标",
+              "kind": "competing_hypothesis",
+              "reference": "research:financial-stability-dominance"
+            }
+          ],
+          "falsificationRule": {
+            "version": "1",
+            "all": [
+              {
+                "feature": "inflation.momentum",
+                "operator": "gte",
+                "threshold": 0.2
+              },
+              {
+                "feature": "liquidity.momentum",
+                "operator": "gte",
+                "threshold": 0.2
+              }
+            ],
+            "persistencePeriods": 2,
+            "evaluationWindowDays": 180
+          },
+          "evidenceGrade": "C",
+          "status": "research_candidate",
+          "ownerRole": "macro_research",
+          "version": "0.1.0",
+          "validFrom": "2026-09-12T00:00:00Z",
+          "validTo": null,
+          "falsificationEvaluation": {
+            "status": "signal_present_unconfirmed",
+            "currentMatch": true,
+            "observationsAvailable": 1,
+            "observationsRequired": 2,
+            "persistenceSatisfied": false,
+            "featureReadings": [
+              {
+                "feature": "inflation.momentum",
+                "value": 0.3967,
+                "operator": "gte",
+                "threshold": 0.2,
+                "matches": true
+              },
+              {
+                "feature": "liquidity.momentum",
+                "value": 0.2553,
+                "operator": "gte",
+                "threshold": 0.2,
+                "matches": true
+              }
+            ],
+            "lastEvaluatedAt": "2026-09-11T16:00:00+08:00",
+            "historyBoundary": "current_snapshot_only",
+            "ruleVersion": "1"
+          }
+        },
+        {
+          "id": "mc.liquidity_growth",
+          "edgeIds": [
+            "e.liquidity.growth"
+          ],
+          "statement": "金融条件变化通过信用传导影响需求、就业与增长动量。",
+          "inputFeatures": [
+            "liquidity.level",
+            "growth.momentum"
+          ],
+          "expectedSign": "positive",
+          "shape": "conditional",
+          "lagDistribution": {
+            "minDays": 60,
+            "modeDays": 180,
+            "maxDays": 540
+          },
+          "mediators": [
+            "bank_credit",
+            "refinancing_cost",
+            "private_demand"
+          ],
+          "activationConditions": [
+            "credit_transmission_operates"
+          ],
+          "applicableRegimes": [
+            "goldilocks",
+            "contraction",
+            "stagflation"
+          ],
+          "supportingEvidence": [
+            {
+              "id": "support.lg.1",
+              "title": "信用传导研究假设",
+              "kind": "research_synthesis",
+              "reference": "research:credit-transmission"
+            }
+          ],
+          "opposingEvidence": [
+            {
+              "id": "oppose.lg.1",
+              "title": "财政扩张或高现金储备可延迟传导",
+              "kind": "competing_hypothesis",
+              "reference": "research:transmission-offsets"
+            }
+          ],
+          "falsificationRule": {
+            "version": "1",
+            "all": [
+              {
+                "feature": "liquidity.level",
+                "operator": "lte",
+                "threshold": -0.2
+              },
+              {
+                "feature": "growth.momentum",
+                "operator": "gte",
+                "threshold": 0.3
+              }
+            ],
+            "persistencePeriods": 3,
+            "evaluationWindowDays": 270
+          },
+          "evidenceGrade": "C",
+          "status": "research_candidate",
+          "ownerRole": "macro_research",
+          "version": "0.1.0",
+          "validFrom": "2026-09-12T00:00:00Z",
+          "validTo": null,
+          "falsificationEvaluation": {
+            "status": "not_triggered",
+            "currentMatch": false,
+            "observationsAvailable": 1,
+            "observationsRequired": 3,
+            "persistenceSatisfied": false,
+            "featureReadings": [
+              {
+                "feature": "liquidity.level",
+                "value": 0.4122,
+                "operator": "lte",
+                "threshold": -0.2,
+                "matches": false
+              },
+              {
+                "feature": "growth.momentum",
+                "value": -0.1765,
+                "operator": "gte",
+                "threshold": 0.3,
+                "matches": false
+              }
+            ],
+            "lastEvaluatedAt": "2026-09-11T16:00:00+08:00",
+            "historyBoundary": "current_snapshot_only",
+            "ruleVersion": "1"
+          }
+        },
+        {
+          "id": "mc.order_supply_inflation",
+          "edgeIds": [
+            "e.order.inflation"
+          ],
+          "statement": "持续的贸易、能源或秩序冲击可通过供给渠道抬高通胀压力并压缩政策空间。",
+          "inputFeatures": [
+            "order.level",
+            "inflation.momentum"
+          ],
+          "expectedSign": "positive",
+          "shape": "conditional",
+          "lagDistribution": {
+            "minDays": 14,
+            "modeDays": 90,
+            "maxDays": 365
+          },
+          "mediators": [
+            "energy_cost",
+            "trade_cost",
+            "supply_chain_reconfiguration"
+          ],
+          "activationConditions": [
+            "supply_or_trade_shock_persists"
+          ],
+          "applicableRegimes": [
+            "overheating",
+            "stagflation"
+          ],
+          "supportingEvidence": [
+            {
+              "id": "support.osi.1",
+              "title": "秩序与供给渠道研究假设",
+              "kind": "research_synthesis",
+              "reference": "research:dalio-order-supply-channel"
+            }
+          ],
+          "opposingEvidence": [
+            {
+              "id": "oppose.osi.1",
+              "title": "需求破坏可能抵消供给价格冲击",
+              "kind": "competing_hypothesis",
+              "reference": "research:demand-destruction-offset"
+            }
+          ],
+          "falsificationRule": {
+            "version": "1",
+            "all": [
+              {
+                "feature": "order.level",
+                "operator": "gte",
+                "threshold": 0.5
+              },
+              {
+                "feature": "inflation.momentum",
+                "operator": "lte",
+                "threshold": -0.2
+              }
+            ],
+            "persistencePeriods": 3,
+            "evaluationWindowDays": 365
+          },
+          "evidenceGrade": "C",
+          "status": "research_candidate",
+          "ownerRole": "macro_research",
+          "version": "0.1.0",
+          "validFrom": "2026-09-12T00:00:00Z",
+          "validTo": null,
+          "falsificationEvaluation": {
+            "status": "not_triggered",
+            "currentMatch": false,
+            "observationsAvailable": 1,
+            "observationsRequired": 3,
+            "persistenceSatisfied": false,
+            "featureReadings": [
+              {
+                "feature": "order.level",
+                "value": 0.8308,
+                "operator": "gte",
+                "threshold": 0.5,
+                "matches": true
+              },
+              {
+                "feature": "inflation.momentum",
+                "value": 0.3967,
+                "operator": "lte",
+                "threshold": -0.2,
+                "matches": false
+              }
+            ],
+            "lastEvaluatedAt": "2026-09-11T16:00:00+08:00",
+            "historyBoundary": "current_snapshot_only",
+            "ruleVersion": "1"
+          }
+        }
+      ],
+      "modelVersion": "causal-binding-0.4.0"
     },
     "GLOBAL": {
-      "schemaVersion": "0.3.0",
+      "schemaVersion": "0.4.0",
       "graphId": "wmos.core.global",
       "graphVersion": "0.3.0",
       "asOf": "2026-09-11T16:00:00+08:00",
@@ -1342,7 +1938,8 @@
           "invalidation": "核心价格与工资动量持续回落且供给冲击消退",
           "status": "research_candidate",
           "activityScore": 0.3215,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": "mc.order_supply_inflation"
         },
         {
           "id": "e.inflation.liquidity",
@@ -1368,7 +1965,8 @@
           "invalidation": "政策明确转向增长或金融稳定目标且通胀容忍度上升",
           "status": "research_candidate",
           "activityScore": 0.313,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": "mc.inflation_policy"
         },
         {
           "id": "e.liquidity.growth",
@@ -1394,7 +1992,8 @@
           "invalidation": "金融条件收紧但信用、需求和就业持续改善",
           "status": "research_candidate",
           "activityScore": 0.3061,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": "mc.liquidity_growth"
         },
         {
           "id": "e.liquidity.fragility",
@@ -1420,7 +2019,8 @@
           "invalidation": "偿债负担与违约指标在高利率环境下持续改善",
           "status": "research_candidate",
           "activityScore": 0.2989,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.fragility.growth",
@@ -1446,7 +2046,8 @@
           "invalidation": "高脆弱性未伴随贷款标准、信用利差或支出恶化",
           "status": "research_candidate",
           "activityScore": 0.3217,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.growth.equity",
@@ -1472,7 +2073,8 @@
           "invalidation": "盈利与权益风险溢价显著脱离增长状态",
           "status": "research_candidate",
           "activityScore": 0.3203,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.fragility.credit",
@@ -1498,7 +2100,8 @@
           "invalidation": "信用压力代理与脆弱性长期反向变化",
           "status": "research_candidate",
           "activityScore": 0.3323,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.inflation.factor",
@@ -1524,7 +2127,8 @@
           "invalidation": "通胀风险资产未对持续通胀意外产生正向敏感度",
           "status": "research_candidate",
           "activityScore": 0.3076,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.liquidity.realrate",
@@ -1550,7 +2154,8 @@
           "invalidation": "政策金融条件与实际利率风险长期脱钩",
           "status": "research_candidate",
           "activityScore": 0.2919,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         },
         {
           "id": "e.order.insurance",
@@ -1576,7 +2181,8 @@
           "invalidation": "秩序压力上升未伴随储备多元化或保险需求",
           "status": "research_candidate",
           "activityScore": 0.304,
-          "runtimeStatus": "candidate_only"
+          "runtimeStatus": "candidate_only",
+          "mechanismId": null
         }
       ],
       "paths": [
@@ -1636,8 +2242,296 @@
           "falsification": "信用、就业和消费连续两个观察期同步恶化"
         }
       ],
-      "modelVersion": "causal-binding-0.3.0"
+      "mechanismContracts": [
+        {
+          "id": "mc.inflation_policy",
+          "edgeIds": [
+            "e.inflation.liquidity"
+          ],
+          "statement": "持续通胀压力提高政策约束，并倾向收紧政策与金融条件。",
+          "inputFeatures": [
+            "inflation.momentum",
+            "liquidity.momentum"
+          ],
+          "expectedSign": "negative",
+          "shape": "conditional",
+          "lagDistribution": {
+            "minDays": 0,
+            "modeDays": 60,
+            "maxDays": 270
+          },
+          "mediators": [
+            "policy_tolerance",
+            "employment_mandate",
+            "financial_stability"
+          ],
+          "activationConditions": [
+            "inflation_above_policy_tolerance"
+          ],
+          "applicableRegimes": [
+            "overheating",
+            "stagflation"
+          ],
+          "supportingEvidence": [
+            {
+              "id": "support.ip.1",
+              "title": "政策反应函数研究假设",
+              "kind": "research_synthesis",
+              "reference": "research:policy-reaction-function"
+            }
+          ],
+          "opposingEvidence": [
+            {
+              "id": "oppose.ip.1",
+              "title": "金融稳定约束可能覆盖价格目标",
+              "kind": "competing_hypothesis",
+              "reference": "research:financial-stability-dominance"
+            }
+          ],
+          "falsificationRule": {
+            "version": "1",
+            "all": [
+              {
+                "feature": "inflation.momentum",
+                "operator": "gte",
+                "threshold": 0.2
+              },
+              {
+                "feature": "liquidity.momentum",
+                "operator": "gte",
+                "threshold": 0.2
+              }
+            ],
+            "persistencePeriods": 2,
+            "evaluationWindowDays": 180
+          },
+          "evidenceGrade": "C",
+          "status": "research_candidate",
+          "ownerRole": "macro_research",
+          "version": "0.1.0",
+          "validFrom": "2026-09-12T00:00:00Z",
+          "validTo": null,
+          "falsificationEvaluation": {
+            "status": "not_triggered",
+            "currentMatch": false,
+            "observationsAvailable": 1,
+            "observationsRequired": 2,
+            "persistenceSatisfied": false,
+            "featureReadings": [
+              {
+                "feature": "inflation.momentum",
+                "value": 0.2716,
+                "operator": "gte",
+                "threshold": 0.2,
+                "matches": true
+              },
+              {
+                "feature": "liquidity.momentum",
+                "value": -0.0293,
+                "operator": "gte",
+                "threshold": 0.2,
+                "matches": false
+              }
+            ],
+            "lastEvaluatedAt": "2026-09-11T16:00:00+08:00",
+            "historyBoundary": "current_snapshot_only",
+            "ruleVersion": "1"
+          }
+        },
+        {
+          "id": "mc.liquidity_growth",
+          "edgeIds": [
+            "e.liquidity.growth"
+          ],
+          "statement": "金融条件变化通过信用传导影响需求、就业与增长动量。",
+          "inputFeatures": [
+            "liquidity.level",
+            "growth.momentum"
+          ],
+          "expectedSign": "positive",
+          "shape": "conditional",
+          "lagDistribution": {
+            "minDays": 60,
+            "modeDays": 180,
+            "maxDays": 540
+          },
+          "mediators": [
+            "bank_credit",
+            "refinancing_cost",
+            "private_demand"
+          ],
+          "activationConditions": [
+            "credit_transmission_operates"
+          ],
+          "applicableRegimes": [
+            "goldilocks",
+            "contraction",
+            "stagflation"
+          ],
+          "supportingEvidence": [
+            {
+              "id": "support.lg.1",
+              "title": "信用传导研究假设",
+              "kind": "research_synthesis",
+              "reference": "research:credit-transmission"
+            }
+          ],
+          "opposingEvidence": [
+            {
+              "id": "oppose.lg.1",
+              "title": "财政扩张或高现金储备可延迟传导",
+              "kind": "competing_hypothesis",
+              "reference": "research:transmission-offsets"
+            }
+          ],
+          "falsificationRule": {
+            "version": "1",
+            "all": [
+              {
+                "feature": "liquidity.level",
+                "operator": "lte",
+                "threshold": -0.2
+              },
+              {
+                "feature": "growth.momentum",
+                "operator": "gte",
+                "threshold": 0.3
+              }
+            ],
+            "persistencePeriods": 3,
+            "evaluationWindowDays": 270
+          },
+          "evidenceGrade": "C",
+          "status": "research_candidate",
+          "ownerRole": "macro_research",
+          "version": "0.1.0",
+          "validFrom": "2026-09-12T00:00:00Z",
+          "validTo": null,
+          "falsificationEvaluation": {
+            "status": "not_triggered",
+            "currentMatch": false,
+            "observationsAvailable": 1,
+            "observationsRequired": 3,
+            "persistenceSatisfied": false,
+            "featureReadings": [
+              {
+                "feature": "liquidity.level",
+                "value": -0.1874,
+                "operator": "lte",
+                "threshold": -0.2,
+                "matches": false
+              },
+              {
+                "feature": "growth.momentum",
+                "value": -0.3044,
+                "operator": "gte",
+                "threshold": 0.3,
+                "matches": false
+              }
+            ],
+            "lastEvaluatedAt": "2026-09-11T16:00:00+08:00",
+            "historyBoundary": "current_snapshot_only",
+            "ruleVersion": "1"
+          }
+        },
+        {
+          "id": "mc.order_supply_inflation",
+          "edgeIds": [
+            "e.order.inflation"
+          ],
+          "statement": "持续的贸易、能源或秩序冲击可通过供给渠道抬高通胀压力并压缩政策空间。",
+          "inputFeatures": [
+            "order.level",
+            "inflation.momentum"
+          ],
+          "expectedSign": "positive",
+          "shape": "conditional",
+          "lagDistribution": {
+            "minDays": 14,
+            "modeDays": 90,
+            "maxDays": 365
+          },
+          "mediators": [
+            "energy_cost",
+            "trade_cost",
+            "supply_chain_reconfiguration"
+          ],
+          "activationConditions": [
+            "supply_or_trade_shock_persists"
+          ],
+          "applicableRegimes": [
+            "overheating",
+            "stagflation"
+          ],
+          "supportingEvidence": [
+            {
+              "id": "support.osi.1",
+              "title": "秩序与供给渠道研究假设",
+              "kind": "research_synthesis",
+              "reference": "research:dalio-order-supply-channel"
+            }
+          ],
+          "opposingEvidence": [
+            {
+              "id": "oppose.osi.1",
+              "title": "需求破坏可能抵消供给价格冲击",
+              "kind": "competing_hypothesis",
+              "reference": "research:demand-destruction-offset"
+            }
+          ],
+          "falsificationRule": {
+            "version": "1",
+            "all": [
+              {
+                "feature": "order.level",
+                "operator": "gte",
+                "threshold": 0.5
+              },
+              {
+                "feature": "inflation.momentum",
+                "operator": "lte",
+                "threshold": -0.2
+              }
+            ],
+            "persistencePeriods": 3,
+            "evaluationWindowDays": 365
+          },
+          "evidenceGrade": "C",
+          "status": "research_candidate",
+          "ownerRole": "macro_research",
+          "version": "0.1.0",
+          "validFrom": "2026-09-12T00:00:00Z",
+          "validTo": null,
+          "falsificationEvaluation": {
+            "status": "not_triggered",
+            "currentMatch": false,
+            "observationsAvailable": 1,
+            "observationsRequired": 3,
+            "persistenceSatisfied": false,
+            "featureReadings": [
+              {
+                "feature": "order.level",
+                "value": 0.8308,
+                "operator": "gte",
+                "threshold": 0.5,
+                "matches": true
+              },
+              {
+                "feature": "inflation.momentum",
+                "value": 0.2716,
+                "operator": "lte",
+                "threshold": -0.2,
+                "matches": false
+              }
+            ],
+            "lastEvaluatedAt": "2026-09-11T16:00:00+08:00",
+            "historyBoundary": "current_snapshot_only",
+            "ruleVersion": "1"
+          }
+        }
+      ],
+      "modelVersion": "causal-binding-0.4.0"
     }
   },
-  "modelVersion": "causal-binding-0.3.0"
+  "modelVersion": "causal-binding-0.4.0"
 }

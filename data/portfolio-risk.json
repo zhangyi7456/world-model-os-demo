@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.4.0",
+  "schemaVersion": "0.5.0",
   "portfolioId": "reference-portfolio",
   "portfolioVersion": "0.1.0",
   "asOf": "2026-09-11T16:00:00+08:00",
@@ -86,6 +86,88 @@
       "beta": 0.126
     }
   ],
+  "riskMethod": {
+    "factorSetId": "wmos-seven-factor",
+    "factorSetVersion": "0.2.0",
+    "returnDataMode": "DEMO_FIXTURE_NOT_MARKET_DATA",
+    "requestedEstimator": "weekly_156w_covariance_with_diagonal_shrinkage",
+    "activeEstimator": "one_common_driver_fixture",
+    "estimatorStatus": "fallback_insufficient_or_demo_history",
+    "eligibleForRiskBudget": false,
+    "actualWeeks": 16,
+    "minimumWeeks": 104,
+    "primaryWindowWeeks": 156,
+    "annualizationFactor": 52,
+    "shrinkageIntensity": 0.35,
+    "candidateCovariance": [
+      [
+        0.003653,
+        -0.000564,
+        -0.000481,
+        0.000877,
+        -0.000316,
+        -0.000992,
+        0.003014
+      ],
+      [
+        -0.000564,
+        0.000839,
+        0.000411,
+        -0.000166,
+        -0.000434,
+        0.00014,
+        -0.000649
+      ],
+      [
+        -0.000481,
+        0.000411,
+        0.00051,
+        -0.000148,
+        -0.000326,
+        0.00015,
+        -0.000588
+      ],
+      [
+        0.000877,
+        -0.000166,
+        -0.000148,
+        0.000533,
+        -0.000206,
+        -0.000387,
+        0.001148
+      ],
+      [
+        -0.000316,
+        -0.000434,
+        -0.000326,
+        -0.000206,
+        0.001848,
+        0.000218,
+        -0.000481
+      ],
+      [
+        -0.000992,
+        0.00014,
+        0.00015,
+        -0.000387,
+        0.000218,
+        0.000792,
+        -0.001354
+      ],
+      [
+        0.003014,
+        -0.000649,
+        -0.000588,
+        0.001148,
+        -0.000481,
+        -0.001354,
+        0.006143
+      ]
+    ],
+    "candidatePsd": true,
+    "fallbackReason": "demo return history is shorter than policy minimum and cannot drive risk budgets",
+    "factorDefinitionStatus": "frozen_research_definition"
+  },
   "covarianceViews": {
     "normal": {
       "volatility": {
@@ -227,7 +309,8 @@
           0.0484
         ]
       ],
-      "estimation": "versioned one-common-driver shrinkage fixture"
+      "estimation": "versioned one-common-driver fallback fixture",
+      "estimatorStatus": "fallback_insufficient_or_demo_history"
     },
     "stress": {
       "volatility": {
@@ -369,7 +452,8 @@
           0.1444
         ]
       ],
-      "estimation": "versioned one-common-driver shrinkage fixture"
+      "estimation": "versioned one-common-driver fallback fixture",
+      "estimatorStatus": "fallback_insufficient_or_demo_history"
     }
   },
   "riskViews": {
@@ -382,52 +466,59 @@
           "factorId": "equity",
           "componentVariance": 0.008795,
           "netPctOfTotalVariance": 0.62617,
-          "absoluteContributionPct": 0.67175,
+          "absoluteContributionPct": 0.62617,
           "direction": "risk_adding"
         },
         {
           "factorId": "nominal_duration",
           "componentVariance": 0.00083,
           "netPctOfTotalVariance": 0.059061,
-          "absoluteContributionPct": 0.06336,
+          "absoluteContributionPct": 0.059061,
           "direction": "risk_adding"
         },
         {
           "factorId": "real_rate",
           "componentVariance": 0.000865,
           "netPctOfTotalVariance": 0.061571,
-          "absoluteContributionPct": 0.066053,
+          "absoluteContributionPct": 0.061571,
           "direction": "risk_adding"
         },
         {
           "factorId": "credit",
           "componentVariance": 0.000417,
           "netPctOfTotalVariance": 0.029684,
-          "absoluteContributionPct": 0.031845,
+          "absoluteContributionPct": 0.029684,
           "direction": "risk_adding"
         },
         {
           "factorId": "inflation_commodity",
           "componentVariance": 0.000116,
           "netPctOfTotalVariance": 0.008226,
-          "absoluteContributionPct": 0.008824,
+          "absoluteContributionPct": 0.008226,
           "direction": "risk_adding"
         },
         {
           "factorId": "usd",
           "componentVariance": 0.000193,
           "netPctOfTotalVariance": 0.013741,
-          "absoluteContributionPct": 0.014741,
+          "absoluteContributionPct": 0.013741,
           "direction": "risk_adding"
         },
         {
           "factorId": "china_equity",
           "componentVariance": 0.001878,
           "netPctOfTotalVariance": 0.133696,
-          "absoluteContributionPct": 0.143428,
+          "absoluteContributionPct": 0.133696,
           "direction": "risk_adding"
         }
       ],
+      "specificContribution": {
+        "factorId": "specific_risk",
+        "componentVariance": 0.000953,
+        "netPctOfTotalVariance": 0.067851,
+        "absoluteContributionPct": 0.067851,
+        "direction": "risk_adding"
+      },
       "specificRiskPctOfTotalVariance": 0.067851
     },
     "stress": {
@@ -439,52 +530,59 @@
           "factorId": "equity",
           "componentVariance": 0.037225,
           "netPctOfTotalVariance": 0.537173,
-          "absoluteContributionPct": 0.544663,
+          "absoluteContributionPct": 0.537173,
           "direction": "risk_adding"
         },
         {
           "factorId": "nominal_duration",
           "componentVariance": 0.006548,
           "netPctOfTotalVariance": 0.094491,
-          "absoluteContributionPct": 0.095809,
+          "absoluteContributionPct": 0.094491,
           "direction": "risk_adding"
         },
         {
           "factorId": "real_rate",
           "componentVariance": 0.007402,
           "netPctOfTotalVariance": 0.106813,
-          "absoluteContributionPct": 0.108303,
+          "absoluteContributionPct": 0.106813,
           "direction": "risk_adding"
         },
         {
           "factorId": "credit",
           "componentVariance": 0.003866,
           "netPctOfTotalVariance": 0.055793,
-          "absoluteContributionPct": 0.056571,
+          "absoluteContributionPct": 0.055793,
           "direction": "risk_adding"
         },
         {
           "factorId": "inflation_commodity",
           "componentVariance": 0.00128,
           "netPctOfTotalVariance": 0.018467,
-          "absoluteContributionPct": 0.018725,
+          "absoluteContributionPct": 0.018467,
           "direction": "risk_adding"
         },
         {
           "factorId": "usd",
           "componentVariance": 0.001242,
           "netPctOfTotalVariance": 0.01792,
-          "absoluteContributionPct": 0.01817,
+          "absoluteContributionPct": 0.01792,
           "direction": "risk_adding"
         },
         {
           "factorId": "china_equity",
           "componentVariance": 0.010782,
           "netPctOfTotalVariance": 0.155591,
-          "absoluteContributionPct": 0.15776,
+          "absoluteContributionPct": 0.155591,
           "direction": "risk_adding"
         }
       ],
+      "specificContribution": {
+        "factorId": "specific_risk",
+        "componentVariance": 0.000953,
+        "netPctOfTotalVariance": 0.013752,
+        "absoluteContributionPct": 0.013752,
+        "direction": "risk_adding"
+      },
       "specificRiskPctOfTotalVariance": 0.013752
     }
   },
@@ -492,7 +590,7 @@
     {
       "factorId": "equity",
       "label": "权益系统风险",
-      "currentRiskContribution": 0.67175,
+      "currentRiskContribution": 0.62617,
       "policyMin": 0.25,
       "policyTarget": 0.38,
       "policyMax": 0.5,
@@ -502,7 +600,7 @@
     {
       "factorId": "nominal_duration",
       "label": "名义久期",
-      "currentRiskContribution": 0.06336,
+      "currentRiskContribution": 0.059061,
       "policyMin": 0.05,
       "policyTarget": 0.12,
       "policyMax": 0.22,
@@ -512,7 +610,7 @@
     {
       "factorId": "real_rate",
       "label": "实际利率下行",
-      "currentRiskContribution": 0.066053,
+      "currentRiskContribution": 0.061571,
       "policyMin": 0.06,
       "policyTarget": 0.14,
       "policyMax": 0.25,
@@ -522,7 +620,7 @@
     {
       "factorId": "credit",
       "label": "信用风险",
-      "currentRiskContribution": 0.031845,
+      "currentRiskContribution": 0.029684,
       "policyMin": 0.02,
       "policyTarget": 0.08,
       "policyMax": 0.16,
@@ -532,7 +630,7 @@
     {
       "factorId": "inflation_commodity",
       "label": "通胀 / 商品",
-      "currentRiskContribution": 0.008824,
+      "currentRiskContribution": 0.008226,
       "policyMin": 0.05,
       "policyTarget": 0.12,
       "policyMax": 0.24,
@@ -542,7 +640,7 @@
     {
       "factorId": "usd",
       "label": "美元",
-      "currentRiskContribution": 0.014741,
+      "currentRiskContribution": 0.013741,
       "policyMin": 0.0,
       "policyTarget": 0.06,
       "policyMax": 0.14,
@@ -552,7 +650,7 @@
     {
       "factorId": "china_equity",
       "label": "中国权益特异风险",
-      "currentRiskContribution": 0.143428,
+      "currentRiskContribution": 0.133696,
       "policyMin": 0.02,
       "policyTarget": 0.1,
       "policyMax": 0.2,
@@ -733,10 +831,33 @@
     "nonExecutable": true,
     "requiresHumanApproval": true,
     "orderPayload": null,
+    "comparison": {
+      "status": "illustrative_factor_space_only",
+      "assumption": "reduce the largest factor beta by 10%; hold all asset weights and specific risk outside this non-executable comparison",
+      "changedFactorId": "equity",
+      "factorBetaScale": 0.9,
+      "before": {
+        "expectedVolatility": 0.118511,
+        "worstTailLoss": -0.1971,
+        "topFactorId": "equity",
+        "topFactorContribution": 0.62617
+      },
+      "after": {
+        "expectedVolatility": 0.111168,
+        "worstTailLoss": -0.188604,
+        "topFactorId": "equity",
+        "topFactorContribution": 0.587903
+      },
+      "delta": {
+        "expectedVolatility": -0.007343,
+        "worstTailLoss": 0.008496
+      },
+      "notAnAllocation": true
+    },
     "boundary": "risk review only; no target weights or trade instructions"
   },
   "modelConfidence": 0.8294,
   "riskClaim": "factor exposure and scenario research support; not investment advice",
-  "modelVersion": "portfolio-risk-0.4.0",
+  "modelVersion": "portfolio-risk-0.5.0",
   "publicClassification": "PUBLIC_SYNTHETIC_REFERENCE"
 }

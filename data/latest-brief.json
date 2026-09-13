@@ -307,7 +307,7 @@
       "factorId": "equity",
       "componentVariance": 0.008795,
       "netPctOfTotalVariance": 0.62617,
-      "absoluteContributionPct": 0.67175,
+      "absoluteContributionPct": 0.62617,
       "direction": "risk_adding"
     },
     "worstScenario": {

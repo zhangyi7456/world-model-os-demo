@@ -266,11 +266,28 @@ main { grid-column: 2; min-height: 100vh; }
 .stress-panel th, .stress-panel td { padding: 12px 10px; border-bottom: 1px solid var(--line); text-align: left; font-size: 9px; }
 .stress-panel th { color: var(--muted); font-weight: 500; }
 .stress-panel td small { display: block; margin-top: 4px; color: var(--muted); font: 7px ui-monospace, monospace; }
+.risk-audit { display: grid; grid-template-columns: minmax(260px, .75fr) 1.25fr; border-bottom: 1px solid var(--line); }
+.risk-audit > div { padding: 24px 20px; border-right: 1px solid var(--line); }
+.risk-audit h2 { margin: 8px 0; font: 400 22px Georgia, serif; }
+.risk-audit p { color: var(--muted); font-size: 8px; line-height: 1.55; }
+.risk-audit dl { margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); }
+.risk-audit dl div { padding: 19px 16px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.risk-audit dl div:nth-child(3n) { border-right: 0; }
+.risk-audit dt { color: var(--muted); font-size: 8px; }
+.risk-audit dd { margin: 7px 0 0; overflow-wrap: anywhere; color: var(--accent); font: 8px ui-monospace, monospace; }
 .proposal { padding: 19px 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid rgba(98, 213, 204, 0.22); background: var(--accent-dim); }
+.proposal > div { flex: 1; }
 .proposal b, .proposal small { display: block; }
 .proposal b { margin-top: 7px; font-size: 10px; }
 .proposal small { margin-top: 5px; color: var(--muted); font-size: 8px; }
 .proposal button { padding: 10px 14px; border: 0; color: #829497; background: #26383b; font-size: 9px; }
+.proposal-compare { margin-top: 16px; display: grid; grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr); gap: 12px; align-items: center; }
+.proposal-compare span { padding: 12px; border: 1px solid var(--line); }
+.proposal-compare small, .proposal-compare b, .proposal-compare em { display: block; }
+.proposal-compare b { margin-top: 6px; font: 400 23px Georgia, serif; }
+.proposal-compare em { margin-top: 4px; color: var(--muted); font: normal 8px ui-monospace, monospace; }
+.proposal-compare > i { color: var(--accent); font-style: normal; }
+.proposal-compare > p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 8px; }
 
 .data-mode-strip { display: grid; grid-template-columns: repeat(5, 1fr); border-bottom: 1px solid var(--line); }
 .data-mode-strip div { padding: 17px 18px; border-right: 1px solid var(--line); }
@@ -374,7 +391,7 @@ main { grid-column: 2; min-height: 100vh; }
   .state-value b { font-size: 25px; }
   .state-metrics { display: none; }
   .regime-guardrail { grid-template-columns: 1fr 1fr; }
-  .brief-grid, .brief-grid.lower, .world-grid, .scenario-analysis, .portfolio-thesis, .exposure-grid, .evidence-workspace { grid-template-columns: 1fr; }
+  .brief-grid, .brief-grid.lower, .world-grid, .scenario-analysis, .portfolio-thesis, .exposure-grid, .evidence-workspace, .risk-audit { grid-template-columns: 1fr; }
   .brief-column, .matrix-panel, .drivers-panel, .scenario-analysis > div, .portfolio-thesis > div:first-child, .exposure-grid > div, .indicator-registry { border-right: 0; border-bottom: 1px solid var(--line); }
   .brief-column { min-height: 0; padding: 21px 12px; }
   .scenario-legend { grid-template-columns: 1fr 1fr 1fr; }
@@ -401,6 +418,13 @@ main { grid-column: 2; min-height: 100vh; }
   .portfolio-metrics { grid-template-columns: repeat(3, 1fr); }
   .portfolio-metrics span { padding: 20px 10px; }
   .portfolio-metrics b { font-size: 21px; }
+  .risk-audit > div { border-right: 0; border-bottom: 1px solid var(--line); }
+  .risk-audit dl { grid-template-columns: repeat(2, 1fr); }
+  .risk-audit dl div:nth-child(3n) { border-right: 1px solid var(--line); }
+  .risk-audit dl div:nth-child(2n) { border-right: 0; }
+  .proposal { align-items: stretch; flex-direction: column; }
+  .proposal-compare { grid-template-columns: 1fr; }
+  .proposal-compare > i { transform: rotate(90deg); text-align: center; }
   .exposure-grid > div, .stress-panel { padding: 21px 12px; }
   .exposure-row { grid-template-columns: 118px 1fr 40px; }
   .table-scroll { overflow-x: auto; }

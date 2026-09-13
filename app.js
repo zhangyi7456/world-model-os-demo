@@ -14,9 +14,10 @@ const factorLabels = {
   inflation_commodity: "通胀 / 商品",
   usd: "美元",
   china_equity: "中国权益特异风险",
+  specific_risk: "资产特异风险",
 };
 const qualityLabels = { fresh: "正常", stale: "陈旧", estimated: "估算", missing: "缺失", bad: "拒绝" };
-const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null, releaseCalendar: null, historyReplay: null };
+const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null, releaseCalendar: null, historyReplay: null, factorRisk: null };
 let selectedEntity = "US";
 let selectedPathId = null;
 let selectedEdgeId = null;
@@ -182,14 +183,18 @@ function portfolio() {
   const contributions = [...normal.contributions].sort((a, b) => b.absoluteContributionPct - a.absoluteContributionPct);
   const top = contributions[0]; const budget = data.riskBudgets.find((item) => item.factorId === top.factorId);
   const capital = data.capitalWeights.map((item) => exposureRow(item.label, item.weight)).join("");
-  const risks = contributions.map((item) => { const policy = data.riskBudgets.find((row) => row.factorId === item.factorId); return exposureRow(factorLabels[item.factorId] || item.factorId, item.absoluteContributionPct, policy.policyMax, policy.status); }).join("");
+  const risks = contributions.map((item) => { const policy = data.riskBudgets.find((row) => row.factorId === item.factorId); return exposureRow(factorLabels[item.factorId] || item.factorId, item.absoluteContributionPct, policy.policyMax, policy.status); }).join("") + exposureRow(factorLabels.specific_risk, normal.specificContribution.absoluteContributionPct);
   const stresses = data.scenarioStress.map((item) => `<tr><td>${escapeHtml(item.title)}<small>${item.scenarioType.toUpperCase()} · ${escapeHtml(item.approvalStatus)}</small></td><td>${item.suggestedProbability == null ? "条件事件" : pct(item.suggestedProbability)}</td><td class="negative">${formatRange(item.lossRange)}</td><td>${escapeHtml(factorLabels[item.leadingLossFactor] || item.leadingLossFactor)}</td></tr>`).join("");
+  const method = data.riskMethod; const comparison = data.proposal.comparison;
+  const estimator = `<section class="risk-audit"><div><p class="eyebrow">ACTIVE ESTIMATOR</p><h2>${escapeHtml(method.activeEstimator)}</h2><p>${escapeHtml(method.fallbackReason)}</p></div><dl><div><dt>请求方法</dt><dd>${escapeHtml(method.requestedEstimator)}</dd></div><div><dt>周频样本</dt><dd>${method.actualWeeks} / ${method.minimumWeeks} 最低</dd></div><div><dt>收缩强度</dt><dd>${pct(method.shrinkageIntensity)}</dd></div><div><dt>候选矩阵 PSD</dt><dd>${method.candidatePsd ? "PASS" : "—"}</dd></div><div><dt>预算资格</dt><dd>${method.eligibleForRiskBudget ? "ELIGIBLE" : "BLOCKED"}</dd></div><div><dt>输入模式</dt><dd>${escapeHtml(method.returnDataMode)}</dd></div></dl></section>`;
+  const proposalCompare = `<div class="proposal-compare"><span><small>BEFORE · VOL</small><b>${pct(comparison.before.expectedVolatility)}</b><em>${pct(comparison.before.topFactorContribution)} ${escapeHtml(factorLabels[comparison.before.topFactorId])}</em></span><i>→</i><span><small>ILLUSTRATIVE AFTER · VOL</small><b>${pct(comparison.after.expectedVolatility)}</b><em>${pct(comparison.after.topFactorContribution)} ${escapeHtml(factorLabels[comparison.after.topFactorId])}</em></span><p>仅在因子空间把 ${escapeHtml(factorLabels[comparison.changedFactorId])} beta 缩放至 ${pct(comparison.factorBetaScale)}；不是资产配置或交易建议。</p></div>`;
   return `<div class="view">
     ${pageHead(5, "组合风险", "公开合成参考组合 · 用七个风险因子与压力情景检查集中度，不生成目标权重或订单。", `<div class="release-context">${statusBadge("PUBLIC_SYNTHETIC_REFERENCE")}<strong>${escapeHtml(data.proposal.status.replaceAll("_", " "))}</strong><small>${escapeHtml(data.modelVersion)} · NON-EXECUTABLE</small></div>`)}
     <section class="portfolio-thesis"><div><p class="eyebrow">PRIMARY RISK · NORMAL VIEW</p><h2>${pct(top.absoluteContributionPct)} 的绝对风险贡献来自${escapeHtml(factorLabels[top.factorId])}。</h2><p>政策上限 ${pct(budget.policyMax)}。该组合是公开研究夹具，不代表任何用户真实账户。</p></div><div class="portfolio-metrics"><span><small>正常波动</small><b>${pct(normal.expectedVolatility)}</b></span><span><small>压力波动</small><b>${pct(stress.expectedVolatility)}</b></span><span><small>最差下界</small><b class="negative">${pct(data.constraints.worstTailLoss)}</b></span></div></section>
-    <section class="exposure-grid"><div><div class="section-title"><h2>资金权重</h2><span>CAPITAL · 100%</span></div>${capital}</div><div><div class="section-title"><h2>绝对风险贡献</h2><span>MARKER = POLICY MAX</span></div>${risks}<p class="boundary-copy">当前 Fixture 未把 specific risk 纳入同一风险分母；正式版上线前必须补齐。</p></div></section>
+    <section class="exposure-grid"><div><div class="section-title"><h2>资金权重</h2><span>CAPITAL · 100%</span></div>${capital}</div><div><div class="section-title"><h2>绝对风险贡献</h2><span>FACTORS + SPECIFIC = 100%</span></div>${risks}<p class="boundary-copy">Normal 与 Stress 均使用因子绝对贡献加特异风险的同一分母；净方差贡献同时对账至 100%。</p></div></section>
+    ${estimator}
     <section class="stress-panel"><div class="section-title"><h2>情景压力</h2><span>RESEARCH ASSUMPTIONS</span></div><div class="table-scroll"><table><thead><tr><th>情景</th><th>建议概率</th><th>影响区间</th><th>最大损失来源</th></tr></thead><tbody>${stresses}</tbody></table></div></section>
-    <section class="proposal"><div><p class="eyebrow">READ-ONLY PROPOSAL</p><b>${escapeHtml(data.proposal.reasons.join("；"))}</b><small>requiresHumanApproval = true · orderPayload = null</small></div><button disabled>不生成交易指令</button></section>
+    <section class="proposal"><div><p class="eyebrow">READ-ONLY PROPOSAL</p><b>${escapeHtml(data.proposal.reasons.join("；"))}</b><small>requiresHumanApproval = true · orderPayload = null</small>${proposalCompare}</div><button disabled>不生成交易指令</button></section>
   </div>`;
 }
 
@@ -273,11 +278,11 @@ function selectEntity(entity) {
 
 async function loadData() {
   try {
-    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief", "release-calendar", "history-replay"];
+    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief", "release-calendar", "history-replay", "factor-risk-method"];
     const responses = await Promise.all(names.map((name) => fetch(`./data/${name}.json`, { cache: "no-store" })));
     if (responses.some((response) => !response.ok)) throw new Error("required public artifacts are unavailable");
-    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData, releaseCalendarData, historyReplayData] = await Promise.all(responses.map((response) => response.json()));
-    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData, releaseCalendar: releaseCalendarData, historyReplay: historyReplayData });
+    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData, releaseCalendarData, historyReplayData, factorRiskData] = await Promise.all(responses.map((response) => response.json()));
+    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData, releaseCalendar: releaseCalendarData, historyReplay: historyReplayData, factorRisk: factorRiskData });
     selectedEntity = worldData.primaryEntity || "US";
     $("#entity-select").value = selectedEntity;
     $("#data-mode").textContent = publicationData.dataModeComposition.worldState;

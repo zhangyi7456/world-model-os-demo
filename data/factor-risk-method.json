@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "0.1.0",
+  "asOf": "2026-09-11T16:00:00+08:00",
+  "dataMode": "RESEARCH_FACTOR_FIXTURE",
+  "factorSetId": "wmos-seven-factor",
+  "factorSetVersion": "0.2.0",
+  "status": "frozen_research_definition",
+  "baseCurrency": "USD",
+  "frequency": "weekly",
+  "primaryWindowWeeks": 156,
+  "minimumWeeks": 104,
+  "factors": [
+    {
+      "id": "equity",
+      "label": "全球股票",
+      "economicMeaning": "全球企业盈利、风险偏好与长期生产率的综合暴露",
+      "positiveReturnDefinition": "全球宽基股票总回报减美元现金回报",
+      "proxy": "licensed global broad equity total-return index",
+      "overlapRule": "China equity exposure is residualized into china_equity; avoid double counting",
+      "licenseClass": "LICENSED_OR_PUBLIC_PROXY_REQUIRED"
+    },
+    {
+      "id": "nominal_duration",
+      "label": "名义久期",
+      "economicMeaning": "名义增长和政策利率下降带来的长久期债券收益",
+      "positiveReturnDefinition": "长期美国国债总回报减1至3年期美国国债总回报",
+      "proxy": "licensed duration-matched US Treasury total-return indices",
+      "overlapRule": "duration contribution in credit factor must be hedged out",
+      "licenseClass": "LICENSED_OR_PUBLIC_PROXY_REQUIRED"
+    },
+    {
+      "id": "real_rate",
+      "label": "实际利率",
+      "economicMeaning": "实际贴现率下降对长久期与非生息资产的支持",
+      "positiveReturnDefinition": "10年期实际收益率周变化的相反数",
+      "proxy": "10-year inflation-indexed Treasury real yield",
+      "overlapRule": "keep separate from nominal duration and inflation surprise",
+      "licenseClass": "PUBLIC_MACRO_SERIES"
+    },
+    {
+      "id": "credit",
+      "label": "信用",
+      "economicMeaning": "承担企业违约和融资条件风险获得的超额回报",
+      "positiveReturnDefinition": "公司债总回报减久期匹配政府债总回报",
+      "proxy": "licensed broad corporate bond excess-return index",
+      "overlapRule": "remove matched government duration before estimation",
+      "licenseClass": "LICENSED_OR_PUBLIC_PROXY_REQUIRED"
+    },
+    {
+      "id": "inflation_commodity",
+      "label": "通胀商品",
+      "economicMeaning": "商品供需与通胀冲击的可交易暴露",
+      "positiveReturnDefinition": "广义商品总回报减美元现金回报",
+      "proxy": "licensed broad commodity total-return index",
+      "overlapRule": "do not add gold-specific narrative exposure outside measured returns",
+      "licenseClass": "LICENSED_OR_PUBLIC_PROXY_REQUIRED"
+    },
+    {
+      "id": "usd",
+      "label": "美元",
+      "economicMeaning": "美元相对主要贸易伙伴货币升值的暴露",
+      "positiveReturnDefinition": "广义贸易加权美元指数的周回报",
+      "proxy": "broad trade-weighted US dollar index",
+      "overlapRule": "apply base-currency and hedge convention before aggregating asset beta",
+      "licenseClass": "PUBLIC_MACRO_SERIES"
+    },
+    {
+      "id": "china_equity",
+      "label": "中国股票",
+      "economicMeaning": "中国增长、政策与本土风险偏好的增量股票暴露",
+      "positiveReturnDefinition": "中国宽基股票美元总回报对全球股票因子回归后的残差",
+      "proxy": "licensed broad China equity total-return index, residualized",
+      "overlapRule": "must be residualized against equity to prevent duplicate global beta",
+      "licenseClass": "LICENSED_OR_PUBLIC_PROXY_REQUIRED"
+    }
+  ],
+  "returnInput": {
+    "dataMode": "DEMO_FIXTURE_NOT_MARKET_DATA",
+    "observationCount": 16,
+    "firstObservation": "2026-05-22",
+    "lastObservation": "2026-09-04",
+    "publishedValues": false
+  },
+  "estimator": {
+    "factorSetId": "wmos-seven-factor",
+    "factorSetVersion": "0.2.0",
+    "returnDataMode": "DEMO_FIXTURE_NOT_MARKET_DATA",
+    "requestedEstimator": "weekly_156w_covariance_with_diagonal_shrinkage",
+    "activeEstimator": "one_common_driver_fixture",
+    "estimatorStatus": "fallback_insufficient_or_demo_history",
+    "eligibleForRiskBudget": false,
+    "actualWeeks": 16,
+    "minimumWeeks": 104,
+    "primaryWindowWeeks": 156,
+    "annualizationFactor": 52,
+    "shrinkageIntensity": 0.35,
+    "candidateCovariance": [
+      [
+        0.003653,
+        -0.000564,
+        -0.000481,
+        0.000877,
+        -0.000316,
+        -0.000992,
+        0.003014
+      ],
+      [
+        -0.000564,
+        0.000839,
+        0.000411,
+        -0.000166,
+        -0.000434,
+        0.00014,
+        -0.000649
+      ],
+      [
+        -0.000481,
+        0.000411,
+        0.00051,
+        -0.000148,
+        -0.000326,
+        0.00015,
+        -0.000588
+      ],
+      [
+        0.000877,
+        -0.000166,
+        -0.000148,
+        0.000533,
+        -0.000206,
+        -0.000387,
+        0.001148
+      ],
+      [
+        -0.000316,
+        -0.000434,
+        -0.000326,
+        -0.000206,
+        0.001848,
+        0.000218,
+        -0.000481
+      ],
+      [
+        -0.000992,
+        0.00014,
+        0.00015,
+        -0.000387,
+        0.000218,
+        0.000792,
+        -0.001354
+      ],
+      [
+        0.003014,
+        -0.000649,
+        -0.000588,
+        0.001148,
+        -0.000481,
+        -0.001354,
+        0.006143
+      ]
+    ],
+    "candidatePsd": true,
+    "fallbackReason": "demo return history is shorter than policy minimum and cannot drive risk budgets",
+    "factorDefinitionStatus": "frozen_research_definition"
+  }
+}

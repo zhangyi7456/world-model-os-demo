@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.5.0",
+  "schemaVersion": "0.6.0",
   "portfolioId": "reference-portfolio",
   "portfolioVersion": "0.1.0",
   "asOf": "2026-09-11T16:00:00+08:00",
@@ -167,6 +167,313 @@
     "candidatePsd": true,
     "fallbackReason": "demo return history is shorter than policy minimum and cannot drive risk budgets",
     "factorDefinitionStatus": "frozen_research_definition"
+  },
+  "exposureEngine": {
+    "engineVersion": "asset-exposure-0.1.0",
+    "requestedMethod": "centered_weekly_ridge_104_156_260",
+    "ridgeLambda": 0.05,
+    "dataModes": [
+      "DEMO_FIXTURE_NOT_MARKET_DATA"
+    ],
+    "formalOverrideEnabled": false,
+    "gateStatus": "BLOCKED",
+    "gateReason": "licensed weekly factor and asset returns have not met the 104-week minimum",
+    "assets": [
+      {
+        "assetId": "global_equity",
+        "label": "权益",
+        "activeMappingMethod": "asset_class_prior",
+        "status": "blocked_insufficient_or_demo_history",
+        "eligibleForMappingOverride": false,
+        "actualWeeks": 16,
+        "minimumWeeks": 104,
+        "windowReadiness": [
+          {
+            "windowWeeks": 104,
+            "status": "blocked"
+          },
+          {
+            "windowWeeks": 156,
+            "status": "blocked"
+          },
+          {
+            "windowWeeks": 260,
+            "status": "blocked"
+          }
+        ],
+        "exploratoryEstimate": {
+          "sampleCount": 16,
+          "firstObservation": "2026-05-22",
+          "lastObservation": "2026-09-04",
+          "ridgeLambda": 0.05,
+          "alpha": 0.000489,
+          "betas": {
+            "equity": 0.729054,
+            "nominal_duration": -0.092051,
+            "real_rate": -0.016919,
+            "credit": 0.176826,
+            "inflation_commodity": -0.026027,
+            "usd": 0.000573,
+            "china_equity": 0.441259
+          },
+          "standardErrors": {
+            "equity": 0.092955,
+            "nominal_duration": 0.10002,
+            "real_rate": 0.12077,
+            "credit": 0.138983,
+            "inflation_commodity": 0.050347,
+            "usd": 0.114827,
+            "china_equity": 0.0842
+          },
+          "rSquared": 0.997351,
+          "residualVolatility": 0.005988,
+          "annualizationFactor": 52.0
+        },
+        "priorBetas": {
+          "equity": 1.0,
+          "nominal_duration": 0.0,
+          "real_rate": 0.05,
+          "credit": 0.1,
+          "inflation_commodity": -0.05,
+          "usd": -0.15,
+          "china_equity": 0.25
+        },
+        "signAgreementWithPrior": 0.666667,
+        "stabilityStatus": "pending_104_156_260_week_windows"
+      },
+      {
+        "assetId": "nominal_bonds",
+        "label": "名义久期",
+        "activeMappingMethod": "contractual",
+        "status": "blocked_insufficient_or_demo_history",
+        "eligibleForMappingOverride": false,
+        "actualWeeks": 16,
+        "minimumWeeks": 104,
+        "windowReadiness": [
+          {
+            "windowWeeks": 104,
+            "status": "blocked"
+          },
+          {
+            "windowWeeks": 156,
+            "status": "blocked"
+          },
+          {
+            "windowWeeks": 260,
+            "status": "blocked"
+          }
+        ],
+        "exploratoryEstimate": {
+          "sampleCount": 16,
+          "firstObservation": "2026-05-22",
+          "lastObservation": "2026-09-04",
+          "ridgeLambda": 0.05,
+          "alpha": 0.000853,
+          "betas": {
+            "equity": -0.083001,
+            "nominal_duration": 0.818479,
+            "real_rate": 0.604007,
+            "credit": -0.046602,
+            "inflation_commodity": -0.134397,
+            "usd": -0.137849,
+            "china_equity": -0.036242
+          },
+          "standardErrors": {
+            "equity": 0.113017,
+            "nominal_duration": 0.121606,
+            "real_rate": 0.146835,
+            "credit": 0.168978,
+            "inflation_commodity": 0.061213,
+            "usd": 0.139609,
+            "china_equity": 0.102372
+          },
+          "rSquared": 0.986793,
+          "residualVolatility": 0.007281,
+          "annualizationFactor": 52.0
+        },
+        "priorBetas": {
+          "equity": 0.0,
+          "nominal_duration": 1.0,
+          "real_rate": 0.7,
+          "credit": 0.0,
+          "inflation_commodity": -0.3,
+          "usd": 0.2,
+          "china_equity": 0.0
+        },
+        "signAgreementWithPrior": 0.75,
+        "stabilityStatus": "pending_104_156_260_week_windows"
+      },
+      {
+        "assetId": "gold_real_assets",
+        "label": "黄金 / 实物",
+        "activeMappingMethod": "structural_mapping",
+        "status": "blocked_insufficient_or_demo_history",
+        "eligibleForMappingOverride": false,
+        "actualWeeks": 16,
+        "minimumWeeks": 104,
+        "windowReadiness": [
+          {
+            "windowWeeks": 104,
+            "status": "blocked"
+          },
+          {
+            "windowWeeks": 156,
+            "status": "blocked"
+          },
+          {
+            "windowWeeks": 260,
+            "status": "blocked"
+          }
+        ],
+        "exploratoryEstimate": {
+          "sampleCount": 16,
+          "firstObservation": "2026-05-22",
+          "lastObservation": "2026-09-04",
+          "ridgeLambda": 0.05,
+          "alpha": 0.000919,
+          "betas": {
+            "equity": -0.149296,
+            "nominal_duration": -0.035137,
+            "real_rate": -0.004569,
+            "credit": -0.043099,
+            "inflation_commodity": 0.861142,
+            "usd": -0.223615,
+            "china_equity": 0.018834
+          },
+          "standardErrors": {
+            "equity": 0.134315,
+            "nominal_duration": 0.144523,
+            "real_rate": 0.174507,
+            "credit": 0.200823,
+            "inflation_commodity": 0.072749,
+            "usd": 0.165919,
+            "china_equity": 0.121665
+          },
+          "rSquared": 0.975494,
+          "residualVolatility": 0.008653,
+          "annualizationFactor": 52.0
+        },
+        "priorBetas": {
+          "equity": 0.0,
+          "nominal_duration": 0.0,
+          "real_rate": 1.1,
+          "credit": 0.0,
+          "inflation_commodity": 1.0,
+          "usd": -0.7,
+          "china_equity": 0.0
+        },
+        "signAgreementWithPrior": 0.666667,
+        "stabilityStatus": "pending_104_156_260_week_windows"
+      },
+      {
+        "assetId": "cash",
+        "label": "现金",
+        "activeMappingMethod": "contractual",
+        "status": "blocked_missing_asset_return_series",
+        "eligibleForMappingOverride": false,
+        "actualWeeks": 0,
+        "minimumWeeks": 104,
+        "windowReadiness": [
+          {
+            "windowWeeks": 104,
+            "status": "blocked"
+          },
+          {
+            "windowWeeks": 156,
+            "status": "blocked"
+          },
+          {
+            "windowWeeks": 260,
+            "status": "blocked"
+          }
+        ],
+        "exploratoryEstimate": null,
+        "priorBetas": {
+          "equity": 0.0,
+          "nominal_duration": 0.0,
+          "real_rate": 0.0,
+          "credit": 0.0,
+          "inflation_commodity": -0.1,
+          "usd": 0.35,
+          "china_equity": 0.0
+        },
+        "signAgreementWithPrior": null,
+        "stabilityStatus": "pending_104_156_260_week_windows"
+      },
+      {
+        "assetId": "other",
+        "label": "其他",
+        "activeMappingMethod": "manual_low_confidence",
+        "status": "blocked_missing_asset_return_series",
+        "eligibleForMappingOverride": false,
+        "actualWeeks": 0,
+        "minimumWeeks": 104,
+        "windowReadiness": [
+          {
+            "windowWeeks": 104,
+            "status": "blocked"
+          },
+          {
+            "windowWeeks": 156,
+            "status": "blocked"
+          },
+          {
+            "windowWeeks": 260,
+            "status": "blocked"
+          }
+        ],
+        "exploratoryEstimate": null,
+        "priorBetas": {
+          "equity": 0.4,
+          "nominal_duration": 0.0,
+          "real_rate": 0.0,
+          "credit": 0.5,
+          "inflation_commodity": 0.3,
+          "usd": -0.1,
+          "china_equity": 0.2
+        },
+        "signAgreementWithPrior": null,
+        "stabilityStatus": "pending_104_156_260_week_windows"
+      }
+    ]
+  },
+  "matrixGovernance": {
+    "normal": {
+      "activeMethod": "one_common_driver_fixture",
+      "candidateEligible": false,
+      "status": "FALLBACK"
+    },
+    "stress": {
+      "activeMethod": "hypothetical_conservative_loading_fixture",
+      "historicalReplayStatus": "BLOCKED_PENDING_LICENSED_FACTOR_RETURNS",
+      "historicalWindows": [
+        {
+          "id": "gfc_2008",
+          "label": "Global Financial Crisis",
+          "start": "2008-09-05",
+          "end": "2009-03-13",
+          "selectionReason": "credit and liquidity fracture",
+          "status": "definition_only"
+        },
+        {
+          "id": "covid_2020",
+          "label": "Pandemic Liquidity Shock",
+          "start": "2020-02-21",
+          "end": "2020-04-03",
+          "selectionReason": "cross-asset liquidation and policy response",
+          "status": "definition_only"
+        },
+        {
+          "id": "inflation_2022",
+          "label": "Inflation and Duration Shock",
+          "start": "2022-01-07",
+          "end": "2022-10-21",
+          "selectionReason": "joint equity-duration drawdown",
+          "status": "definition_only"
+        }
+      ],
+      "status": "HYPOTHETICAL_FIXTURE"
+    }
   },
   "covarianceViews": {
     "normal": {
@@ -591,70 +898,98 @@
       "factorId": "equity",
       "label": "权益系统风险",
       "currentRiskContribution": 0.62617,
+      "normalRiskContribution": 0.62617,
+      "stressRiskContribution": 0.537173,
       "policyMin": 0.25,
       "policyTarget": 0.38,
       "policyMax": 0.5,
       "status": "above_max",
+      "normalStatus": "above_max",
+      "stressStatus": "above_max",
       "confidence": 0.8294
     },
     {
       "factorId": "nominal_duration",
       "label": "名义久期",
       "currentRiskContribution": 0.059061,
+      "normalRiskContribution": 0.059061,
+      "stressRiskContribution": 0.094491,
       "policyMin": 0.05,
       "policyTarget": 0.12,
       "policyMax": 0.22,
       "status": "within_band",
+      "normalStatus": "within_band",
+      "stressStatus": "within_band",
       "confidence": 0.8294
     },
     {
       "factorId": "real_rate",
       "label": "实际利率下行",
       "currentRiskContribution": 0.061571,
+      "normalRiskContribution": 0.061571,
+      "stressRiskContribution": 0.106813,
       "policyMin": 0.06,
       "policyTarget": 0.14,
       "policyMax": 0.25,
       "status": "within_band",
+      "normalStatus": "within_band",
+      "stressStatus": "within_band",
       "confidence": 0.8294
     },
     {
       "factorId": "credit",
       "label": "信用风险",
       "currentRiskContribution": 0.029684,
+      "normalRiskContribution": 0.029684,
+      "stressRiskContribution": 0.055793,
       "policyMin": 0.02,
       "policyTarget": 0.08,
       "policyMax": 0.16,
       "status": "within_band",
+      "normalStatus": "within_band",
+      "stressStatus": "within_band",
       "confidence": 0.8294
     },
     {
       "factorId": "inflation_commodity",
       "label": "通胀 / 商品",
       "currentRiskContribution": 0.008226,
+      "normalRiskContribution": 0.008226,
+      "stressRiskContribution": 0.018467,
       "policyMin": 0.05,
       "policyTarget": 0.12,
       "policyMax": 0.24,
       "status": "below_min",
+      "normalStatus": "below_min",
+      "stressStatus": "below_min",
       "confidence": 0.8294
     },
     {
       "factorId": "usd",
       "label": "美元",
       "currentRiskContribution": 0.013741,
+      "normalRiskContribution": 0.013741,
+      "stressRiskContribution": 0.01792,
       "policyMin": 0.0,
       "policyTarget": 0.06,
       "policyMax": 0.14,
       "status": "within_band",
+      "normalStatus": "within_band",
+      "stressStatus": "within_band",
       "confidence": 0.8294
     },
     {
       "factorId": "china_equity",
       "label": "中国权益特异风险",
       "currentRiskContribution": 0.133696,
+      "normalRiskContribution": 0.133696,
+      "stressRiskContribution": 0.155591,
       "policyMin": 0.02,
       "policyTarget": 0.1,
       "policyMax": 0.2,
       "status": "within_band",
+      "normalStatus": "within_band",
+      "stressStatus": "within_band",
       "confidence": 0.8294
     }
   ],
@@ -815,6 +1150,20 @@
         "value": 0.92,
         "limit": 0.9,
         "status": "pass"
+      },
+      {
+        "id": "normal_volatility",
+        "label": "正常波动上限",
+        "value": 0.118511,
+        "limit": 0.12,
+        "status": "pass"
+      },
+      {
+        "id": "max_liquidity_days",
+        "label": "最大变现天数",
+        "value": 12.0,
+        "limit": 15,
+        "status": "pass"
       }
     ],
     "liquidWeight": 0.92,
@@ -824,8 +1173,9 @@
     "proposalType": "RISK_BUDGET_REVIEW",
     "status": "review_required",
     "reasons": [
-      "权益系统风险 高于上限",
-      "通胀 / 商品 低于下限",
+      "权益系统风险（正常）高于上限",
+      "权益系统风险（压力）高于上限",
+      "通胀 / 商品（正常）低于下限",
       "情景尾部损失"
     ],
     "nonExecutable": true,
@@ -858,6 +1208,6 @@
   },
   "modelConfidence": 0.8294,
   "riskClaim": "factor exposure and scenario research support; not investment advice",
-  "modelVersion": "portfolio-risk-0.5.0",
+  "modelVersion": "portfolio-risk-0.6.0",
   "publicClassification": "PUBLIC_SYNTHETIC_REFERENCE"
 }

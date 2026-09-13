@@ -246,6 +246,10 @@ main { grid-column: 2; min-height: 100vh; }
 .portfolio-thesis > div:first-child { padding: 30px 20px; border-right: 1px solid var(--line); }
 .portfolio-thesis h2 { max-width: 680px; margin: 8px 0; font: 400 27px Georgia, serif; }
 .portfolio-thesis p { color: var(--muted); font-size: 9px; }
+.risk-view-tabs { margin-top: 20px; display: inline-flex; border: 1px solid var(--line); }
+.risk-view-tabs button { padding: 8px 13px; border: 0; border-right: 1px solid var(--line); color: var(--muted); background: transparent; font: 8px ui-monospace, monospace; cursor: pointer; }
+.risk-view-tabs button:last-child { border-right: 0; }
+.risk-view-tabs button.active { color: var(--ink); background: var(--accent-dim); box-shadow: inset 0 -2px var(--accent); }
 .portfolio-metrics { display: grid; grid-template-columns: repeat(3, 1fr); }
 .portfolio-metrics span { padding: 30px 18px; border-right: 1px solid var(--line); }
 .portfolio-metrics span:last-child { border-right: 0; }
@@ -275,6 +279,13 @@ main { grid-column: 2; min-height: 100vh; }
 .risk-audit dl div:nth-child(3n) { border-right: 0; }
 .risk-audit dt { color: var(--muted); font-size: 8px; }
 .risk-audit dd { margin: 7px 0 0; overflow-wrap: anywhere; color: var(--accent); font: 8px ui-monospace, monospace; }
+.exposure-diagnostics { padding: 24px 20px; border-bottom: 1px solid var(--line); }
+.exposure-diagnostics table { width: 100%; border-collapse: collapse; }
+.exposure-diagnostics th, .exposure-diagnostics td { padding: 11px 10px; border-bottom: 1px solid var(--line); text-align: left; font-size: 8px; }
+.exposure-diagnostics th { color: var(--muted); font-weight: 500; }
+.exposure-diagnostics td b, .exposure-diagnostics td small { display: block; }
+.exposure-diagnostics td small { margin-top: 4px; color: var(--muted); font: 7px ui-monospace, monospace; }
+.exposure-diagnostics td:last-child { color: var(--warn); font-family: ui-monospace, monospace; }
 .proposal { padding: 19px 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid rgba(98, 213, 204, 0.22); background: var(--accent-dim); }
 .proposal > div { flex: 1; }
 .proposal b, .proposal small { display: block; }
@@ -425,10 +436,11 @@ main { grid-column: 2; min-height: 100vh; }
   .proposal { align-items: stretch; flex-direction: column; }
   .proposal-compare { grid-template-columns: 1fr; }
   .proposal-compare > i { transform: rotate(90deg); text-align: center; }
-  .exposure-grid > div, .stress-panel { padding: 21px 12px; }
+  .exposure-grid > div, .stress-panel, .exposure-diagnostics { padding: 21px 12px; }
   .exposure-row { grid-template-columns: 118px 1fr 40px; }
   .table-scroll { overflow-x: auto; }
   .stress-panel table { min-width: 670px; }
+  .exposure-diagnostics table { min-width: 760px; }
   .proposal { align-items: start; padding: 18px 12px; }
   .data-mode-strip { grid-template-columns: 1fr 1fr; }
   .data-mode-strip div:nth-child(2) { border-right: 0; }

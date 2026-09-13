@@ -403,6 +403,18 @@ main { grid-column: 2; min-height: 100vh; }
 .release-row b, .decision-row b { font-size: 9px; }
 .release-row small, .decision-row small { color: var(--muted); font: 7px ui-monospace, monospace; text-transform: uppercase; }
 .release-row.current { background: linear-gradient(90deg, var(--accent-dim), transparent); }
+.return-ledger-panel { padding: 24px 20px; border-bottom: 1px solid var(--line); }
+.return-ledger-summary { margin-bottom: 18px; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.return-ledger-summary > div { padding: 15px 12px; border-right: 1px solid var(--line); }
+.return-ledger-summary > div:last-child { border-right: 0; }
+.return-ledger-summary span, .return-ledger-summary b { display: block; }
+.return-ledger-summary span { color: var(--muted); font: 7px ui-monospace, monospace; text-transform: uppercase; }
+.return-ledger-summary b { margin-top: 7px; font-size: 9px; }
+.return-ledger-panel table { width: 100%; border-collapse: collapse; }
+.return-ledger-panel th, .return-ledger-panel td { padding: 11px 10px; border-bottom: 1px solid var(--line); text-align: left; font-size: 8px; }
+.return-ledger-panel th { color: var(--muted); font-weight: 500; }
+.return-ledger-panel td b, .return-ledger-panel td small { display: block; }
+.return-ledger-panel td small { margin-top: 4px; color: var(--muted); font: 7px ui-monospace, monospace; }
 
 .mobile-nav { display: none; }
 .drawer-backdrop { position: fixed; inset: 0; z-index: 20; opacity: 0; background: rgba(1, 6, 7, 0.65); backdrop-filter: blur(2px); transition: opacity 180ms ease; }
@@ -510,6 +522,7 @@ main { grid-column: 2; min-height: 100vh; }
   .delivery-summary > div { min-height: 92px; }
   .status-semantics { grid-template-columns: 1fr; }
   .delivery-row { padding: 18px 0; grid-template-columns: 1fr; gap: 14px; }
+  .return-ledger-summary { grid-template-columns: repeat(2, 1fr); }
   .method-grid > div { border-right: 0; border-bottom: 1px solid var(--line); }
   .release-row, .decision-row { grid-template-columns: 74px 1fr; }
   .release-row small, .decision-row small { grid-column: 2; }

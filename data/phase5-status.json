@@ -123,7 +123,7 @@
       "priority": "P1",
       "title": "真实七因子 Reference Portfolio",
       "status": "blocked",
-      "completionPct": 72,
+      "completionPct": 80,
       "ownerFunctions": [
         "quant",
         "data"
@@ -132,10 +132,12 @@
         "frozen factor definitions",
         "Ridge and shrinkage pipeline",
         "specific-risk reconciliation",
-        "Normal / Stress risk budgets"
+        "Normal / Stress risk budgets",
+        "immutable total-return ledger",
+        "calendar / FX / revision policies"
       ],
       "blocker": "正式因子代理、资产总收益、币种换算、复权与 104 / 156 / 260 周许可数据未到位",
-      "nextAction": "建设价格与总收益不可变账本，再启用 rolling beta 和 historical stress replay",
+      "nextAction": "批准正式供应商与许可，装载 260 周总收益后启用 rolling beta 和 historical stress replay",
       "exitCriteria": "正式样本通过稳定性门槛且 Normal / Stress 均满足风险预算"
     },
     {
@@ -238,6 +240,11 @@
     {
       "release": "site-v1.1.0",
       "focus": "Phase 5 Acceptance & Release Governance",
+      "status": "released"
+    },
+    {
+      "release": "site-v1.2.0",
+      "focus": "Immutable Total Return Data Foundation",
       "status": "current"
     }
   ],
@@ -268,14 +275,14 @@
     }
   ],
   "asOf": "2026-09-11T16:00:00+08:00",
-  "siteRelease": "site-v1.1.0",
+  "siteRelease": "site-v1.2.0",
   "summary": {
     "total": 10,
     "complete": 2,
     "partial": 4,
     "blocked": 2,
     "deferred": 2,
-    "weightedCompletionPct": 57.6,
-    "inScopeCompletionPct": 72.0
+    "weightedCompletionPct": 58.4,
+    "inScopeCompletionPct": 73.0
   }
 }

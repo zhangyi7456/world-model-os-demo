@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "0.1.0",
+  "asOf": "2026-09-11T16:00:00+08:00",
+  "siteRelease": "site-v1.2.0",
+  "dataMode": "CANDIDATE_TOTAL_RETURN_REGISTRY",
+  "registryId": "wmos-reference-assets-total-return",
+  "registryVersion": "0.1.0",
+  "baseCurrency": "USD",
+  "targetFrequency": "weekly",
+  "weeklyCut": "FRIDAY_LAST_AVAILABLE",
+  "rawArchivePolicy": "IMMUTABLE_BYTES_WITH_SHA256",
+  "revisionViewDefault": "first_release",
+  "noValuesPublished": true,
+  "formalRiskUseEnabled": false,
+  "readiness": {
+    "totalAssets": 5,
+    "verifiedAssets": 0,
+    "blockedAssets": 5,
+    "gateStatus": "BLOCKED_PENDING_LICENSED_HISTORY"
+  },
+  "assets": [
+    {
+      "assetId": "global_equity",
+      "label": "全球权益",
+      "sourceCurrency": "USD",
+      "returnBasis": "total_return_index",
+      "providerStatus": "provider_tbd",
+      "licenseClass": "LICENSED_INDEX_OR_PUBLIC_ETF_METADATA_ONLY",
+      "calendar": "GLOBAL_EQUITY_PRIMARY_MARKET",
+      "revisionPolicy": "append_only_bitemporal",
+      "fxPolicy": "source_currency_to_usd_close",
+      "minimumWeeks": 260,
+      "candidateProxies": [
+        "licensed broad global equity total-return index",
+        "public broad global equity ETF adjusted close"
+      ],
+      "gateStatus": "BLOCKED_PENDING_PROVIDER_AND_HISTORY"
+    },
+    {
+      "assetId": "nominal_bonds",
+      "label": "美国名义久期",
+      "sourceCurrency": "USD",
+      "returnBasis": "total_return_index",
+      "providerStatus": "provider_tbd",
+      "licenseClass": "LICENSED_INDEX_OR_PUBLIC_ETF_METADATA_ONLY",
+      "calendar": "US_FIXED_INCOME",
+      "revisionPolicy": "append_only_bitemporal",
+      "fxPolicy": "identity_usd",
+      "minimumWeeks": 260,
+      "candidateProxies": [
+        "licensed duration-matched Treasury total-return index",
+        "public Treasury ETF adjusted close"
+      ],
+      "gateStatus": "BLOCKED_PENDING_PROVIDER_AND_HISTORY"
+    },
+    {
+      "assetId": "gold_real_assets",
+      "label": "黄金 / 实物",
+      "sourceCurrency": "USD",
+      "returnBasis": "adjusted_close",
+      "providerStatus": "provider_tbd",
+      "licenseClass": "PUBLIC_ETF_OR_LICENSED_SPOT_METADATA_ONLY",
+      "calendar": "US_EQUITY_OR_LONDON_BULLION",
+      "revisionPolicy": "append_only_bitemporal",
+      "fxPolicy": "identity_usd",
+      "minimumWeeks": 260,
+      "candidateProxies": [
+        "public gold ETF adjusted close",
+        "licensed spot gold plus carry"
+      ],
+      "gateStatus": "BLOCKED_PENDING_PROVIDER_AND_HISTORY"
+    },
+    {
+      "assetId": "cash",
+      "label": "美元现金",
+      "sourceCurrency": "USD",
+      "returnBasis": "cash_accrual",
+      "providerStatus": "public_series_candidate",
+      "licenseClass": "PUBLIC_MACRO_SERIES",
+      "calendar": "US_MONEY_MARKET",
+      "revisionPolicy": "append_only_bitemporal",
+      "fxPolicy": "identity_usd",
+      "minimumWeeks": 260,
+      "candidateProxies": [
+        "3-month Treasury bill secondary market rate with daily accrual"
+      ],
+      "gateStatus": "BLOCKED_PENDING_PROVIDER_AND_HISTORY"
+    },
+    {
+      "assetId": "other",
+      "label": "其他",
+      "sourceCurrency": "USD",
+      "returnBasis": "adjusted_close",
+      "providerStatus": "manual_only_no_single_proxy",
+      "licenseClass": "NOT_ELIGIBLE_UNTIL_ASSET_DEFINITION",
+      "calendar": "UNDEFINED",
+      "revisionPolicy": "append_only_bitemporal",
+      "fxPolicy": "source_currency_to_usd_close",
+      "minimumWeeks": 260,
+      "candidateProxies": [],
+      "gateStatus": "BLOCKED_PENDING_PROVIDER_AND_HISTORY"
+    }
+  ]
+}

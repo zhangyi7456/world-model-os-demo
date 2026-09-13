@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.7.0",
-  "siteRelease": "site-v1.1.0",
+  "schemaVersion": "0.8.0",
+  "siteRelease": "site-v1.2.0",
   "snapshotId": "demo-multi-2026-09-11T16:00:00+08:00",
   "dataModeComposition": {
     "worldState": "DEMO_FIXTURE",
@@ -11,7 +11,8 @@
     "historyReplay": "DEMO_STATE_HISTORY_NOT_PIT",
     "scenarioLedger": "RESEARCH_SCENARIO_LEDGER",
     "factorRiskMethod": "RESEARCH_FACTOR_FIXTURE",
-    "phase5Status": "RELEASE_GOVERNANCE"
+    "phase5Status": "RELEASE_GOVERNANCE",
+    "totalReturnLedger": "CANDIDATE_TOTAL_RETURN_REGISTRY"
   },
   "decisionAsOf": "2026-09-11T16:00:00+08:00",
   "dataCutoff": "2026-09-11T16:00:00+08:00",
@@ -27,9 +28,10 @@
     "causalMap": "0.4.0",
     "scenarios": "0.4.0",
     "portfolio": "0.6.0",
-    "phase5Status": "0.1.0"
+    "phase5Status": "0.1.0",
+    "totalReturnLedger": "0.1.0"
   },
-  "sourceCommit": "14792c8f79b8f3aab6b9be4dedd24cd7630f1a46",
+  "sourceCommit": "34f1aeaab6fa142e84ca6c22dd4be2ba5545aae4",
   "workingTreeDirty": false,
   "artifactHashes": {
     "worldState": "1f3f19ab96fba15efc6e3ce901fd357d52125cac08829c66d8cba321e547c179",
@@ -40,7 +42,8 @@
     "historyReplay": "26e37d31a9f9f469d54d8504b6549ec0a12a3fdecfb91a1d048fc3e7943daa80",
     "scenarioLedger": "bc60619a489a889debd5a8f906e770753fad8e267160d6f0b514079713ff7514",
     "factorRiskMethod": "03caa8336a3c0af37859b72e80bf4bc1236f3e95643805a0a744bfaa208d7d28",
-    "phase5Status": "23799d67b980a5a31d78dff43cd17b91873a25564540717f3857e13cef8db94c"
+    "phase5Status": "7d3719841e9d838dacadc8b9f50feb32466c1fe7ef5a2555cef154375921d0a3",
+    "totalReturnLedger": "4f7db15975e84dc6d13f13c65672e1c07f4ff08b11fcf7d3952608240ea28cae"
   },
   "lastSuccessfulBuild": "2026-09-11T16:00:00+08:00",
   "approvalStatus": "demo_reviewed",
@@ -50,7 +53,8 @@
     "SCENARIO_PENDING_HUMAN_REVIEW",
     "CAUSAL_EDGES_RESEARCH_CANDIDATE",
     "FACTOR_EXPOSURE_PENDING_104W_LICENSED_HISTORY",
-    "HISTORICAL_STRESS_REPLAY_PENDING_LICENSED_RETURNS"
+    "HISTORICAL_STRESS_REPLAY_PENDING_LICENSED_RETURNS",
+    "TOTAL_RETURN_LEDGER_PENDING_PROVIDER_AND_LICENSE_APPROVAL"
   ],
   "publicFieldPolicyVersion": "public-allowlist-0.1.0",
   "readOnly": true

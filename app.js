@@ -17,13 +17,14 @@ const factorLabels = {
   specific_risk: "资产特异风险",
 };
 const qualityLabels = { fresh: "正常", stale: "陈旧", estimated: "估算", missing: "缺失", bad: "拒绝" };
-const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null, releaseCalendar: null, historyReplay: null, factorRisk: null };
+const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null, releaseCalendar: null, historyReplay: null, factorRisk: null, phase5Status: null };
 let selectedEntity = "US";
 let selectedPathId = null;
 let selectedEdgeId = null;
 let selectedIndicatorId = null;
 let selectedHorizon = "6M";
 let selectedRiskView = "normal";
+let selectedWorkstreamFilter = "all";
 
 const $ = (selector) => document.querySelector(selector);
 const pct = (value) => `${Math.round(Number(value || 0) * 100)}%`;
@@ -234,11 +235,39 @@ function releaseCalendarPanel(calendar) {
   return `<section class="release-calendar"><div class="section-title"><h2>US 发布日历与修订视图</h2><span>CANDIDATE REGISTRY · ${escapeHtml(model.releaseCalendar?.timeZone)}</span></div><div class="table-scroll"><table><thead><tr><th>序列</th><th>频率</th><th>预期周期 + 宽限</th><th>Fixture 新鲜度</th><th>PIT 装载</th></tr></thead><tbody>${rows}</tbody></table></div><p class="boundary-copy">新鲜度从来源发布时间计算；当前时间列来自 Demo fixture。正式凭据接入前，不将该注册表标记为 REAL_STATE_PIT。</p></section>`;
 }
 
+function methodology() {
+  const data = model.phase5Status;
+  if (!data) return loadingView(7, "方法与版本");
+  const summary = data.summary;
+  const semantics = Object.entries(data.statusSemantics).map(([status, label]) => `<div><i class="delivery-dot ${status}"></i><span>${escapeHtml(status)}</span><small>${escapeHtml(label)}</small></div>`).join("");
+  const filters = ["all", "complete", "partial", "blocked", "deferred"].map((status) => {
+    const count = status === "all" ? summary.total : summary[status];
+    return `<button data-workstream-filter="${status}" class="${selectedWorkstreamFilter === status ? "active" : ""}">${status.toUpperCase()} <span>${count}</span></button>`;
+  }).join("");
+  const visible = data.workstreams.filter((item) => selectedWorkstreamFilter === "all" || item.status === selectedWorkstreamFilter);
+  const workstreams = visible.map((item) => `<article class="delivery-row">
+    <div class="delivery-identity"><span>${escapeHtml(item.priority)} · ${escapeHtml(item.id)}</span><h2>${escapeHtml(item.title)}</h2><small>${item.ownerFunctions.map(escapeHtml).join(" · ")}</small></div>
+    <div class="delivery-progress"><div><i style="width:${item.completionPct}%"></i></div><b>${item.completionPct}%</b><span class="delivery-status ${item.status}">${escapeHtml(item.status)}</span></div>
+    <div class="delivery-action"><span>NEXT ACTION</span><b>${escapeHtml(item.nextAction)}</b>${item.blocker ? `<small>BLOCKER · ${escapeHtml(item.blocker)}</small>` : `<small>EXIT · ${escapeHtml(item.exitCriteria)}</small>`}</div>
+  </article>`).join("");
+  const releases = [...data.releaseHistory].reverse().map((item) => `<div class="release-row ${item.status}"><span>${escapeHtml(item.release)}</span><b>${escapeHtml(item.focus)}</b><small>${escapeHtml(item.status)}</small></div>`).join("");
+  const queue = data.decisionQueue.map((item) => `<div class="decision-row"><span>${String(item.rank).padStart(2, "0")}</span><b>${escapeHtml(item.decision)}</b><small>${item.requiresExternalInput ? "EXTERNAL INPUT" : "INTERNAL EXECUTION"}</small></div>`).join("");
+  return `<div class="view methodology-view">
+    ${pageHead(7, "方法与版本", "PRD 执行账本 · 区分已交付、基础设施完成但未校准、外部阻塞与明确延期。", `<div class="release-context"><p class="kicker">CURRENT RELEASE</p><strong>${escapeHtml(data.siteRelease)}</strong><small>Schema validation · immutable manifest · rollback ready</small></div>`)}
+    <section class="method-thesis"><div><p class="eyebrow">METHOD STACK</p><h2>世界状态决定风险地图，价值框架定义长期目标，证据纪律决定什么有资格进入模型。</h2></div><dl><div><dt>PRIMARY</dt><dd>${escapeHtml(data.methodology.primary)}</dd></div><div><dt>VALUE ANCHOR</dt><dd>${escapeHtml(data.methodology.valueAnchor)}</dd></div><div><dt>EVIDENCE</dt><dd>${escapeHtml(data.methodology.evidenceDiscipline)}</dd></div></dl></section>
+    <section class="delivery-summary"><div><span>当前范围完成度</span><b>${summary.inScopeCompletionPct}%</b><small>全路线图 ${summary.weightedCompletionPct}%</small></div><div><span>已完成</span><b class="positive">${summary.complete}</b></div><div><span>部分完成</span><b>${summary.partial}</b></div><div><span>外部阻塞</span><b class="negative">${summary.blocked}</b></div><div><span>明确延期</span><b>${summary.deferred}</b></div></section>
+    <section class="status-semantics">${semantics}</section>
+    <section class="delivery-board"><div class="section-title"><h2>Phase 5 执行账本</h2><span>PRD STATUS · FILTERABLE</span></div><div class="delivery-filters">${filters}</div><div class="delivery-list">${workstreams || `<p class="empty">此筛选条件下没有工作流。</p>`}</div></section>
+    <section class="method-grid"><div><div class="section-title"><h2>版本链</h2><span>NEWEST FIRST</span></div>${releases}</div><div><div class="section-title"><h2>下一执行队列</h2><span>GATES BEFORE FEATURES</span></div>${queue}<p class="boundary-copy">外部数据未满足许可、PIT 和样本门槛前，系统继续显示 Fixture / Candidate，不升级为 Verified。</p></div></section>
+    <section class="release-download"><div><p class="eyebrow">RELEASE GOVERNANCE</p><h2>每次发布同时固定版本、提交、产物哈希、数据模式和降级原因。</h2><p>${escapeHtml(model.publication.sourceCommit.slice(0, 12))} · ${Object.keys(model.publication.artifactHashes).length} HASHED ARTIFACTS · READ ONLY</p></div><button data-open-manifest>检查当前发布清单</button></section>
+  </div>`;
+}
+
 function loadingView(number, title) {
   return `<div class="view">${pageHead(number, title, "正在读取不可变研究快照。")}</div>`;
 }
 
-const views = { latest, world, causal, scenario, portfolio, evidence };
+const views = { latest, world, causal, scenario, portfolio, evidence, methodology };
 
 function render() {
   const route = views[currentRoute()] ? currentRoute() : "latest";
@@ -283,11 +312,11 @@ function selectEntity(entity) {
 
 async function loadData() {
   try {
-    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief", "release-calendar", "history-replay", "factor-risk-method"];
+    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief", "release-calendar", "history-replay", "factor-risk-method", "phase5-status"];
     const responses = await Promise.all(names.map((name) => fetch(`./data/${name}.json`, { cache: "no-store" })));
     if (responses.some((response) => !response.ok)) throw new Error("required public artifacts are unavailable");
-    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData, releaseCalendarData, historyReplayData, factorRiskData] = await Promise.all(responses.map((response) => response.json()));
-    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData, releaseCalendar: releaseCalendarData, historyReplay: historyReplayData, factorRisk: factorRiskData });
+    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData, releaseCalendarData, historyReplayData, factorRiskData, phase5StatusData] = await Promise.all(responses.map((response) => response.json()));
+    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData, releaseCalendar: releaseCalendarData, historyReplay: historyReplayData, factorRisk: factorRiskData, phase5Status: phase5StatusData });
     selectedEntity = worldData.primaryEntity || "US";
     $("#entity-select").value = selectedEntity;
     $("#data-mode").textContent = publicationData.dataModeComposition.worldState;
@@ -315,6 +344,7 @@ document.addEventListener("click", (event) => {
   const dimension = event.target.closest("[data-dimension]"); if (dimension) { const found = state()?.dataHealth?.indicators?.find((item) => item.dimension.startsWith(dimension.dataset.dimension)); selectedIndicatorId = found?.indicatorId || null; location.hash = "evidence"; render(); }
   const horizon = event.target.closest("[data-horizon]"); if (horizon) { selectedHorizon = horizon.dataset.horizon; render(); }
   const riskView = event.target.closest("[data-risk-view]"); if (riskView) { selectedRiskView = riskView.dataset.riskView; render(); }
+  const workstreamFilter = event.target.closest("[data-workstream-filter]"); if (workstreamFilter) { selectedWorkstreamFilter = workstreamFilter.dataset.workstreamFilter; render(); }
   const routeLink = event.target.closest("[data-route-link]"); if (routeLink) location.hash = routeLink.dataset.routeLink;
   if (event.target.closest("#release-trigger, #manifest-trigger, [data-open-manifest]")) openDrawer();
   if (event.target.closest("#drawer-close") || event.target.id === "drawer-backdrop") closeDrawer();

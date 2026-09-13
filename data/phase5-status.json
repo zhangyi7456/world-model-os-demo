@@ -1,0 +1,281 @@
+{
+  "schemaVersion": "0.1.0",
+  "phase": "Phase 5",
+  "title": "Public Trust & Research Governance",
+  "dataMode": "RELEASE_GOVERNANCE",
+  "methodology": {
+    "primary": "Ray Dalio world-state and debt-cycle model",
+    "valueAnchor": "Li Lu long-term value and purchasing-power framework",
+    "evidenceDiscipline": "Jim Simons testable, falsifiable and data-driven workflow"
+  },
+  "statusSemantics": {
+    "complete": "已实现、已测试并进入公开发布契约",
+    "partial": "基础设施已实现，但正式数据、样本或评审门槛尚未满足",
+    "blocked": "依赖外部凭据、许可或尚未到期的数据",
+    "deferred": "按 PRD 明确不进入当前公开 MVP"
+  },
+  "workstreams": [
+    {
+      "id": "public-trust-foundation",
+      "priority": "P0",
+      "title": "公开可信基础",
+      "status": "complete",
+      "completionPct": 100,
+      "ownerFunctions": [
+        "product",
+        "frontend",
+        "backend"
+      ],
+      "evidence": [
+        "Latest Brief",
+        "Evidence & Data",
+        "PublicationManifest",
+        "public allowlist scan"
+      ],
+      "nextAction": "持续执行每次发布的契约与隐私回归",
+      "exitCriteria": "公开包可追溯、只读、非交易且无私人数据"
+    },
+    {
+      "id": "us-pit-ledger",
+      "priority": "P0",
+      "title": "US PIT 数据账本与 First / Latest 双轨",
+      "status": "blocked",
+      "completionPct": 58,
+      "ownerFunctions": [
+        "data",
+        "backend"
+      ],
+      "evidence": [
+        "9-series candidate registry",
+        "bitemporal ledger contract",
+        "release calendar",
+        "freshness engine"
+      ],
+      "blocker": "缺少 credentialled ALFRED / 正式供应商历史与再分发许可",
+      "nextAction": "接入不可变 first-release vintage，并保存原始文件哈希",
+      "exitCriteria": "至少五个 PIT 历史截面与一次真实 revision 可重建"
+    },
+    {
+      "id": "state-regime-calibration",
+      "priority": "P0",
+      "title": "状态与 Regime 样本外校准",
+      "status": "partial",
+      "completionPct": 64,
+      "ownerFunctions": [
+        "macro",
+        "quant"
+      ],
+      "evidence": [
+        "G/I/L/F/O state engine",
+        "score-share semantics",
+        "hysteresis",
+        "minimum duration",
+        "history replay fixture"
+      ],
+      "blocker": "当前历史不是 PIT，尚无 expanding / rolling OOS 结果",
+      "nextAction": "冻结训练窗与 OOS 门槛，输出 Brier、log loss 和 reliability curve",
+      "exitCriteria": "通过 OOS 校准前继续禁止 probability 命名"
+    },
+    {
+      "id": "mechanism-validation",
+      "priority": "P0",
+      "title": "Mechanism Contract 跨期验证",
+      "status": "partial",
+      "completionPct": 70,
+      "ownerFunctions": [
+        "macro",
+        "quant",
+        "data"
+      ],
+      "evidence": [
+        "3 executable mechanism contracts",
+        "edge inspector",
+        "supporting and opposing evidence",
+        "falsification rules"
+      ],
+      "blocker": "阈值、时滞与跨样本 validation history 尚未获评审批准",
+      "nextAction": "使用 PIT 历史回放每条规则并记录命中、漏报和失效期",
+      "exitCriteria": "每条边均有经评审的阈值、窗口、时滞与 evidence references"
+    },
+    {
+      "id": "scenario-learning-loop",
+      "priority": "P1",
+      "title": "情景结算与概率学习",
+      "status": "partial",
+      "completionPct": 67,
+      "ownerFunctions": [
+        "macro",
+        "quant",
+        "product"
+      ],
+      "evidence": [
+        "3M / 6M / 12M ledger",
+        "Prior / Suggested / Approved separation",
+        "waterfall",
+        "overlay joint tree"
+      ],
+      "blocker": "Approved 与 Outcome 仍为空；首批预测尚未自然到达结算日",
+      "nextAction": "到期后冻结 outcome、计算 Brier / log loss 并更新校准曲线",
+      "exitCriteria": "三个期限至少各完成一个可复现结算周期"
+    },
+    {
+      "id": "reference-portfolio-risk",
+      "priority": "P1",
+      "title": "真实七因子 Reference Portfolio",
+      "status": "blocked",
+      "completionPct": 72,
+      "ownerFunctions": [
+        "quant",
+        "data"
+      ],
+      "evidence": [
+        "frozen factor definitions",
+        "Ridge and shrinkage pipeline",
+        "specific-risk reconciliation",
+        "Normal / Stress risk budgets"
+      ],
+      "blocker": "正式因子代理、资产总收益、币种换算、复权与 104 / 156 / 260 周许可数据未到位",
+      "nextAction": "建设价格与总收益不可变账本，再启用 rolling beta 和 historical stress replay",
+      "exitCriteria": "正式样本通过稳定性门槛且 Normal / Stress 均满足风险预算"
+    },
+    {
+      "id": "methodology-release-governance",
+      "priority": "P1",
+      "title": "方法、版本与可回滚发布",
+      "status": "complete",
+      "completionPct": 100,
+      "ownerFunctions": [
+        "product",
+        "frontend",
+        "backend",
+        "release"
+      ],
+      "evidence": [
+        "Methodology & Releases page",
+        "JSON Schema CI validation",
+        "release acceptance report",
+        "rollback verifier"
+      ],
+      "nextAction": "每个公开版本保留 source tag、public tag、manifest 与验收记录",
+      "exitCriteria": "可从已标记版本重建并回滚上一 GitHub Pages release"
+    },
+    {
+      "id": "history-replay-product",
+      "priority": "P1",
+      "title": "History Replay 独立研究页面",
+      "status": "partial",
+      "completionPct": 45,
+      "ownerFunctions": [
+        "frontend",
+        "macro",
+        "data"
+      ],
+      "evidence": [
+        "history-replay public artifact",
+        "state trajectory on World State"
+      ],
+      "blocker": "当前历史明确为 non-PIT demo，尚无可审计事件回放页",
+      "nextAction": "在真实 PIT 数据到位后设计 snapshot scrubber、revision compare 与 event annotations",
+      "exitCriteria": "任一历史截面可永久链接并追溯当时可见证据"
+    },
+    {
+      "id": "private-model-lab",
+      "priority": "P1",
+      "title": "私有 Model Lab 与 Audit",
+      "status": "deferred",
+      "completionPct": 0,
+      "ownerFunctions": [
+        "product",
+        "backend",
+        "security"
+      ],
+      "blocker": "公开 GitHub Pages 不承载写入、审批和私人数据",
+      "nextAction": "在独立私有运行面定义身份、审批、审计和持久化边界",
+      "exitCriteria": "与公开仓物理隔离并通过权限与审计评审"
+    },
+    {
+      "id": "private-purchasing-power",
+      "priority": "P2",
+      "title": "私人持仓、负债与购买力缺口",
+      "status": "deferred",
+      "completionPct": 0,
+      "ownerFunctions": [
+        "product",
+        "quant",
+        "security"
+      ],
+      "blocker": "需独立隐私模型与责任边界",
+      "nextAction": "在 MVP-B 重新评审，不进入公开站",
+      "exitCriteria": "真实组合永不进入 public bundle"
+    }
+  ],
+  "releaseHistory": [
+    {
+      "release": "site-v0.6.0",
+      "focus": "Public Trust Foundation",
+      "status": "released"
+    },
+    {
+      "release": "site-v0.7.0",
+      "focus": "State & Mechanism Guardrails",
+      "status": "released"
+    },
+    {
+      "release": "site-v0.8.0",
+      "focus": "Scenario Learning Ledger",
+      "status": "released"
+    },
+    {
+      "release": "site-v0.9.0",
+      "focus": "Reference Portfolio Risk",
+      "status": "released"
+    },
+    {
+      "release": "site-v1.0.0",
+      "focus": "Rolling Factor Exposure Governance",
+      "status": "released"
+    },
+    {
+      "release": "site-v1.1.0",
+      "focus": "Phase 5 Acceptance & Release Governance",
+      "status": "current"
+    }
+  ],
+  "decisionQueue": [
+    {
+      "rank": 1,
+      "workstreamId": "us-pit-ledger",
+      "decision": "选择可重建 first-release vintage 的正式数据供应路径",
+      "requiresExternalInput": true
+    },
+    {
+      "rank": 2,
+      "workstreamId": "state-regime-calibration",
+      "decision": "冻结 expanding / rolling OOS 方案和概率启用门槛",
+      "requiresExternalInput": false
+    },
+    {
+      "rank": 3,
+      "workstreamId": "reference-portfolio-risk",
+      "decision": "冻结七因子代理、基础币种和总收益口径",
+      "requiresExternalInput": true
+    },
+    {
+      "rank": 4,
+      "workstreamId": "history-replay-product",
+      "decision": "在 PIT 可用后开发可审计历史回放页面",
+      "requiresExternalInput": false
+    }
+  ],
+  "asOf": "2026-09-11T16:00:00+08:00",
+  "siteRelease": "site-v1.1.0",
+  "summary": {
+    "total": 10,
+    "complete": 2,
+    "partial": 4,
+    "blocked": 2,
+    "deferred": 2,
+    "weightedCompletionPct": 57.6,
+    "inScopeCompletionPct": 72.0
+  }
+}

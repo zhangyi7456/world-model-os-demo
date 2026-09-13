@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.6.0",
-  "siteRelease": "site-v1.0.0",
+  "schemaVersion": "0.7.0",
+  "siteRelease": "site-v1.1.0",
   "snapshotId": "demo-multi-2026-09-11T16:00:00+08:00",
   "dataModeComposition": {
     "worldState": "DEMO_FIXTURE",
@@ -10,7 +10,8 @@
     "releaseCalendar": "CANDIDATE_REGISTRY",
     "historyReplay": "DEMO_STATE_HISTORY_NOT_PIT",
     "scenarioLedger": "RESEARCH_SCENARIO_LEDGER",
-    "factorRiskMethod": "RESEARCH_FACTOR_FIXTURE"
+    "factorRiskMethod": "RESEARCH_FACTOR_FIXTURE",
+    "phase5Status": "RELEASE_GOVERNANCE"
   },
   "decisionAsOf": "2026-09-11T16:00:00+08:00",
   "dataCutoff": "2026-09-11T16:00:00+08:00",
@@ -25,9 +26,10 @@
     "worldState": "0.2.0",
     "causalMap": "0.4.0",
     "scenarios": "0.4.0",
-    "portfolio": "0.6.0"
+    "portfolio": "0.6.0",
+    "phase5Status": "0.1.0"
   },
-  "sourceCommit": "92d627fb6666a81bd284fd1b96388b40281cd57c",
+  "sourceCommit": "14792c8f79b8f3aab6b9be4dedd24cd7630f1a46",
   "workingTreeDirty": false,
   "artifactHashes": {
     "worldState": "1f3f19ab96fba15efc6e3ce901fd357d52125cac08829c66d8cba321e547c179",
@@ -37,7 +39,8 @@
     "releaseCalendar": "c640e37375dc7ba74a16c8b15a9bc022cae475615ff788fb47a03810a3a64940",
     "historyReplay": "26e37d31a9f9f469d54d8504b6549ec0a12a3fdecfb91a1d048fc3e7943daa80",
     "scenarioLedger": "bc60619a489a889debd5a8f906e770753fad8e267160d6f0b514079713ff7514",
-    "factorRiskMethod": "03caa8336a3c0af37859b72e80bf4bc1236f3e95643805a0a744bfaa208d7d28"
+    "factorRiskMethod": "03caa8336a3c0af37859b72e80bf4bc1236f3e95643805a0a744bfaa208d7d28",
+    "phase5Status": "23799d67b980a5a31d78dff43cd17b91873a25564540717f3857e13cef8db94c"
   },
   "lastSuccessfulBuild": "2026-09-11T16:00:00+08:00",
   "approvalStatus": "demo_reviewed",

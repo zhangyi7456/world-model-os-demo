@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "0.1.0",
+  "siteRelease": "site-v1.3.0",
+  "asOf": "2026-09-11T16:00:00+08:00",
+  "planId": "wmos-oos-calibration",
+  "planVersion": "0.1.0",
+  "dataMode": "CALIBRATION_HARNESS_NO_PIT_RESULTS",
+  "status": "BLOCKED_PENDING_PIT_HISTORY",
+  "probabilityNamingAllowed": false,
+  "currentLabel": "score_share",
+  "eligibleLabel": "calibrated_probability",
+  "classes": [
+    "goldilocks",
+    "overheating",
+    "contraction",
+    "stagflation"
+  ],
+  "currentHistory": {
+    "observations": 12,
+    "firstPeriod": "2025-10",
+    "lastPeriod": "2026-09",
+    "dataMode": "DEMO_FIXTURE",
+    "eligiblePointInTimeObservations": 0
+  },
+  "walkForward": {
+    "configuration": {
+      "frequency": "monthly",
+      "minimumTrainingPeriods": 60,
+      "rollingWindowPeriods": 120,
+      "testWindowPeriods": 12,
+      "stepPeriods": 12,
+      "embargoPeriods": 1,
+      "modes": [
+        "expanding",
+        "rolling"
+      ]
+    },
+    "modes": {
+      "expanding": {
+        "foldCount": 0,
+        "folds": []
+      },
+      "rolling": {
+        "foldCount": 0,
+        "folds": []
+      }
+    }
+  },
+  "metrics": {
+    "brierScore": null,
+    "brierSkill": null,
+    "logLoss": null,
+    "reliabilityCurve": null,
+    "maximumCalibrationError": null
+  },
+  "thresholds": {
+    "minimumForecasts": 120,
+    "minimumPerClass": 20,
+    "minimumFolds": 5,
+    "minimumBrierSkill": 0.05,
+    "maximumCalibrationError": 0.1,
+    "allPitRequired": true,
+    "reviewApprovalRequired": true
+  },
+  "gateChecks": {
+    "minimumHistory": false,
+    "minimumForecasts": false,
+    "minimumPerClass": false,
+    "minimumFolds": false,
+    "brierSkill": false,
+    "maximumCalibrationError": false,
+    "allPointInTime": false,
+    "reviewApproval": false
+  },
+  "horizonPlans": [
+    {
+      "horizon": "3M",
+      "minimumForecasts": 120,
+      "minimumPerClass": 20
+    },
+    {
+      "horizon": "6M",
+      "minimumForecasts": 80,
+      "minimumPerClass": 15
+    },
+    {
+      "horizon": "12M",
+      "minimumForecasts": 60,
+      "minimumPerClass": 10
+    }
+  ],
+  "blockers": [
+    "REAL_STATE_PIT history is not loaded",
+    "minimum training history and OOS folds are not available",
+    "forecast outcomes and calibration metrics do not yet exist",
+    "independent research review has not approved probability naming"
+  ]
+}

@@ -104,6 +104,19 @@ main { grid-column: 2; min-height: 100vh; }
 .regime-guardrail span, .regime-guardrail small { display: block; color: var(--muted); font-size: 8px; }
 .regime-guardrail b { display: block; margin-top: 6px; overflow-wrap: anywhere; font: 9px ui-monospace, monospace; }
 .regime-guardrail > p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 8px; }
+.calibration-gate { display: grid; grid-template-columns: 0.85fr 1.65fr; border-bottom: 1px solid var(--line); background: rgba(175, 116, 76, 0.055); }
+.calibration-copy { padding: 22px 20px; border-right: 1px solid var(--line); }
+.calibration-copy h2 { margin: 5px 0 9px; font: 400 22px Georgia, serif; }
+.calibration-copy p:last-child { margin: 0; max-width: 500px; color: var(--muted); font-size: 9px; line-height: 1.55; }
+.calibration-checks { display: grid; grid-template-columns: repeat(5, 1fr); }
+.calibration-checks > div { min-width: 0; padding: 20px 14px; border-right: 1px solid var(--line); }
+.calibration-checks span, .calibration-checks b, .calibration-checks i { display: block; }
+.calibration-checks span { color: var(--muted); font-size: 8px; }
+.calibration-checks b { margin: 8px 0; overflow-wrap: anywhere; font: 11px ui-monospace, monospace; }
+.calibration-checks i { color: var(--danger); font: normal 7px ui-monospace, monospace; letter-spacing: 0.08em; }
+.calibration-checks i.pass { color: var(--positive); }
+.calibration-gate footer { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 12px; padding: 9px 20px; border-top: 1px solid var(--line); color: var(--muted); font: 7px ui-monospace, monospace; }
+.calibration-gate footer b { color: var(--danger); font-weight: 500; }
 
 .brief-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; border-bottom: 1px solid var(--line); }
 .brief-grid.lower { grid-template-columns: 1fr 1fr; }
@@ -466,6 +479,10 @@ main { grid-column: 2; min-height: 100vh; }
   .state-value b { font-size: 25px; }
   .state-metrics { display: none; }
   .regime-guardrail { grid-template-columns: 1fr 1fr; }
+  .calibration-gate { grid-template-columns: 1fr; }
+  .calibration-copy { border-right: 0; border-bottom: 1px solid var(--line); }
+  .calibration-checks { grid-template-columns: repeat(2, 1fr); }
+  .calibration-checks > div { border-bottom: 1px solid var(--line); }
   .brief-grid, .brief-grid.lower, .world-grid, .scenario-analysis, .portfolio-thesis, .exposure-grid, .evidence-workspace, .risk-audit, .method-thesis, .method-grid { grid-template-columns: 1fr; }
   .brief-column, .matrix-panel, .drivers-panel, .scenario-analysis > div, .portfolio-thesis > div:first-child, .exposure-grid > div, .indicator-registry { border-right: 0; border-bottom: 1px solid var(--line); }
   .brief-column { min-height: 0; padding: 21px 12px; }

@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.8.0",
-  "siteRelease": "site-v1.2.0",
+  "schemaVersion": "0.9.0",
+  "siteRelease": "site-v1.3.0",
   "snapshotId": "demo-multi-2026-09-11T16:00:00+08:00",
   "dataModeComposition": {
     "worldState": "DEMO_FIXTURE",
@@ -12,7 +12,8 @@
     "scenarioLedger": "RESEARCH_SCENARIO_LEDGER",
     "factorRiskMethod": "RESEARCH_FACTOR_FIXTURE",
     "phase5Status": "RELEASE_GOVERNANCE",
-    "totalReturnLedger": "CANDIDATE_TOTAL_RETURN_REGISTRY"
+    "totalReturnLedger": "CANDIDATE_TOTAL_RETURN_REGISTRY",
+    "calibrationReadiness": "CALIBRATION_HARNESS_NO_PIT_RESULTS"
   },
   "decisionAsOf": "2026-09-11T16:00:00+08:00",
   "dataCutoff": "2026-09-11T16:00:00+08:00",
@@ -29,9 +30,10 @@
     "scenarios": "0.4.0",
     "portfolio": "0.6.0",
     "phase5Status": "0.1.0",
-    "totalReturnLedger": "0.1.0"
+    "totalReturnLedger": "0.1.0",
+    "calibrationReadiness": "0.1.0"
   },
-  "sourceCommit": "34f1aeaab6fa142e84ca6c22dd4be2ba5545aae4",
+  "sourceCommit": "d5cd01338182439481cbcc03cf5f4411d227ed54",
   "workingTreeDirty": false,
   "artifactHashes": {
     "worldState": "1f3f19ab96fba15efc6e3ce901fd357d52125cac08829c66d8cba321e547c179",
@@ -42,8 +44,9 @@
     "historyReplay": "26e37d31a9f9f469d54d8504b6549ec0a12a3fdecfb91a1d048fc3e7943daa80",
     "scenarioLedger": "bc60619a489a889debd5a8f906e770753fad8e267160d6f0b514079713ff7514",
     "factorRiskMethod": "03caa8336a3c0af37859b72e80bf4bc1236f3e95643805a0a744bfaa208d7d28",
-    "phase5Status": "7d3719841e9d838dacadc8b9f50feb32466c1fe7ef5a2555cef154375921d0a3",
-    "totalReturnLedger": "4f7db15975e84dc6d13f13c65672e1c07f4ff08b11fcf7d3952608240ea28cae"
+    "phase5Status": "eaffc9adfe18c8ae713b49871ee9d3b5ee943c4c89e79e9765cfd0537e6f0885",
+    "totalReturnLedger": "f103e35f203bef7b32bf22da7ab31ac64a50e98f4f45720ff7571a38750ec3b7",
+    "calibrationReadiness": "6a801e2c95f250769b886cd0b6f181c75fe963a1f3b7a2b1191d159edf214c22"
   },
   "lastSuccessfulBuild": "2026-09-11T16:00:00+08:00",
   "approvalStatus": "demo_reviewed",
@@ -54,7 +57,8 @@
     "CAUSAL_EDGES_RESEARCH_CANDIDATE",
     "FACTOR_EXPOSURE_PENDING_104W_LICENSED_HISTORY",
     "HISTORICAL_STRESS_REPLAY_PENDING_LICENSED_RETURNS",
-    "TOTAL_RETURN_LEDGER_PENDING_PROVIDER_AND_LICENSE_APPROVAL"
+    "TOTAL_RETURN_LEDGER_PENDING_PROVIDER_AND_LICENSE_APPROVAL",
+    "OOS_CALIBRATION_PENDING_REAL_PIT_HISTORY"
   ],
   "publicFieldPolicyVersion": "public-allowlist-0.1.0",
   "readOnly": true

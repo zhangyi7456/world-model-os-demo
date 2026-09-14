@@ -60,7 +60,7 @@
       "priority": "P0",
       "title": "状态与 Regime 样本外校准",
       "status": "partial",
-      "completionPct": 64,
+      "completionPct": 78,
       "ownerFunctions": [
         "macro",
         "quant"
@@ -70,10 +70,13 @@
         "score-share semantics",
         "hysteresis",
         "minimum duration",
-        "history replay fixture"
+        "frozen expanding / rolling OOS plan",
+        "temporal isolation validator",
+        "Brier / log loss / reliability implementation",
+        "public probability naming gate"
       ],
-      "blocker": "当前历史不是 PIT，尚无 expanding / rolling OOS 结果",
-      "nextAction": "冻结训练窗与 OOS 门槛，输出 Brier、log loss 和 reliability curve",
+      "blocker": "当前历史不是 PIT，真实预测、结果标签和 expanding / rolling OOS 结果尚不存在",
+      "nextAction": "装载 REAL_STATE_PIT 历史后执行首轮 expanding / rolling OOS 并提交独立评审",
       "exitCriteria": "通过 OOS 校准前继续禁止 probability 命名"
     },
     {
@@ -245,6 +248,11 @@
     {
       "release": "site-v1.2.0",
       "focus": "Immutable Total Return Data Foundation",
+      "status": "released"
+    },
+    {
+      "release": "site-v1.3.0",
+      "focus": "OOS Calibration Harness & Probability Naming Gate",
       "status": "current"
     }
   ],
@@ -258,8 +266,8 @@
     {
       "rank": 2,
       "workstreamId": "state-regime-calibration",
-      "decision": "冻结 expanding / rolling OOS 方案和概率启用门槛",
-      "requiresExternalInput": false
+      "decision": "装载 PIT 历史后执行已冻结的 OOS 方案并评审概率启用门槛",
+      "requiresExternalInput": true
     },
     {
       "rank": 3,
@@ -275,14 +283,14 @@
     }
   ],
   "asOf": "2026-09-11T16:00:00+08:00",
-  "siteRelease": "site-v1.2.0",
+  "siteRelease": "site-v1.3.0",
   "summary": {
     "total": 10,
     "complete": 2,
     "partial": 4,
     "blocked": 2,
     "deferred": 2,
-    "weightedCompletionPct": 58.4,
-    "inScopeCompletionPct": 73.0
+    "weightedCompletionPct": 59.8,
+    "inScopeCompletionPct": 74.8
   }
 }

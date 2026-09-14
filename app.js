@@ -17,7 +17,7 @@ const factorLabels = {
   specific_risk: "资产特异风险",
 };
 const qualityLabels = { fresh: "正常", stale: "陈旧", estimated: "估算", missing: "缺失", bad: "拒绝" };
-const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null, releaseCalendar: null, historyReplay: null, factorRisk: null, phase5Status: null, totalReturnLedger: null };
+const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null, releaseCalendar: null, historyReplay: null, factorRisk: null, phase5Status: null, totalReturnLedger: null, calibration: null };
 let selectedEntity = "US";
 let selectedPathId = null;
 let selectedEdgeId = null;
@@ -110,6 +110,7 @@ function world() {
     ${pageHead(2, "世界状态", `${entityLabels[selectedEntity]} · Level、Momentum、Pressure 与可信度；颜色不替代方向语义。`, `<div class="release-context"><p class="kicker">STATISTICAL STATE</p><strong>${escapeHtml(regime.label.replaceAll("_", " "))}</strong><small>未经样本外校准，分布仅称 score share</small></div>`)}
     ${stateStrip()}
     <section class="regime-guardrail"><div><p class="eyebrow">REGIME GUARDRAIL</p><h2>${escapeHtml(transition.candidateLabel.replaceAll("_", " "))}</h2><small>候选连续 ${transition.candidateRunLength}/${transition.minimumDuration} 期 · band ±${transition.hysteresisBand}</small></div><div><span>持续期</span><b>${transition.persistenceMet ? "满足" : "未满足"}</b></div><div><span>发布状态</span><b>${escapeHtml(transition.publicationStatus)}</b></div><div><span>校准状态</span><b>${escapeHtml(transition.calibrationStatus)}</b></div><p>${transition.reasonCodes.map((item) => escapeHtml(item.replaceAll("_", " "))).join(" · ")}。该层只抑制假切换，未完成样本外校准。</p></section>
+    ${calibrationGate()}
     <section class="world-grid">
       <div class="matrix-panel"><div class="section-title"><h2>经济体错位</h2><span>CLICK TO FOCUS</span></div><div class="matrix-head"><span>实体</span>${Object.values(stateMeta).map((meta) => `<span>${meta.code}</span>`).join("")}</div>${matrixRows}</div>
       <div class="drivers-panel"><div class="section-title"><h2>状态变化贡献</h2><span>PROXY · NOT CAUSAL</span></div>${drivers}</div>
@@ -117,6 +118,21 @@ function world() {
     <section class="expectation-gap"><div><p class="eyebrow">REALITY MAP</p><h3>真实状态</h3><strong>${stateMeta.growth.risk(current.dimensions.growth.level)} · ${stateMeta.inflation.risk(current.dimensions.inflation.level)}</strong><small>来自当前 Demo 指标聚合</small></div><i>≠</i><div><p class="eyebrow">EXPECTATION MAP</p><h3>市场隐含预期</h3><strong>尚未接入正式价格隐含序列</strong><small>Phase 5.1 接入后才能计算 Surprise Gap</small></div></section>
     <section class="timeline-panel"><div class="section-title"><h2>状态轨迹</h2><span>G / I · DEMO HISTORY</span></div>${historyChart()}</section>
   </div>`;
+}
+
+function calibrationGate() {
+  const item = model.calibration;
+  if (!item) return "";
+  const threshold = item.thresholds;
+  const folds = Math.max(...Object.values(item.walkForward.modes).map((mode) => mode.foldCount));
+  const rows = [
+    ["PIT 历史", `${item.currentHistory.eligiblePointInTimeObservations}/${item.walkForward.configuration.minimumTrainingPeriods}`, item.gateChecks.minimumHistory && item.gateChecks.allPointInTime],
+    ["OOS 折数", `${folds}/${threshold.minimumFolds}`, item.gateChecks.minimumFolds],
+    ["Brier Skill", item.metrics.brierSkill == null ? `— / ≥${pct(threshold.minimumBrierSkill)}` : pct(item.metrics.brierSkill), item.gateChecks.brierSkill],
+    ["最大校准差", item.metrics.maximumCalibrationError == null ? `— / ≤${pct(threshold.maximumCalibrationError)}` : pct(item.metrics.maximumCalibrationError), item.gateChecks.maximumCalibrationError],
+    ["独立评审", item.gateChecks.reviewApproval ? "APPROVED" : "PENDING", item.gateChecks.reviewApproval],
+  ];
+  return `<section class="calibration-gate"><div class="calibration-copy"><p class="eyebrow">PROBABILITY NAMING GATE</p><h2>${item.probabilityNamingAllowed ? "已允许显示校准概率" : "仍是 Score Share，不是概率"}</h2><p>扩展窗与滚动窗方案已冻结；真实 PIT、时间隔离、样本量、校准表现和人工评审必须同时通过。</p></div><div class="calibration-checks">${rows.map(([label, value, pass]) => `<div><span>${escapeHtml(label)}</span><b>${escapeHtml(value)}</b><i class="${pass ? "pass" : "blocked"}">${pass ? "PASS" : "BLOCKED"}</i></div>`).join("")}</div><footer><span>${escapeHtml(item.planId)} · v${escapeHtml(item.planVersion)}</span><b>${escapeHtml(item.status)}</b></footer></section>`;
 }
 
 function historyChart() {
@@ -316,11 +332,11 @@ function selectEntity(entity) {
 
 async function loadData() {
   try {
-    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief", "release-calendar", "history-replay", "factor-risk-method", "phase5-status", "total-return-ledger-method"];
+    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief", "release-calendar", "history-replay", "factor-risk-method", "phase5-status", "total-return-ledger-method", "calibration-readiness"];
     const responses = await Promise.all(names.map((name) => fetch(`./data/${name}.json`, { cache: "no-store" })));
     if (responses.some((response) => !response.ok)) throw new Error("required public artifacts are unavailable");
-    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData, releaseCalendarData, historyReplayData, factorRiskData, phase5StatusData, totalReturnLedgerData] = await Promise.all(responses.map((response) => response.json()));
-    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData, releaseCalendar: releaseCalendarData, historyReplay: historyReplayData, factorRisk: factorRiskData, phase5Status: phase5StatusData, totalReturnLedger: totalReturnLedgerData });
+    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData, releaseCalendarData, historyReplayData, factorRiskData, phase5StatusData, totalReturnLedgerData, calibrationData] = await Promise.all(responses.map((response) => response.json()));
+    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData, releaseCalendar: releaseCalendarData, historyReplay: historyReplayData, factorRisk: factorRiskData, phase5Status: phase5StatusData, totalReturnLedger: totalReturnLedgerData, calibration: calibrationData });
     selectedEntity = worldData.primaryEntity || "US";
     $("#entity-select").value = selectedEntity;
     $("#data-mode").textContent = publicationData.dataModeComposition.worldState;

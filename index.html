@@ -24,14 +24,15 @@
         </a>
         <nav>
           <a href="#latest" data-route="latest"><span>01</span>最新简报</a>
-          <a href="#world" data-route="world"><span>02</span>世界状态</a>
-          <a href="#causal" data-route="causal"><span>03</span>因果地图</a>
-          <a href="#scenario" data-route="scenario"><span>04</span>情景推演</a>
-          <a href="#portfolio" data-route="portfolio"><span>05</span>组合风险</a>
-          <a href="#evidence" data-route="evidence"><span>06</span>证据与数据</a>
-          <a href="#methodology" data-route="methodology"><span>07</span>方法与版本</a>
+          <a href="#history" data-route="history"><span>02</span>历史轨迹</a>
+          <a href="#world" data-route="world"><span>03</span>世界状态</a>
+          <a href="#causal" data-route="causal"><span>04</span>因果机制</a>
+          <a href="#scenario" data-route="scenario"><span>05</span>情景路径</a>
+          <a href="#portfolio" data-route="portfolio"><span>06</span>组合风险</a>
         </nav>
         <div class="rail-secondary">
+          <a href="#evidence" data-route="evidence">证据与数据</a>
+          <a href="#methodology" data-route="methodology">方法与版本</a>
           <button type="button" id="manifest-trigger">发布清单</button>
           <a href="https://github.com/zhangyi7456/world-model-os-demo/issues" target="_blank" rel="noreferrer">反馈与挑战 ↗</a>
         </div>
@@ -48,24 +49,32 @@
           <a class="mobile-brand" href="#latest">WMOS</a>
           <div class="context">
             <label><span>实体</span><select id="entity-select" aria-label="选择分析实体"><option value="US">美国</option><option value="CN">中国</option><option value="GLOBAL">全球</option></select></label>
+            <label><span>时间</span><select id="snapshot-select" aria-label="选择历史状态日期"></select></label>
+            <label><span>数据</span><select id="data-view-select" aria-label="选择数据视图"><option value="demo-state">DEMO STATE</option><option value="as-known-at" disabled>AS KNOWN · 待接入</option><option value="source-first-release" disabled>SOURCE FIRST · 待接入</option><option value="wmos-first-capture" disabled>WMOS FIRST · 待接入</option><option value="latest-revised" disabled>LATEST · 待接入</option></select></label>
+            <label><span>模型</span><select id="model-lens-select" aria-label="选择模型视图"><option value="demo-model">DEMO MODEL</option><option value="as-published" disabled>AS PUBLISHED · 待接入</option><option value="recomputed-current" disabled>RECOMPUTED · 待接入</option></select></label>
             <label><span>循环</span><select id="loop-select" aria-label="选择更新循环"><option value="medium">MEDIUM</option><option value="fast">FAST</option><option value="slow">SLOW</option></select></label>
-            <label><span>版本</span><select id="vintage-select" aria-label="选择数据版本"><option value="first-release">FIRST RELEASE</option><option value="latest-revised" disabled>LATEST REVISED · 待接入</option></select></label>
           </div>
           <div class="meta">
+            <button type="button" id="context-trigger" class="context-trigger" aria-haspopup="dialog" aria-controls="detail-drawer"><span id="mobile-context-date">当前</span><span>上下文</span></button>
             <button type="button" id="release-trigger" aria-haspopup="dialog" aria-controls="detail-drawer"><span id="data-mode" class="mode-badge">LOADING</span><span id="site-release">SITE —</span><span id="as-of-time">AS OF —</span></button>
           </div>
         </header>
+        <section class="historical-banner" id="historical-banner" hidden>
+          <span>HISTORICAL MODE</span>
+          <b id="historical-banner-copy">As known at —</b>
+          <button type="button" data-time-action="latest">返回当前</button>
+        </section>
+        <div class="global-timebar" id="global-timebar" aria-label="全局历史时间控制"></div>
         <div id="app" aria-live="polite"></div>
       </main>
     </div>
 
     <nav class="mobile-nav" aria-label="移动端主导航">
       <a href="#latest" data-route="latest">简报</a>
+      <a href="#history" data-route="history">历史</a>
       <a href="#world" data-route="world">状态</a>
       <a href="#scenario" data-route="scenario">情景</a>
-      <a href="#portfolio" data-route="portfolio">组合</a>
-      <a href="#evidence" data-route="evidence">证据</a>
-      <a href="#methodology" data-route="methodology">版本</a>
+      <button type="button" id="mobile-more" aria-haspopup="dialog" aria-controls="detail-drawer">更多</button>
     </nav>
 
     <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>

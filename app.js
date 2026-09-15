@@ -25,6 +25,12 @@ let selectedIndicatorId = null;
 let selectedHorizon = "6M";
 let selectedRiskView = "normal";
 let selectedWorkstreamFilter = "all";
+let selectedSnapshotPeriod = null;
+let compareSnapshotPeriod = null;
+let selectedDataView = "demo-state";
+let selectedModelLens = "demo-model";
+let selectedLoop = "medium";
+let drawerReturnFocus = null;
 
 const $ = (selector) => document.querySelector(selector);
 const pct = (value) => `${Math.round(Number(value || 0) * 100)}%`;
@@ -36,6 +42,37 @@ const graph = () => model.causal?.entities?.[selectedEntity];
 const scenarioSet = () => model.scenario?.entities?.[selectedEntity];
 const brief = () => model.brief?.entities?.[selectedEntity];
 const currentRoute = () => location.hash.slice(1) || "latest";
+const historyPoints = () => model.historyReplay?.points || [];
+const latestHistoryPeriod = () => historyPoints().at(-1)?.period || null;
+const activeHistoryPeriod = () => selectedSnapshotPeriod || latestHistoryPeriod();
+const activeHistoryPoint = () => historyPoints().find((point) => point.period === activeHistoryPeriod()) || historyPoints().at(-1);
+const isHistoricalMode = () => Boolean(activeHistoryPeriod() && activeHistoryPeriod() !== latestHistoryPeriod());
+const periodLabel = (period) => period ? period.replace("-", " · ") : "—";
+const regimeLabels = {
+  goldilocks: "增长改善 · 通胀回落",
+  overheating: "增长与价格压力上行",
+  stagflation: "增长走弱 · 通胀上行",
+  contraction: "增长与价格压力回落",
+  transition_zone: "混合过渡区",
+  mixed_transition: "混合过渡区",
+};
+
+function activeHistoricalEntity() {
+  return activeHistoryPoint()?.entities?.[selectedEntity] || null;
+}
+
+function displayedDimensions() {
+  const current = state()?.dimensions || {};
+  const historical = activeHistoricalEntity();
+  if (!isHistoricalMode() || !historical) return current;
+  return {
+    growth: { ...(current.growth || {}), level: historical.growth, momentum: 0, pressure: historical.growth, confidence: 0, coverage: 0, trend: "flat", freshness: "estimated", historicalAvailability: "DEMO" },
+    inflation: { ...(current.inflation || {}), level: historical.inflation, momentum: 0, pressure: historical.inflation, confidence: 0, coverage: 0, trend: "flat", freshness: "estimated", historicalAvailability: "DEMO" },
+    liquidity: { level: 0, momentum: 0, pressure: 0, confidence: 0, coverage: 0, trend: "flat", freshness: "missing", historicalAvailability: "NOT_AVAILABLE" },
+    fragility: { level: 0, momentum: 0, pressure: 0, confidence: 0, coverage: 0, trend: "flat", freshness: "missing", historicalAvailability: "NOT_AVAILABLE" },
+    order: { level: 0, momentum: 0, pressure: 0, confidence: 0, coverage: 0, trend: "flat", freshness: "missing", historicalAvailability: "NOT_AVAILABLE" },
+  };
+}
 
 function pageHead(number, title, description, context = "") {
   return `<header class="page-head"><div><p class="eyebrow">${String(number).padStart(2, "0")} / WORLD MODEL OS</p><h1>${title}</h1><p>${description}</p></div>${context}</header>`;
@@ -47,17 +84,18 @@ function statusBadge(status) {
 }
 
 function stateStrip({ compact = false } = {}) {
-  const dimensions = state()?.dimensions || {};
+  const dimensions = displayedDimensions();
   return `<section class="status-strip ${compact ? "compact" : ""}">${Object.entries(stateMeta).map(([key, meta]) => {
     const value = dimensions[key] || { level: 0, momentum: 0, pressure: 0, confidence: 0, coverage: 0, trend: "flat", freshness: "missing" };
     const confidence = value.confidenceComponents || { dataCoverage: value.coverage, sourceReliability: value.confidence, modelConfidence: value.confidence };
     const position = Math.max(2, Math.min(98, 50 + value.level * 25));
-    return `<button class="state" data-dimension="${key}" aria-label="查看${meta.name}证据">
+    const unavailable = value.historicalAvailability === "NOT_AVAILABLE";
+    return `<button class="state ${unavailable ? "unavailable" : ""}" data-dimension="${key}" aria-label="查看${meta.name}证据" ${unavailable ? "disabled" : ""}>
       <div class="state-top"><span class="state-code">${meta.code} · ${meta.name.toUpperCase()}</span><span class="trend">${arrow(value.trend)} ${Math.abs(value.momentum).toFixed(2)}</span></div>
-      <div class="state-value"><b>${signed(value.level)}</b><span>${meta.risk(value.level)}</span></div>
+      <div class="state-value"><b>${unavailable ? "—" : signed(value.level)}</b><span>${unavailable ? "该历史维度尚未重建" : meta.risk(value.level)}</span></div>
       <div class="bar"><i style="left:${position}%"></i></div>
       <div class="state-metrics"><span>PRESS ${signed(value.pressure)}</span><span>COV ${pct(confidence.dataCoverage)}</span><span>SRC ${pct(confidence.sourceReliability)}</span><span>MOD ${pct(confidence.modelConfidence)}</span></div>
-      <div class="state-foot"><span>${meta.driver}</span><span class="quality-${value.freshness}">${String(value.freshness).toUpperCase()} · AGG ${pct(value.confidence)}</span></div>
+      <div class="state-foot"><span>${meta.driver}</span><span class="quality-${value.freshness}">${unavailable ? "NOT AVAILABLE" : `${String(value.freshness).toUpperCase()} · AGG ${pct(value.confidence)}`}</span></div>
     </button>`;
   }).join("")}</section>`;
 }
@@ -68,7 +106,91 @@ function releaseContext() {
   return `<div class="release-context"><p class="kicker">${escapeHtml(publication.siteRelease)}</p><strong>${escapeHtml(publication.approvalStatus.replaceAll("_", " "))}</strong><small>${escapeHtml(publication.snapshotId)}</small></div>`;
 }
 
+function syncUrlState() {
+  const url = new URL(window.location.href);
+  const values = {
+    entity: selectedEntity,
+    snapshot: activeHistoryPeriod(),
+    data_view: selectedDataView,
+    model_lens: selectedModelLens,
+    loop: selectedLoop,
+    compare: compareSnapshotPeriod,
+  };
+  Object.entries(values).forEach(([key, value]) => value ? url.searchParams.set(key, value) : url.searchParams.delete(key));
+  window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
+function selectHistoryPeriod(period) {
+  if (!historyPoints().some((point) => point.period === period)) return;
+  selectedSnapshotPeriod = period === latestHistoryPeriod() ? null : period;
+  syncContextControls();
+  syncUrlState();
+  render();
+}
+
+function stepHistory(direction) {
+  const points = historyPoints();
+  const index = Math.max(0, points.findIndex((point) => point.period === activeHistoryPeriod()));
+  const next = Math.max(0, Math.min(points.length - 1, index + direction));
+  selectHistoryPeriod(points[next].period);
+}
+
+function syncContextControls() {
+  const snapshot = $("#snapshot-select");
+  if (snapshot && historyPoints().length) {
+    snapshot.innerHTML = historyPoints().map((point) => `<option value="${escapeHtml(point.period)}">${escapeHtml(point.period === latestHistoryPeriod() ? `${point.period} · CURRENT` : point.period)}</option>`).join("");
+    snapshot.value = activeHistoryPeriod();
+  }
+  if ($("#entity-select")) $("#entity-select").value = selectedEntity;
+  if ($("#data-view-select")) $("#data-view-select").value = selectedDataView;
+  if ($("#model-lens-select")) $("#model-lens-select").value = selectedModelLens;
+  if ($("#loop-select")) $("#loop-select").value = selectedLoop;
+  if ($("#mobile-context-date")) $("#mobile-context-date").textContent = activeHistoryPeriod() || "当前";
+}
+
+function renderGlobalTimebar() {
+  const target = $("#global-timebar");
+  if (!target || !historyPoints().length) return;
+  const points = historyPoints();
+  const index = points.findIndex((point) => point.period === activeHistoryPeriod());
+  const historical = isHistoricalMode();
+  target.innerHTML = `<div class="timebar-core">
+    <button type="button" data-time-action="previous" aria-label="上一个历史时点" ${index <= 0 ? "disabled" : ""}>← <span>上期</span></button>
+    <button type="button" class="timebar-date" data-route-link="history"><small>${historical ? "HISTORICAL SNAPSHOT" : "LATEST SNAPSHOT"}</small><b>${escapeHtml(activeHistoryPeriod())}</b></button>
+    <button type="button" data-time-action="next" aria-label="下一个历史时点" ${index >= points.length - 1 ? "disabled" : ""}><span>下期</span> →</button>
+  </div><div class="timebar-actions">
+    <span class="${historical ? "historical" : "current"}">${historical ? "HISTORICAL MODE" : "CURRENT"}</span>
+    <button type="button" data-time-action="compare">${compareSnapshotPeriod ? `COMPARE ${escapeHtml(compareSnapshotPeriod)}` : "设置对比"}</button>
+    ${historical ? `<button type="button" data-time-action="latest">返回当前</button>` : ""}
+  </div>`;
+  const banner = $("#historical-banner");
+  banner.hidden = !historical;
+  if (historical) $("#historical-banner-copy").textContent = `Selected ${activeHistoryPeriod()} · Demo history is not PIT`;
+}
+
+function historicalBoundary(message = "当前历史产物仅重建 G/I 的 Demo 状态，不是 point-in-time 数据，也不包含当时模型、情景或组合结果。") {
+  return `<section class="history-boundary"><div><p class="eyebrow">HISTORICAL DATA BOUNDARY</p><h2>只显示当时可证明的内容。</h2></div><p>${escapeHtml(message)}</p><a href="#methodology">查看方法与放行门槛 →</a></section>`;
+}
+
+function historicalUnavailablePage(number, title, capability) {
+  return `<div class="view historical-view">${pageHead(number, title, `${entityLabels[selectedEntity]} · ${activeHistoryPeriod()} 的历史上下文已保留。`, `<div class="release-context"><p class="kicker">HISTORICAL MODE</p><strong>BLOCKED</strong><small>${escapeHtml(capability)} history unavailable</small></div>`)}<section class="blocked-history"><p class="eyebrow">FAIL CLOSED</p><h2>该历史层尚未达到可发布标准。</h2><p>系统不会把当前的${escapeHtml(title)}结果冒充为 ${escapeHtml(activeHistoryPeriod())} 当时可知的结果。完成真实 PIT、Model Release 与对应历史账本后才会开放。</p><div><a href="#history">返回历史轨迹</a><button type="button" data-time-action="latest">查看当前版本</button></div></section>${historicalBoundary()}</div>`;
+}
+
+function historicalBrief() {
+  const point = activeHistoricalEntity();
+  if (!point) return loadingView(1, "历史简报");
+  const label = regimeLabels[point.candidateLabel] || point.candidateLabel;
+  return `<div class="view latest-view historical-view">
+    ${pageHead(1, "历史简报", `${entityLabels[selectedEntity]} · ${activeHistoryPeriod()} 的已保存研究截面。`, `<div class="release-context"><p class="kicker">DEMO HISTORY · NOT PIT</p><strong>${escapeHtml(point.candidateLabel.replaceAll("_", " "))}</strong><small>真实 AS_KNOWN_AT 尚未通过 vintage 回放</small></div>`)}
+    <section class="brief-thesis"><div><p class="eyebrow">HISTORICAL READING</p><h2>${escapeHtml(label)}</h2><p>这是历史状态回放，不是对该时点之后结果的预测。</p></div><div class="regime-read"><span>RESEARCH REGIME</span><b>${escapeHtml(point.candidateLabel.replaceAll("_", " "))}</b><small>连续 ${point.candidateRunLength}/${point.minimumDuration} 期 · ${escapeHtml(point.publicationStatus)}</small></div></section>
+    ${stateStrip({ compact: true })}
+    ${historicalBoundary()}
+    <section class="history-callout"><div><p class="eyebrow">CONTINUE IN CONTEXT</p><h2>沿同一时间坐标检查轨迹与差异。</h2></div><a href="#history">打开历史轨迹 →</a><a href="#world">打开世界状态 →</a></section>
+  </div>`;
+}
+
 function latest() {
+  if (isHistoricalMode()) return historicalBrief();
   const item = brief();
   if (!item) return loadingView(1, "最新简报");
   const topPath = graph()?.paths?.find((path) => path.id === item.primaryPath.id) || item.primaryPath;
@@ -99,15 +221,122 @@ function latest() {
   </div>`;
 }
 
+function historySvg() {
+  const points = historyPoints();
+  if (!points.length) return `<p class="empty">等待历史状态产物。</p>`;
+  const x = (index) => points.length === 1 ? 500 : 30 + index * (940 / (points.length - 1));
+  const y = (value) => 112 - ((Number(value) + 1) / 2) * 94;
+  const line = (key) => points.map((row, index) => `${x(index).toFixed(1)},${y(row.entities[selectedEntity][key]).toFixed(1)}`).join(" ");
+  const selectedIndex = Math.max(0, points.findIndex((point) => point.period === activeHistoryPeriod()));
+  return `<div class="history-chart" role="img" aria-label="${entityLabels[selectedEntity]}增长与通胀历史状态，从 ${points[0].period} 到 ${points.at(-1).period}">
+    <svg viewBox="0 0 1000 140" preserveAspectRatio="none" aria-hidden="true">
+      <line class="axis-zero" x1="30" y1="65" x2="970" y2="65" />
+      <line class="selected-rule" x1="${x(selectedIndex)}" y1="8" x2="${x(selectedIndex)}" y2="124" />
+      <polyline class="growth-line" points="${line("growth")}" />
+      <polyline class="inflation-line" points="${line("inflation")}" />
+      ${points.map((row, index) => `<circle class="growth-dot ${row.period === activeHistoryPeriod() ? "selected" : ""}" cx="${x(index)}" cy="${y(row.entities[selectedEntity].growth)}" r="${row.period === activeHistoryPeriod() ? 5 : 2.5}"/><circle class="inflation-dot ${row.period === activeHistoryPeriod() ? "selected" : ""}" cx="${x(index)}" cy="${y(row.entities[selectedEntity].inflation)}" r="${row.period === activeHistoryPeriod() ? 5 : 2.5}"/>`).join("")}
+    </svg>
+  </div><div class="legend history-legend"><span><i class="growth-key"></i>增长</span><span><i class="inflation-key"></i>通胀</span><span>数值为模型状态分数，不是经济增长率或通胀率</span></div>`;
+}
+
+function historyRegimeRail() {
+  return `<div class="regime-rail" role="list" aria-label="历史状态时间轨">${historyPoints().map((row) => {
+    const point = row.entities[selectedEntity];
+    return `<button type="button" role="listitem" class="regime-tick regime-${escapeHtml(point.candidateLabel)} ${row.period === activeHistoryPeriod() ? "selected" : ""} ${row.period === latestHistoryPeriod() ? "latest" : ""}" data-history-period="${escapeHtml(row.period)}" aria-pressed="${row.period === activeHistoryPeriod()}"><span>${escapeHtml(row.period.slice(5))}</span><b>${escapeHtml(point.candidateLabel.replaceAll("_", " "))}</b></button>`;
+  }).join("")}</div>`;
+}
+
+function historyDataTable() {
+  return `<details class="history-table"><summary>查看可访问数据表</summary><div class="table-scroll"><table><thead><tr><th>时期</th><th>增长状态</th><th>通胀状态</th><th>候选 Regime</th><th>持续期</th><th>发布状态</th></tr></thead><tbody>${historyPoints().map((row) => { const point = row.entities[selectedEntity]; return `<tr class="${row.period === activeHistoryPeriod() ? "selected" : ""}"><td><button type="button" data-history-period="${escapeHtml(row.period)}">${escapeHtml(row.period)}</button></td><td>${signed(point.growth)}</td><td>${signed(point.inflation)}</td><td>${escapeHtml(point.candidateLabel)}</td><td>${point.candidateRunLength}/${point.minimumDuration}</td><td>${escapeHtml(point.publicationStatus)}</td></tr>`; }).join("")}</tbody></table></div></details>`;
+}
+
+function historyStateTracks() {
+  const point = activeHistoricalEntity();
+  const available = [
+    ["G", "增长", point?.growth, "DEMO STATE"],
+    ["I", "通胀", point?.inflation, "DEMO STATE"],
+    ["L", "流动性", null, "NOT RECONSTRUCTED"],
+    ["F", "脆弱性", null, "NOT RECONSTRUCTED"],
+    ["O", "秩序", null, "NOT RECONSTRUCTED"],
+  ];
+  return `<div class="history-small-multiples">${available.map(([code, label, value, status]) => `<div class="history-track ${value == null ? "blocked" : ""}"><span>${code} · ${label}</span><div><i style="width:${value == null ? 0 : Math.max(4, Math.min(100, 50 + Number(value) * 50))}%"></i></div><b>${value == null ? "—" : signed(value)}</b><small>${status}</small></div>`).join("")}</div>`;
+}
+
+function dalioCycleTracks() {
+  const rows = [
+    ["生产率", "STRUCTURE · SLOW", "指标合同已定义；真实长历史待接入", "blocked"],
+    ["短期债务周期", "CYCLE · MEDIUM", "当前 G/I Demo 可作界面验证，不可作周期结论", "partial"],
+    ["长期债务周期", "BALANCE SHEET · SLOW", "债务与利息负担历史尚未重建", "blocked"],
+    ["内部秩序", "DOMESTIC ORDER · SLOW", "低频数据与事件证据待双人审核", "blocked"],
+    ["外部秩序", "EXTERNAL ORDER · SLOW", "事件轨合同已定义，真实事件尚未发布", "blocked"],
+  ];
+  return `<div class="cycle-tracks">${rows.map(([label, layer, copy, status]) => `<div><i class="delivery-dot ${status}"></i><span><b>${label}</b><small>${layer}</small></span><p>${copy}</p></div>`).join("")}</div>`;
+}
+
+function historyEvents() {
+  const points = historyPoints();
+  const events = points.flatMap((row, index) => {
+    if (!index) return [];
+    const current = row.entities[selectedEntity];
+    const previous = points[index - 1].entities[selectedEntity];
+    if (current.candidateLabel === previous.candidateLabel) return [];
+    return [{ period: row.period, from: previous.candidateLabel, to: current.candidateLabel, persistent: current.persistenceMet }];
+  });
+  if (!events.length) return `<p class="empty">当前范围内没有候选 Regime 切换。</p>`;
+  return `<div class="event-rail">${events.map((event) => `<button type="button" data-history-period="${escapeHtml(event.period)}"><time>${escapeHtml(event.period)}</time><span>${escapeHtml(event.from.replaceAll("_", " "))} → ${escapeHtml(event.to.replaceAll("_", " "))}</span><small>${event.persistent ? "PERSISTENCE MET" : "CANDIDATE ONLY"}</small></button>`).join("")}</div>`;
+}
+
+function historyCompare() {
+  const points = historyPoints();
+  const activeIndex = points.findIndex((point) => point.period === activeHistoryPeriod());
+  const defaultCompare = points[Math.max(0, activeIndex - 1)]?.period;
+  const comparePeriod = compareSnapshotPeriod && compareSnapshotPeriod !== activeHistoryPeriod() ? compareSnapshotPeriod : defaultCompare;
+  const a = points.find((point) => point.period === comparePeriod)?.entities?.[selectedEntity];
+  const b = activeHistoricalEntity();
+  if (!a || !b) return "";
+  return `<section class="snapshot-compare"><div class="section-title"><h2>快照 A/B</h2><span>STATE CHANGE · NOT CAUSAL</span></div><div class="compare-controls"><label><span>A · 基准</span><select id="compare-select" aria-label="选择对比历史时点">${points.filter((point) => point.period !== activeHistoryPeriod()).map((point) => `<option value="${escapeHtml(point.period)}" ${point.period === comparePeriod ? "selected" : ""}>${escapeHtml(point.period)}</option>`).join("")}</select></label><div><span>B · 当前选择</span><b>${escapeHtml(activeHistoryPeriod())}</b></div></div><div class="compare-grid"><div><span>增长变化</span><b class="${b.growth - a.growth < 0 ? "negative" : "positive"}">${signed(b.growth - a.growth, 2)}</b><small>${signed(a.growth)} → ${signed(b.growth)}</small></div><div><span>通胀变化</span><b class="${b.inflation - a.inflation > 0 ? "negative" : "positive"}">${signed(b.inflation - a.inflation, 2)}</b><small>${signed(a.inflation)} → ${signed(b.inflation)}</small></div><div><span>状态迁移</span><b>${escapeHtml(a.candidateLabel.replaceAll("_", " "))}</b><small>→ ${escapeHtml(b.candidateLabel.replaceAll("_", " "))}</small></div><div><span>可归因范围</span><b>STATE ONLY</b><small>无 revision/model/override 历史</small></div></div></section>`;
+}
+
+function historyView() {
+  const point = activeHistoricalEntity();
+  if (!point) return loadingView(2, "历史轨迹");
+  return `<div class="view history-view">
+    ${pageHead(2, "历史轨迹", `${entityLabels[selectedEntity]} · 将当前判断放回可回放轨迹，区分状态变化、数据修订与模型变化。`, `<div class="release-context"><p class="kicker">SELECTED SNAPSHOT</p><strong>${escapeHtml(activeHistoryPeriod())}</strong><small>${escapeHtml(model.historyReplay.dataMode)} · ${escapeHtml(selectedModelLens)}</small></div>`)}
+    <section class="history-hero"><div><p class="eyebrow">HISTORICAL OBSERVATORY</p><h2>${escapeHtml(regimeLabels[point.candidateLabel] || point.candidateLabel)}</h2><p>当前选择是历史轨迹中的一个截面。时间选择会在简报与世界状态之间保持连续。</p></div><div class="history-reading"><span>GROWTH</span><b>${signed(point.growth)}</b><span>INFLATION</span><b>${signed(point.inflation)}</b></div></section>
+    <section class="history-workspace"><div class="section-title"><h2>状态长卷</h2><span>CLICK A PERIOD · DEMO NOT PIT</span></div>${historySvg()}${historyRegimeRail()}${historyDataTable()}</section>
+    <section class="history-state-section"><div class="section-title"><h2>五维状态轨迹</h2><span>AVAILABLE COVERAGE AT SELECTED DATE</span></div>${historyStateTracks()}</section>
+    ${historyCompare()}
+    <section class="history-lower"><div><div class="section-title"><h2>Dalio 五力轨道</h2><span>READINESS</span></div>${dalioCycleTracks()}</div><div><div class="section-title"><h2>状态切换事件</h2><span>DERIVED FROM DEMO REGIME</span></div>${historyEvents()}</div></section>
+    ${historicalBoundary("本页以现有 12 期 Demo 状态验证产品交互。G/I 是模型分数；L/F/O、真实 vintage、Model Release、修订归因、情景结算和组合收益轨迹仍保持 blocked。")}
+  </div>`;
+}
+
+function historicalWorld() {
+  const current = activeHistoricalEntity();
+  if (!current) return loadingView(3, "历史世界状态");
+  const matrixRows = ["US", "CN", "GLOBAL"].map((entity) => {
+    const item = activeHistoryPoint()?.entities?.[entity];
+    return `<button class="matrix-row ${selectedEntity === entity ? "selected" : ""}" data-entity="${entity}"><b>${entityLabels[entity]}</b><span>${signed(item?.growth)} →</span><span>${signed(item?.inflation)} →</span><span>—</span><span>—</span><span>—</span></button>`;
+  }).join("");
+  return `<div class="view historical-view">
+    ${pageHead(3, "历史世界状态", `${entityLabels[selectedEntity]} · ${activeHistoryPeriod()} 的 Demo 状态截面。`, `<div class="release-context"><p class="kicker">HISTORICAL MODE · NOT PIT</p><strong>${escapeHtml(current.candidateLabel.replaceAll("_", " "))}</strong><small>仅 G/I 已有历史 Demo</small></div>`)}
+    ${stateStrip()}
+    <section class="world-grid"><div class="matrix-panel"><div class="section-title"><h2>同一时点的经济体错位</h2><span>G / I AVAILABLE</span></div><div class="matrix-head"><span>实体</span>${Object.values(stateMeta).map((meta) => `<span>${meta.code}</span>`).join("")}</div>${matrixRows}</div><div class="drivers-panel"><div class="section-title"><h2>变化归因</h2><span>BLOCKED</span></div><div class="blocked-panel"><b>尚不能区分现实、修订与模型变化</b><p>当前 Demo 没有 Observation Revision、Model Release 与人工覆盖历史，因此不生成伪归因。</p></div></div></section>
+    <section class="timeline-panel"><div class="section-title"><h2>状态轨迹</h2><span>SELECTED ${escapeHtml(activeHistoryPeriod())}</span></div>${historySvg()}</section>
+    ${historicalBoundary()}
+  </div>`;
+}
+
 function world() {
+  if (isHistoricalMode()) return historicalWorld();
   const current = state();
-  if (!current) return loadingView(2, "世界状态");
+  if (!current) return loadingView(3, "世界状态");
   const regime = current.regime;
   const transition = regime.transition;
   const matrixRows = ["US", "CN", "GLOBAL"].map((entity) => `<button class="matrix-row ${selectedEntity === entity ? "selected" : ""}" data-entity="${entity}"><b>${entityLabels[entity]}</b>${Object.keys(stateMeta).map((key) => { const d = model.world.entities[entity].dimensions[key]; return `<span>${signed(d.level)} ${arrow(d.trend)}</span>`; }).join("")}</button>`).join("");
   const drivers = current.drivers.slice(0, 5).map((driver, index) => `<button class="driver" data-indicator="${driver.indicatorId}"><span>${String(index + 1).padStart(2, "0")}</span><p><b>${escapeHtml(driver.label)}</b><small>${escapeHtml(driver.explanation)} · ${driver.sourceCapability}</small></p><em class="${driver.impact < 0 ? "negative" : "positive"}">${signed(driver.impact, 3)}</em></button>`).join("");
   return `<div class="view">
-    ${pageHead(2, "世界状态", `${entityLabels[selectedEntity]} · Level、Momentum、Pressure 与可信度；颜色不替代方向语义。`, `<div class="release-context"><p class="kicker">STATISTICAL STATE</p><strong>${escapeHtml(regime.label.replaceAll("_", " "))}</strong><small>未经样本外校准，分布仅称 score share</small></div>`)}
+    ${pageHead(3, "世界状态", `${entityLabels[selectedEntity]} · Level、Momentum、Pressure 与可信度；颜色不替代方向语义。`, `<div class="release-context"><p class="kicker">STATISTICAL STATE</p><strong>${escapeHtml(regime.label.replaceAll("_", " "))}</strong><small>未经样本外校准，分布仅称 score share</small></div>`)}
     ${stateStrip()}
     <section class="regime-guardrail"><div><p class="eyebrow">REGIME GUARDRAIL</p><h2>${escapeHtml(transition.candidateLabel.replaceAll("_", " "))}</h2><small>候选连续 ${transition.candidateRunLength}/${transition.minimumDuration} 期 · band ±${transition.hysteresisBand}</small></div><div><span>持续期</span><b>${transition.persistenceMet ? "满足" : "未满足"}</b></div><div><span>发布状态</span><b>${escapeHtml(transition.publicationStatus)}</b></div><div><span>校准状态</span><b>${escapeHtml(transition.calibrationStatus)}</b></div><p>${transition.reasonCodes.map((item) => escapeHtml(item.replaceAll("_", " "))).join(" · ")}。该层只抑制假切换，未完成样本外校准。</p></section>
     ${calibrationGate()}
@@ -143,8 +372,9 @@ function historyChart() {
 }
 
 function causal() {
+  if (isHistoricalMode()) return historicalUnavailablePage(4, "因果机制", "mechanism");
   const current = graph();
-  if (!current) return loadingView(3, "因果地图");
+  if (!current) return loadingView(4, "因果地图");
   const path = current.paths.find((item) => item.id === (selectedPathId || current.primaryPathId)) || current.paths[0];
   selectedPathId = path.id;
   const edges = path.edgeIds.map((id) => current.edges.find((edge) => edge.id === id)).filter(Boolean);
@@ -158,7 +388,7 @@ function causal() {
   const source = node(edge?.source); const target = node(edge?.target);
   const mechanism = current.mechanismContracts?.find((item) => item.id === edge?.mechanismId);
   return `<div class="view">
-    ${pageHead(3, "因果地图", `${entityLabels[selectedEntity]} · 只绘制契约中真实存在的边；所有机制仍是研究候选。`, `<div class="release-context">${statusBadge("RESEARCH_CANDIDATE")}<strong>${escapeHtml(path.label)}</strong><small>Evidence ${path.evidenceGrade} · 活动度 ${Math.round(path.activityScore * 100)}</small></div>`)}
+    ${pageHead(4, "因果地图", `${entityLabels[selectedEntity]} · 只绘制契约中真实存在的边；所有机制仍是研究候选。`, `<div class="release-context">${statusBadge("RESEARCH_CANDIDATE")}<strong>${escapeHtml(path.label)}</strong><small>Evidence ${path.evidenceGrade} · 活动度 ${Math.round(path.activityScore * 100)}</small></div>`)}
     <div class="path-tabs">${tabs}</div>
     <section class="causal-workspace"><div class="causal-canvas"><p class="eyebrow">CURRENT DOMINANT PATH</p><div class="causal-flow">${flow}</div><p class="boundary-copy">节点之间仅在数据契约存在 edge 时显示箭头；活动度不等于因果强度。</p></div>
     <aside class="inspector"><p class="eyebrow">SELECTED EDGE · ${escapeHtml(edge?.runtimeStatus)}</p><h2>${escapeHtml(source?.label)} → ${escapeHtml(target?.label)}</h2><p>${escapeHtml(mechanism?.statement || edge?.conditions?.join("；") || "未配置适用条件")}</p><div class="edge-picker">${edges.map((item) => `<button data-edge="${item.id}" class="${item.id === edge?.id ? "active" : ""}">${escapeHtml(node(item.source)?.label)} → ${escapeHtml(node(item.target)?.label)}</button>`).join("")}</div><dl class="evidence-list"><div><dt>证据等级</dt><dd>${escapeHtml(edge?.evidenceGrade)}</dd></div><div><dt>方向 / 形状</dt><dd>${escapeHtml(edge?.sign)} / ${escapeHtml(edge?.shape)}</dd></div><div><dt>时滞</dt><dd>${edge?.lag?.minDays || 0}—${edge?.lag?.maxDays || 0} 天；典型 ${edge?.lag?.modeDays || 0} 天</dd></div><div><dt>反证条件</dt><dd>${escapeHtml(edge?.invalidation)}</dd></div><div><dt>审批边界</dt><dd>候选机制；不得描述为已验证因果</dd></div></dl>${mechanismAudit(mechanism)}</aside></section>
@@ -173,8 +403,9 @@ function mechanismAudit(mechanism) {
 }
 
 function scenario() {
+  if (isHistoricalMode()) return historicalUnavailablePage(5, "情景路径", "scenario ledger");
   const set = scenarioSet();
-  if (!set) return loadingView(4, "情景推演");
+  if (!set) return loadingView(5, "情景推演");
   const forecast = set.forecasts?.find((item) => item.horizon === selectedHorizon) || set.forecasts?.[0];
   const scenarios = forecast?.scenarios || set.scenarios;
   const rows = scenarios.map((item) => `<article class="scenario-row"><div><p class="eyebrow">${item.slot} · ${escapeHtml(item.approvalStatus)}</p><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.definition)}</p></div><div class="probability-steps"><span><small>PRIOR</small><b>${pct(item.priorProbability)}</b></span><i>→</i><span><small>SUGGESTED</small><b>${pct(item.suggestedProbability)}</b></span><i>→</i><span class="pending"><small>APPROVED</small><b>—</b></span></div><dl><dt>进入条件</dt><dd>${escapeHtml(item.trigger)}</dd><dt>失效条件</dt><dd>${escapeHtml(item.invalidation)}</dd><dt>影响区间</dt><dd class="${item.impactRange.low < 0 ? "negative" : "positive"}">${formatRange(item.impactRange)} · 假设</dd></dl></article>`).join("");
@@ -182,7 +413,7 @@ function scenario() {
   const horizonTabs = (set.forecasts || []).map((item) => `<button data-horizon="${item.horizon}" class="${item.horizon === forecast?.horizon ? "active" : ""}"><b>${item.horizon}</b><small>结算 ${escapeHtml(item.settlesAt.slice(0, 10))}</small></button>`).join("");
   const jointBranches = [...(set.overlayTree || [])].sort((a, b) => b.jointProbability - a.jointProbability).slice(0, 6).map((item) => `<tr><td>${escapeHtml(item.baseScenarioId)}</td><td>${item.productivityUpside ? "ON" : "OFF"}</td><td>${item.orderShock ? "ON" : "OFF"}</td><td>${pct(item.jointProbability)}</td></tr>`).join("");
   return `<div class="view">
-    ${pageHead(4, "情景推演", `${entityLabels[selectedEntity]} · 3M/6M/12M 预测账本；展示先验、机器建议与人工批准的严格边界。`, `<div class="release-context"><p class="kicker">HORIZON · ${escapeHtml(forecast?.horizon)}</p><strong>PENDING HUMAN REVIEW</strong><small>结算 ${escapeHtml(forecast?.settlesAt.slice(0, 10))}</small></div>`)}
+    ${pageHead(5, "情景推演", `${entityLabels[selectedEntity]} · 3M/6M/12M 预测账本；展示先验、机器建议与人工批准的严格边界。`, `<div class="release-context"><p class="kicker">HORIZON · ${escapeHtml(forecast?.horizon)}</p><strong>PENDING HUMAN REVIEW</strong><small>结算 ${escapeHtml(forecast?.settlesAt.slice(0, 10))}</small></div>`)}
     <section class="horizon-tabs">${horizonTabs}</section>
     <section class="scenario-list">${rows}</section>
     <section class="scenario-analysis"><div><div class="section-title"><h2>簇折扣 Waterfall</h2><span>RAW → DISCOUNTED</span></div>${evidence}<p class="boundary-copy">同一维度只保留一个主导信号，避免重复计数。</p></div><div><div class="section-title"><h2>独立覆盖层</h2><span>NOT ADDED TO 100%</span></div>${set.overlays.map((item) => `<article class="overlay-row"><div><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.trigger)}</small></div><strong>${pct(item.suggestedProbability)}</strong></article>`).join("")}<p class="boundary-copy">覆盖层通过下方联合树进入情景，不与主路径直接相加。</p></div></section>
@@ -195,8 +426,9 @@ function formatRange(range) {
 }
 
 function portfolio() {
+  if (isHistoricalMode()) return historicalUnavailablePage(6, "组合风险", "portfolio total return");
   const data = model.portfolio;
-  if (!data) return loadingView(5, "组合风险");
+  if (!data) return loadingView(6, "组合风险");
   const normal = data.riskViews.normal; const stress = data.riskViews.stress;
   const activeRisk = data.riskViews[selectedRiskView];
   const contributions = [...activeRisk.contributions].sort((a, b) => b.absoluteContributionPct - a.absoluteContributionPct);
@@ -213,7 +445,7 @@ function portfolio() {
   const returnDataGate = `<section class="return-ledger-panel"><div class="section-title"><h2>总收益数据门</h2><span>${escapeHtml(ledger?.readiness?.gateStatus || "UNAVAILABLE")}</span></div><div class="return-ledger-summary"><div><span>数据口径</span><b>总收益 × 汇率</b></div><div><span>周频切点</span><b>${escapeHtml(ledger?.weeklyCut || "—")}</b></div><div><span>修订策略</span><b>APPEND-ONLY PIT</b></div><div><span>正式放行</span><b>${ledger?.readiness?.verifiedAssets || 0}/${ledger?.readiness?.totalAssets || 0}</b></div></div><div class="table-scroll"><table><thead><tr><th>参考资产</th><th>收益口径</th><th>币种转换</th><th>交易日历</th><th>最低历史</th><th>状态</th></tr></thead><tbody>${ledgerRows}</tbody></table></div><p class="boundary-copy">当前只公开来源与方法元数据，不公开收益值。供应商、许可、原始文件哈希和 260 周历史全部通过后，才允许进入正式风险估计。</p></section>`;
   const proposalCompare = `<div class="proposal-compare"><span><small>BEFORE · VOL</small><b>${pct(comparison.before.expectedVolatility)}</b><em>${pct(comparison.before.topFactorContribution)} ${escapeHtml(factorLabels[comparison.before.topFactorId])}</em></span><i>→</i><span><small>ILLUSTRATIVE AFTER · VOL</small><b>${pct(comparison.after.expectedVolatility)}</b><em>${pct(comparison.after.topFactorContribution)} ${escapeHtml(factorLabels[comparison.after.topFactorId])}</em></span><p>仅在因子空间把 ${escapeHtml(factorLabels[comparison.changedFactorId])} beta 缩放至 ${pct(comparison.factorBetaScale)}；不是资产配置或交易建议。</p></div>`;
   return `<div class="view">
-    ${pageHead(5, "组合风险", "公开合成参考组合 · 用七个风险因子与压力情景检查集中度，不生成目标权重或订单。", `<div class="release-context">${statusBadge("PUBLIC_SYNTHETIC_REFERENCE")}<strong>${escapeHtml(data.proposal.status.replaceAll("_", " "))}</strong><small>${escapeHtml(data.modelVersion)} · NON-EXECUTABLE</small></div>`)}
+    ${pageHead(6, "组合风险", "公开合成参考组合 · 用七个风险因子与压力情景检查集中度，不生成目标权重或订单。", `<div class="release-context">${statusBadge("PUBLIC_SYNTHETIC_REFERENCE")}<strong>${escapeHtml(data.proposal.status.replaceAll("_", " "))}</strong><small>${escapeHtml(data.modelVersion)} · NON-EXECUTABLE</small></div>`)}
     <section class="portfolio-thesis"><div><p class="eyebrow">PRIMARY RISK · ${selectedRiskView.toUpperCase()} VIEW</p><h2>${pct(top.absoluteContributionPct)} 的绝对风险贡献来自${escapeHtml(factorLabels[top.factorId])}。</h2><p>政策上限 ${pct(budget.policyMax)}。该组合是公开研究夹具，不代表任何用户真实账户。</p><div class="risk-view-tabs"><button data-risk-view="normal" class="${selectedRiskView === "normal" ? "active" : ""}">NORMAL</button><button data-risk-view="stress" class="${selectedRiskView === "stress" ? "active" : ""}">STRESS</button></div></div><div class="portfolio-metrics"><span><small>正常波动</small><b>${pct(normal.expectedVolatility)}</b></span><span><small>压力波动</small><b>${pct(stress.expectedVolatility)}</b></span><span><small>最差下界</small><b class="negative">${pct(data.constraints.worstTailLoss)}</b></span></div></section>
     <section class="exposure-grid"><div><div class="section-title"><h2>资金权重</h2><span>CAPITAL · 100%</span></div>${capital}</div><div><div class="section-title"><h2>绝对风险贡献</h2><span>FACTORS + SPECIFIC = 100%</span></div>${risks}<p class="boundary-copy">Normal 与 Stress 均使用因子绝对贡献加特异风险的同一分母；净方差贡献同时对账至 100%。</p></div></section>
     ${estimator}
@@ -229,8 +461,9 @@ function exposureRow(label, value, marker = null, status = "") {
 }
 
 function evidence() {
+  if (isHistoricalMode()) return historicalUnavailablePage(7, "证据与数据", "observation revision");
   const current = state();
-  if (!current) return loadingView(6, "证据与数据");
+  if (!current) return loadingView(7, "证据与数据");
   const indicators = current.dataHealth.indicators;
   const selected = indicators.find((item) => item.indicatorId === selectedIndicatorId) || indicators[0];
   selectedIndicatorId = selected?.indicatorId || null;
@@ -240,7 +473,7 @@ function evidence() {
   const registry = indicators.map((item) => `<button class="indicator-row ${item.indicatorId === selectedIndicatorId ? "selected" : ""}" data-indicator-select="${item.indicatorId}"><i class="quality-dot quality-${item.qualityStatus}"></i><span><b>${escapeHtml(item.label)}</b><small>${escapeHtml(item.indicatorId)} · ${escapeHtml(item.dimension)}</small></span><em>${escapeHtml(item.value)} ${escapeHtml(item.unit)}</em><u>${escapeHtml(item.sourceCapability)}</u></button>`).join("");
   const sourceLink = selected?.sourceUrl ? `<a href="${escapeHtml(selected.sourceUrl)}" target="_blank" rel="noreferrer">打开原始来源 ↗</a>` : `<span>无公开来源链接</span>`;
   return `<div class="view">
-    ${pageHead(6, "证据与数据", `${entityLabels[selectedEntity]} · 检查数据模式、来源、发布时间、vintage、变换入口与状态贡献。`, releaseContext())}
+    ${pageHead(7, "证据与数据", `${entityLabels[selectedEntity]} · 检查数据模式、来源、发布时间、vintage、变换入口与状态贡献。`, releaseContext())}
     <section class="data-mode-strip">${Object.entries(model.publication.dataModeComposition).map(([key, value]) => `<div><span>${escapeHtml(key)}</span><b>${escapeHtml(value)}</b></div>`).join("")}</section>
     <section class="health-strip"><div><span>有效输入</span><b>${current.quality.observationCount}/${current.quality.catalogCount}</b></div>${Object.entries(qualityLabels).map(([key, label]) => `<div><span>${label}</span><b class="quality-${key}">${counts[key] || 0}</b></div>`).join("")}</section>
     <section class="evidence-workspace"><div class="indicator-registry"><div class="section-title"><h2>指标目录</h2><span>${indicators.length} SERIES</span></div>${registry}</div><article class="indicator-detail"><div class="indicator-title"><div><p class="eyebrow">${escapeHtml(selected?.indicatorId)} · ${escapeHtml(selected?.dimension)}</p><h2>${escapeHtml(selected?.label)}</h2></div>${statusBadge(String(selected?.qualityStatus || "missing").toUpperCase())}</div><div class="observation-value"><strong>${escapeHtml(selected?.value)}</strong><span>${escapeHtml(selected?.unit)}</span></div><dl class="detail-grid"><div><dt>观察期</dt><dd>${escapeHtml(selected?.observationPeriod)}</dd></div><div><dt>发布时间</dt><dd>${escapeHtml(selected?.releaseTime)}</dd></div><div><dt>Vintage</dt><dd>${escapeHtml(selected?.vintageId)}</dd></div><div><dt>来源能力</dt><dd>${escapeHtml(selected?.sourceCapability)}</dd></div><div><dt>质量状态</dt><dd>${escapeHtml(selected?.qualityStatus)}</dd></div><div><dt>聚合置信</dt><dd>${pct(selected?.confidence)}</dd></div><div><dt>来源置信</dt><dd>${pct(selected?.sourceConfidence ?? selected?.confidence)}</dd></div><div><dt>发布时间依据</dt><dd>${escapeHtml(selected?.releaseTimeBasis)}</dd></div><div><dt>来源</dt><dd>${escapeHtml(selected?.source)}</dd></div><div><dt>PIT 状态</dt><dd>${escapeHtml(selectedRelease?.pitAvailability || "NOT IN US CANDIDATE REGISTRY")}</dd></div></dl><div class="source-action">${sourceLink}<button data-open-manifest>查看 Run Manifest</button></div><div class="lineage"><p class="eyebrow">PUBLIC LINEAGE</p><div><span>SOURCE<small>${escapeHtml(selected?.source)}</small></span><i>→</i><span>RAW<small>${escapeHtml(selected?.vintageId)}</small></span><i>→</i><span>TRANSFORM<small>CATALOG VERSIONED</small></span><i>→</i><span>STATE<small>${escapeHtml(selected?.dimension)}</small></span></div></div>${selected?.releaseTimeBasis === "retrieval_time_proxy" ? `<p class="warning">发布时间使用抓取时间代理，不能用于精确历史回放。</p>` : ""}${selectedRelease ? `<p class="warning neutral">该序列已进入 US PIT 候选注册表；首次发布/最新修订账本契约已实现，但正式历史数据尚未装载。</p>` : ""}</article></section>
@@ -257,7 +490,7 @@ function releaseCalendarPanel(calendar) {
 
 function methodology() {
   const data = model.phase5Status;
-  if (!data) return loadingView(7, "方法与版本");
+  if (!data) return loadingView(8, "方法与版本");
   const summary = data.summary;
   const semantics = Object.entries(data.statusSemantics).map(([status, label]) => `<div><i class="delivery-dot ${status}"></i><span>${escapeHtml(status)}</span><small>${escapeHtml(label)}</small></div>`).join("");
   const filters = ["all", "complete", "partial", "blocked", "deferred"].map((status) => {
@@ -273,7 +506,7 @@ function methodology() {
   const releases = [...data.releaseHistory].reverse().map((item) => `<div class="release-row ${item.status}"><span>${escapeHtml(item.release)}</span><b>${escapeHtml(item.focus)}</b><small>${escapeHtml(item.status)}</small></div>`).join("");
   const queue = data.decisionQueue.map((item) => `<div class="decision-row"><span>${String(item.rank).padStart(2, "0")}</span><b>${escapeHtml(item.decision)}</b><small>${item.requiresExternalInput ? "EXTERNAL INPUT" : "INTERNAL EXECUTION"}</small></div>`).join("");
   return `<div class="view methodology-view">
-    ${pageHead(7, "方法与版本", "PRD 执行账本 · 区分已交付、基础设施完成但未校准、外部阻塞与明确延期。", `<div class="release-context"><p class="kicker">CURRENT RELEASE</p><strong>${escapeHtml(data.siteRelease)}</strong><small>Schema validation · immutable manifest · rollback ready</small></div>`)}
+    ${pageHead(8, "方法与版本", "PRD 执行账本 · 区分已交付、基础设施完成但未校准、外部阻塞与明确延期。", `<div class="release-context"><p class="kicker">CURRENT RELEASE</p><strong>${escapeHtml(data.siteRelease)}</strong><small>Schema validation · immutable manifest · rollback ready</small></div>`)}
     <section class="method-thesis"><div><p class="eyebrow">METHOD STACK</p><h2>世界状态决定风险地图，价值框架定义长期目标，证据纪律决定什么有资格进入模型。</h2></div><dl><div><dt>PRIMARY</dt><dd>${escapeHtml(data.methodology.primary)}</dd></div><div><dt>VALUE ANCHOR</dt><dd>${escapeHtml(data.methodology.valueAnchor)}</dd></div><div><dt>EVIDENCE</dt><dd>${escapeHtml(data.methodology.evidenceDiscipline)}</dd></div></dl></section>
     <section class="delivery-summary"><div><span>当前范围完成度</span><b>${summary.inScopeCompletionPct}%</b><small>全路线图 ${summary.weightedCompletionPct}%</small></div><div><span>已完成</span><b class="positive">${summary.complete}</b></div><div><span>部分完成</span><b>${summary.partial}</b></div><div><span>外部阻塞</span><b class="negative">${summary.blocked}</b></div><div><span>明确延期</span><b>${summary.deferred}</b></div></section>
     <section class="status-semantics">${semantics}</section>
@@ -287,14 +520,20 @@ function loadingView(number, title) {
   return `<div class="view">${pageHead(number, title, "正在读取不可变研究快照。")}</div>`;
 }
 
-const views = { latest, world, causal, scenario, portfolio, evidence, methodology };
+const views = { latest, history: historyView, world, causal, scenario, portfolio, evidence, methodology };
+let lastRenderedRoute = null;
 
 function render() {
   const route = views[currentRoute()] ? currentRoute() : "latest";
   document.querySelectorAll("[data-route]").forEach((link) => link.classList.toggle("active", link.dataset.route === route));
+  const more = $("#mobile-more");
+  if (more) more.classList.toggle("active", ["causal", "portfolio", "evidence", "methodology"].includes(route));
   $("#app").innerHTML = views[route]();
+  syncContextControls();
+  renderGlobalTimebar();
   document.title = `WMOS · ${route}`;
-  window.scrollTo({ top: 0, behavior: "instant" });
+  if (lastRenderedRoute !== route) window.scrollTo({ top: 0, behavior: "instant" });
+  lastRenderedRoute = route;
 }
 
 function renderManifest() {
@@ -308,8 +547,31 @@ function renderManifest() {
   $("#drawer-content").innerHTML = `<section class="drawer-section"><div class="manifest-hero"><span>${escapeHtml(item.siteRelease)}</span><b>${escapeHtml(item.approvalStatus)}</b><small>READ ONLY · ${item.workingTreeDirty ? "LOCAL BUILD" : "COMMITTED BUILD"}</small></div></section><section class="drawer-section"><h3>数据模式</h3><dl class="manifest-list">${modes}</dl></section><section class="drawer-section"><h3>不可变上下文</h3><dl class="manifest-list"><div><dt>Snapshot</dt><dd>${escapeHtml(item.snapshotId)}</dd></div><div><dt>Decision as-of</dt><dd>${escapeHtml(item.decisionAsOf)}</dd></div><div><dt>Data cutoff</dt><dd>${escapeHtml(item.dataCutoff)}</dd></div><div><dt>Source commit</dt><dd>${escapeHtml(item.sourceCommit)}</dd></div></dl></section><section class="drawer-section"><h3>模型版本</h3><dl class="manifest-list">${versions}</dl></section><section class="drawer-section"><h3>产物哈希</h3><dl class="manifest-list hashes">${hashes}</dl></section><section class="drawer-section"><h3>降级与边界</h3><ul>${item.degradationFlags.map((flag) => `<li>${escapeHtml(flag)}</li>`).join("")}</ul><p>公开页面是研究快照，不是交易系统；所有写入和审批均在私有环境中完成。</p></section>`;
 }
 
-function openDrawer() {
-  renderManifest();
+function renderContextDrawer() {
+  $("#drawer-eyebrow").textContent = isHistoricalMode() ? "HISTORICAL CONTEXT" : "RESEARCH CONTEXT";
+  $("#drawer-title").textContent = "观察上下文";
+  const option = (value, label, selected, disabled = false) => `<option value="${value}" ${selected ? "selected" : ""} ${disabled ? "disabled" : ""}>${label}</option>`;
+  $("#drawer-content").innerHTML = `<section class="drawer-section context-sheet"><p>这些选择会跨页面保持一致。不可用视图会说明原因，不会回退到其他数据。</p>
+    <label><span>实体</span><select data-context-select="entity">${Object.entries(entityLabels).map(([value, label]) => option(value, label, value === selectedEntity)).join("")}</select></label>
+    <label><span>状态日期</span><select data-context-select="snapshot">${historyPoints().map((point) => option(point.period, point.period === latestHistoryPeriod() ? `${point.period} · CURRENT` : point.period, point.period === activeHistoryPeriod())).join("")}</select></label>
+    <label><span>数据视图</span><select data-context-select="data-view">${option("demo-state", "DEMO STATE", true)}${option("as-known-at", "AS KNOWN AT · 待接入", false, true)}${option("source-first-release", "SOURCE FIRST · 待接入", false, true)}${option("wmos-first-capture", "WMOS FIRST · 待接入", false, true)}${option("latest-revised", "LATEST REVISED · 待接入", false, true)}</select></label>
+    <label><span>模型视图</span><select data-context-select="model-lens">${option("demo-model", "DEMO MODEL", true)}${option("as-published", "AS PUBLISHED · 待接入", false, true)}${option("recomputed-current", "RECOMPUTED · 待接入", false, true)}</select></label>
+    <label><span>更新循环</span><select data-context-select="loop">${["fast", "medium", "slow"].map((value) => option(value, value.toUpperCase(), value === selectedLoop)).join("")}</select></label>
+  </section><section class="drawer-section"><h3>当前边界</h3><dl class="manifest-list"><div><dt>Data mode</dt><dd>${escapeHtml(model.historyReplay?.dataMode)}</dd></div><div><dt>Coverage</dt><dd>G/I · 12 demo points</dd></div><div><dt>Model lens</dt><dd>${escapeHtml(selectedModelLens)}</dd></div><div><dt>Approval</dt><dd>${escapeHtml(model.publication?.approvalStatus)}</dd></div></dl></section>`;
+}
+
+function renderMobileMenu() {
+  $("#drawer-eyebrow").textContent = "WORLD MODEL OS";
+  $("#drawer-title").textContent = "更多";
+  const links = [["causal", "因果机制", "检验路径与反证"], ["portfolio", "组合风险", "查看因子暴露"], ["evidence", "证据与数据", "追溯来源与版本"], ["methodology", "方法与版本", "检查门槛与执行账本"]];
+  $("#drawer-content").innerHTML = `<nav class="drawer-menu" aria-label="更多页面">${links.map(([route, label, copy]) => `<a href="#${route}" data-route-link="${route}"><b>${label}</b><small>${copy}</small><span>→</span></a>`).join("")}</nav><section class="drawer-section"><a class="drawer-external" href="https://github.com/zhangyi7456/world-model-os" target="_blank" rel="noreferrer">GitHub 源码与文档 ↗</a><a class="drawer-external" href="https://github.com/zhangyi7456/world-model-os-demo/issues" target="_blank" rel="noreferrer">反馈与挑战 ↗</a></section>`;
+}
+
+function openDrawer(kind = "manifest", trigger = null) {
+  drawerReturnFocus = trigger || document.activeElement;
+  if (kind === "context") renderContextDrawer();
+  else if (kind === "menu") renderMobileMenu();
+  else renderManifest();
   $("#drawer-backdrop").hidden = false;
   requestAnimationFrame(() => document.body.classList.add("drawer-open"));
   $("#detail-drawer").setAttribute("aria-hidden", "false");
@@ -320,6 +582,7 @@ function closeDrawer() {
   document.body.classList.remove("drawer-open");
   $("#detail-drawer").setAttribute("aria-hidden", "true");
   setTimeout(() => { $("#drawer-backdrop").hidden = true; }, 180);
+  if (drawerReturnFocus?.focus) drawerReturnFocus.focus();
 }
 
 function selectEntity(entity) {
@@ -327,6 +590,7 @@ function selectEntity(entity) {
   selectedEntity = entity;
   selectedPathId = null; selectedEdgeId = null; selectedIndicatorId = null;
   $("#entity-select").value = entity;
+  syncUrlState();
   render();
 }
 
@@ -337,8 +601,15 @@ async function loadData() {
     if (responses.some((response) => !response.ok)) throw new Error("required public artifacts are unavailable");
     const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData, releaseCalendarData, historyReplayData, factorRiskData, phase5StatusData, totalReturnLedgerData, calibrationData] = await Promise.all(responses.map((response) => response.json()));
     Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData, releaseCalendar: releaseCalendarData, historyReplay: historyReplayData, factorRisk: factorRiskData, phase5Status: phase5StatusData, totalReturnLedger: totalReturnLedgerData, calibration: calibrationData });
-    selectedEntity = worldData.primaryEntity || "US";
-    $("#entity-select").value = selectedEntity;
+    const url = new URL(window.location.href);
+    const requestedEntity = url.searchParams.get("entity");
+    selectedEntity = worldData.entities?.[requestedEntity] ? requestedEntity : (worldData.primaryEntity || "US");
+    const requestedSnapshot = url.searchParams.get("snapshot");
+    selectedSnapshotPeriod = historyReplayData.points.some((point) => point.period === requestedSnapshot) && requestedSnapshot !== historyReplayData.points.at(-1)?.period ? requestedSnapshot : null;
+    const requestedCompare = url.searchParams.get("compare");
+    compareSnapshotPeriod = historyReplayData.points.some((point) => point.period === requestedCompare) ? requestedCompare : null;
+    selectedLoop = ["fast", "medium", "slow"].includes(url.searchParams.get("loop")) ? url.searchParams.get("loop") : "medium";
+    syncContextControls();
     $("#data-mode").textContent = publicationData.dataModeComposition.worldState;
     $("#site-release").textContent = publicationData.siteRelease.toUpperCase();
     $("#as-of-time").textContent = `AS OF ${worldData.asOf.slice(0, 10)}`;
@@ -346,6 +617,7 @@ async function loadData() {
     const counts = worldData.quality.statusCounts;
     const degraded = (counts.stale || 0) + (counts.estimated || 0) + (counts.missing || 0) + (counts.bad || 0);
     $("#data-health").textContent = `${worldData.quality.observationCount} 项输入 · ${degraded} 项降级`;
+    syncUrlState();
     render();
   } catch (error) {
     $("#data-mode").textContent = "DATA UNAVAILABLE";
@@ -365,13 +637,40 @@ document.addEventListener("click", (event) => {
   const horizon = event.target.closest("[data-horizon]"); if (horizon) { selectedHorizon = horizon.dataset.horizon; render(); }
   const riskView = event.target.closest("[data-risk-view]"); if (riskView) { selectedRiskView = riskView.dataset.riskView; render(); }
   const workstreamFilter = event.target.closest("[data-workstream-filter]"); if (workstreamFilter) { selectedWorkstreamFilter = workstreamFilter.dataset.workstreamFilter; render(); }
-  const routeLink = event.target.closest("[data-route-link]"); if (routeLink) location.hash = routeLink.dataset.routeLink;
-  if (event.target.closest("#release-trigger, #manifest-trigger, [data-open-manifest]")) openDrawer();
+  const historyPeriod = event.target.closest("[data-history-period]"); if (historyPeriod) selectHistoryPeriod(historyPeriod.dataset.historyPeriod);
+  const timeAction = event.target.closest("[data-time-action]"); if (timeAction) {
+    const action = timeAction.dataset.timeAction;
+    if (action === "previous") stepHistory(-1);
+    if (action === "next") stepHistory(1);
+    if (action === "latest") selectHistoryPeriod(latestHistoryPeriod());
+    if (action === "compare") {
+      const points = historyPoints();
+      const index = points.findIndex((point) => point.period === activeHistoryPeriod());
+      compareSnapshotPeriod = points[Math.max(0, index - 1)]?.period || null;
+      syncUrlState();
+      location.hash = "history";
+      render();
+    }
+  }
+  const routeLink = event.target.closest("[data-route-link]"); if (routeLink) { location.hash = routeLink.dataset.routeLink; if (document.body.classList.contains("drawer-open")) closeDrawer(); }
+  if (event.target.closest("#release-trigger, #manifest-trigger, [data-open-manifest]")) openDrawer("manifest", event.target.closest("button"));
+  if (event.target.closest("#context-trigger")) openDrawer("context", event.target.closest("button"));
+  if (event.target.closest("#mobile-more")) openDrawer("menu", event.target.closest("button"));
   if (event.target.closest("#drawer-close") || event.target.id === "drawer-backdrop") closeDrawer();
 });
 $("#entity-select").addEventListener("change", (event) => selectEntity(event.target.value));
-$("#loop-select").addEventListener("change", render);
-$("#vintage-select").addEventListener("change", render);
+$("#snapshot-select").addEventListener("change", (event) => selectHistoryPeriod(event.target.value));
+$("#data-view-select").addEventListener("change", (event) => { selectedDataView = event.target.value; syncUrlState(); render(); });
+$("#model-lens-select").addEventListener("change", (event) => { selectedModelLens = event.target.value; syncUrlState(); render(); });
+$("#loop-select").addEventListener("change", (event) => { selectedLoop = event.target.value; syncUrlState(); render(); });
+document.addEventListener("change", (event) => {
+  if (event.target.id === "compare-select") { compareSnapshotPeriod = event.target.value; syncUrlState(); render(); }
+  const kind = event.target.dataset.contextSelect;
+  if (!kind) return;
+  if (kind === "entity") selectEntity(event.target.value);
+  if (kind === "snapshot") selectHistoryPeriod(event.target.value);
+  if (kind === "loop") { selectedLoop = event.target.value; syncUrlState(); renderContextDrawer(); render(); }
+});
 document.addEventListener("keydown", (event) => { if (event.key === "Escape" && document.body.classList.contains("drawer-open")) closeDrawer(); });
 addEventListener("hashchange", render);
 render();

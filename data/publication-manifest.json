@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "0.9.0",
-  "siteRelease": "site-v1.4.0",
+  "schemaVersion": "1.0.0",
+  "siteRelease": "site-v1.5.0",
   "snapshotId": "demo-multi-2026-09-11T16:00:00+08:00",
   "dataModeComposition": {
     "worldState": "DEMO_FIXTURE",
@@ -13,7 +13,8 @@
     "factorRiskMethod": "RESEARCH_FACTOR_FIXTURE",
     "phase5Status": "RELEASE_GOVERNANCE",
     "totalReturnLedger": "CANDIDATE_TOTAL_RETURN_REGISTRY",
-    "calibrationReadiness": "CALIBRATION_HARNESS_NO_PIT_RESULTS"
+    "calibrationReadiness": "CALIBRATION_HARNESS_NO_PIT_RESULTS",
+    "temporalGovernance": "TEMPORAL_GOVERNANCE_CANDIDATE"
   },
   "decisionAsOf": "2026-09-11T16:00:00+08:00",
   "dataCutoff": "2026-09-11T16:00:00+08:00",
@@ -31,22 +32,24 @@
     "portfolio": "0.6.0",
     "phase5Status": "0.1.0",
     "totalReturnLedger": "0.1.0",
-    "calibrationReadiness": "0.1.0"
+    "calibrationReadiness": "0.1.0",
+    "temporalGovernance": "0.1.0"
   },
-  "sourceCommit": "8e7b29267a09fa40fb6e773484c10c35d2ea287d",
+  "sourceCommit": "a4e40986deffeb1f7f3ea8d4723f65822be03a5a",
   "workingTreeDirty": false,
   "artifactHashes": {
     "worldState": "1f3f19ab96fba15efc6e3ce901fd357d52125cac08829c66d8cba321e547c179",
     "causalMap": "27e141fd1f5044d1032242c4eaa2b9f69c029cac6d6fcb103d4f62f204caf1d9",
     "scenarios": "6e77f61542951a10630981477df30bd4249974697dc37ba7fba57b3b6d57f520",
     "referencePortfolio": "b2af20d5510476b973e7d62dd21de6db4829746373dfc20d3606af0f82b5ea6f",
-    "releaseCalendar": "c640e37375dc7ba74a16c8b15a9bc022cae475615ff788fb47a03810a3a64940",
+    "releaseCalendar": "0ac12c8d32043c2ee9d461232e5e39f37557b1435f2ef06f44ec8b9aa4611225",
     "historyReplay": "26e37d31a9f9f469d54d8504b6549ec0a12a3fdecfb91a1d048fc3e7943daa80",
     "scenarioLedger": "bc60619a489a889debd5a8f906e770753fad8e267160d6f0b514079713ff7514",
     "factorRiskMethod": "03caa8336a3c0af37859b72e80bf4bc1236f3e95643805a0a744bfaa208d7d28",
-    "phase5Status": "6fcf06ac79159552e27b22141ae4750efea0dee60de61162065875db0a50ee07",
-    "totalReturnLedger": "1a930aa92a3cbd7a3a5811c14d8bf1ccfa9ec9e3bb5dd8b72d1fffb5765e6081",
-    "calibrationReadiness": "02e950fd5e842b9b44e1c585d78c2845acdd295bce51de5593326a348e3e3be5"
+    "phase5Status": "145fb2e786e517a74914b457e4d5d1f9ad9b32f3cd49fbbdba3c453f0d31d5c6",
+    "totalReturnLedger": "e1e5c913eebcbf9d957e8c8bde0ed0bbbf8563653ae28dddcb231dda1744c264",
+    "calibrationReadiness": "7da0941f4155031ef7b805928d92404d821a2634274f101d5adcc72af05180ae",
+    "temporalGovernance": "06ee1900bc44c73cc6df3a34d53afb8e504c2daa3ea6ba8b61968595118da97c"
   },
   "lastSuccessfulBuild": "2026-09-11T16:00:00+08:00",
   "approvalStatus": "demo_reviewed",
@@ -58,7 +61,9 @@
     "FACTOR_EXPOSURE_PENDING_104W_LICENSED_HISTORY",
     "HISTORICAL_STRESS_REPLAY_PENDING_LICENSED_RETURNS",
     "TOTAL_RETURN_LEDGER_PENDING_PROVIDER_AND_LICENSE_APPROVAL",
-    "OOS_CALIBRATION_PENDING_REAL_PIT_HISTORY"
+    "OOS_CALIBRATION_PENDING_REAL_PIT_HISTORY",
+    "PUBLIC_LICENSE_REVIEW_PENDING",
+    "HISTORICAL_MODEL_COVERAGE_STARTS_AT_SITE_V1_5_0"
   ],
   "publicFieldPolicyVersion": "public-allowlist-0.1.0",
   "readOnly": true

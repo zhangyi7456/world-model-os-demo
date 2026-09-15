@@ -40,14 +40,16 @@
       "priority": "P0",
       "title": "US PIT 数据账本与 First / Latest 双轨",
       "status": "blocked",
-      "completionPct": 58,
+      "completionPct": 72,
       "ownerFunctions": [
         "data",
         "backend"
       ],
       "evidence": [
         "9-series candidate registry",
-        "bitemporal ledger contract",
+        "four-view bitemporal selector",
+        "no-fallback source-first rule",
+        "entity cutoff contracts",
         "release calendar",
         "freshness engine"
       ],
@@ -169,18 +171,22 @@
       "priority": "P1",
       "title": "History Replay 独立研究页面",
       "status": "partial",
-      "completionPct": 45,
+      "completionPct": 72,
       "ownerFunctions": [
         "frontend",
         "macro",
         "data"
       ],
       "evidence": [
-        "history-replay public artifact",
-        "state trajectory on World State"
+        "first-class History route",
+        "global time context",
+        "historical mode",
+        "A/B snapshot compare",
+        "Latest/World historical continuity",
+        "history-replay public artifact"
       ],
       "blocker": "当前历史明确为 non-PIT demo，尚无可审计事件回放页",
-      "nextAction": "在真实 PIT 数据到位后设计 snapshot scrubber、revision compare 与 event annotations",
+      "nextAction": "真实 PIT 数据到位后启用 revision compare、Model Lens 与可审计事件注释",
       "exitCriteria": "任一历史截面可永久链接并追溯当时可见证据"
     },
     {
@@ -253,6 +259,16 @@
     {
       "release": "site-v1.3.0",
       "focus": "OOS Calibration Harness & Probability Naming Gate",
+      "status": "released"
+    },
+    {
+      "release": "site-v1.4.0",
+      "focus": "Historical Observatory H1",
+      "status": "released"
+    },
+    {
+      "release": "site-v1.5.0",
+      "focus": "Temporal & Publication Governance",
       "status": "current"
     }
   ],
@@ -260,37 +276,37 @@
     {
       "rank": 1,
       "workstreamId": "us-pit-ledger",
-      "decision": "选择可重建 first-release vintage 的正式数据供应路径",
+      "decision": "批准可重建 source-first vintage 的供应路径与逐序列公开许可",
       "requiresExternalInput": true
     },
     {
       "rank": 2,
-      "workstreamId": "state-regime-calibration",
-      "decision": "装载 PIT 历史后执行已冻结的 OOS 方案并评审概率启用门槛",
+      "workstreamId": "us-pit-ledger",
+      "decision": "装载五个真实截面并运行四视图 leakage suite",
       "requiresExternalInput": true
     },
     {
       "rank": 3,
-      "workstreamId": "reference-portfolio-risk",
-      "decision": "冻结七因子代理、基础币种和总收益口径",
+      "workstreamId": "state-regime-calibration",
+      "decision": "PIT 历史通过后执行冻结 OOS 方案并评审概率启用门槛",
       "requiresExternalInput": true
     },
     {
       "rank": 4,
-      "workstreamId": "history-replay-product",
-      "decision": "在 PIT 可用后开发可审计历史回放页面",
-      "requiresExternalInput": false
+      "workstreamId": "reference-portfolio-risk",
+      "decision": "批准七因子代理、基础币种和总收益许可",
+      "requiresExternalInput": true
     }
   ],
   "asOf": "2026-09-11T16:00:00+08:00",
-  "siteRelease": "site-v1.4.0",
+  "siteRelease": "site-v1.5.0",
   "summary": {
     "total": 10,
     "complete": 2,
     "partial": 4,
     "blocked": 2,
     "deferred": 2,
-    "weightedCompletionPct": 59.8,
-    "inScopeCompletionPct": 74.8
+    "weightedCompletionPct": 63.9,
+    "inScopeCompletionPct": 79.9
   }
 }

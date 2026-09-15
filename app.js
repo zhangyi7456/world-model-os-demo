@@ -17,7 +17,7 @@ const factorLabels = {
   specific_risk: "资产特异风险",
 };
 const qualityLabels = { fresh: "正常", stale: "陈旧", estimated: "估算", missing: "缺失", bad: "拒绝" };
-const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null, releaseCalendar: null, historyReplay: null, factorRisk: null, phase5Status: null, totalReturnLedger: null, calibration: null };
+const model = { world: null, causal: null, scenario: null, portfolio: null, publication: null, brief: null, releaseCalendar: null, historyReplay: null, factorRisk: null, phase5Status: null, totalReturnLedger: null, calibration: null, temporal: null };
 let selectedEntity = "US";
 let selectedPathId = null;
 let selectedEdgeId = null;
@@ -488,6 +488,27 @@ function releaseCalendarPanel(calendar) {
   return `<section class="release-calendar"><div class="section-title"><h2>US 发布日历与修订视图</h2><span>CANDIDATE REGISTRY · ${escapeHtml(model.releaseCalendar?.timeZone)}</span></div><div class="table-scroll"><table><thead><tr><th>序列</th><th>频率</th><th>预期周期 + 宽限</th><th>Fixture 新鲜度</th><th>PIT 装载</th></tr></thead><tbody>${rows}</tbody></table></div><p class="boundary-copy">新鲜度从来源发布时间计算；当前时间列来自 Demo fixture。正式凭据接入前，不将该注册表标记为 REAL_STATE_PIT。</p></section>`;
 }
 
+function temporalGovernancePanel() {
+  const temporal = model.temporal;
+  if (!temporal) return "";
+  const viewLabels = {
+    AS_KNOWN_AT: "当时可知",
+    SOURCE_FIRST_RELEASE: "来源首次发布",
+    WMOS_FIRST_CAPTURE: "WMOS 首次归档",
+    LATEST_REVISED: "最新修订 · 仅回顾",
+  };
+  const views = temporal.dataViews.map((item) => `<article class="governance-card"><div><span>${escapeHtml(item.id)}</span>${statusBadge(item.liveInferenceAllowed ? "LIVE SAFE" : "RETROSPECTIVE ONLY")}</div><h3>${escapeHtml(viewLabels[item.id] || item.id)}</h3><p>${escapeHtml(item.meaning)}</p><small>${escapeHtml(item.availability)}</small></article>`).join("");
+  const timeRows = temporal.entityTimeContracts.entities.map((item) => `<tr><td><b>${escapeHtml(item.entityId)}</b></td><td>${escapeHtml(item.decisionCutoffLocal)} · ${escapeHtml(item.timeZone)}</td><td>${escapeHtml(item.calendarId)}</td><td>${escapeHtml(item.pitApproval)}</td></tr>`).join("");
+  const releases = temporal.modelRegistry.releases.map((item) => `<div class="model-release-row"><div><span>${escapeHtml(item.modelVersion)}</span><b>${escapeHtml(item.dataEligibility)}</b></div><p>发布 ${escapeHtml(item.publishedAt)} · 生效 ${escapeHtml(item.effectiveFrom)}</p><small>${escapeHtml(item.sourceCommit.slice(0, 12))} · ${escapeHtml(item.artifactHash.slice(0, 16))}…</small></div>`).join("");
+  const license = temporal.publicLicensePolicies;
+  return `<section class="temporal-governance"><div class="section-title"><h2>时间与发布治理</h2><span>${escapeHtml(temporal.dataMode)}</span></div>
+    <div class="governance-gate"><div><p class="eyebrow">HISTORICAL RELEASE GATE</p><h3>合同已冻结，真实 PIT 尚未放行。</h3><p>历史默认采用 ${escapeHtml(temporal.defaultDataView)} + ${escapeHtml(temporal.defaultModelLens)}。目标日没有合格模型时返回 MODEL_NOT_AVAILABLE，不用当前模型补算。</p></div><div><span>静默回退</span><b>${temporal.releaseGate.silentFallbackAllowed ? "允许" : "禁止"}</b><span>Verified PIT 实体</span><b>${temporal.releaseGate.verifiedPitEntities.length}</b><span>公开默认</span><b>${escapeHtml(temporal.releaseGate.defaultPublicDecision).toUpperCase()}</b></div></div>
+    <div class="governance-grid">${views}</div>
+    <div class="governance-lower"><div><div class="section-title"><h3>实体状态日</h3><span>LOCAL CUTOFF · UTC STORAGE</span></div><div class="table-scroll"><table><thead><tr><th>实体</th><th>状态截点</th><th>日历</th><th>PIT 放行</th></tr></thead><tbody>${timeRows}</tbody></table></div></div><div><div class="section-title"><h3>Model Release</h3><span>${escapeHtml(temporal.modelRegistry.registryStatus)}</span></div>${releases}<p class="boundary-copy">历史模型覆盖始于 ${escapeHtml(temporal.releaseGate.historicalModelCoverageStart)}；此前一律显示 MODEL_NOT_AVAILABLE。</p></div></div>
+    <div class="license-gate"><div><p class="eyebrow">PUBLIC LICENSE SANITIZER</p><h3>${escapeHtml(license.registryStatus)}</h3></div><p>逐序列策略要求产物类型、最小聚合、精度、发布滞后与归因全部批准。当前默认 <b>${escapeHtml(license.defaultDecision).toUpperCase()}</b>，不会仅凭“可派生”字段放行高精度历史。</p></div>
+  </section>`;
+}
+
 function methodology() {
   const data = model.phase5Status;
   if (!data) return loadingView(8, "方法与版本");
@@ -510,6 +531,7 @@ function methodology() {
     <section class="method-thesis"><div><p class="eyebrow">METHOD STACK</p><h2>世界状态决定风险地图，价值框架定义长期目标，证据纪律决定什么有资格进入模型。</h2></div><dl><div><dt>PRIMARY</dt><dd>${escapeHtml(data.methodology.primary)}</dd></div><div><dt>VALUE ANCHOR</dt><dd>${escapeHtml(data.methodology.valueAnchor)}</dd></div><div><dt>EVIDENCE</dt><dd>${escapeHtml(data.methodology.evidenceDiscipline)}</dd></div></dl></section>
     <section class="delivery-summary"><div><span>当前范围完成度</span><b>${summary.inScopeCompletionPct}%</b><small>全路线图 ${summary.weightedCompletionPct}%</small></div><div><span>已完成</span><b class="positive">${summary.complete}</b></div><div><span>部分完成</span><b>${summary.partial}</b></div><div><span>外部阻塞</span><b class="negative">${summary.blocked}</b></div><div><span>明确延期</span><b>${summary.deferred}</b></div></section>
     <section class="status-semantics">${semantics}</section>
+    ${temporalGovernancePanel()}
     <section class="delivery-board"><div class="section-title"><h2>Phase 5 执行账本</h2><span>PRD STATUS · FILTERABLE</span></div><div class="delivery-filters">${filters}</div><div class="delivery-list">${workstreams || `<p class="empty">此筛选条件下没有工作流。</p>`}</div></section>
     <section class="method-grid"><div><div class="section-title"><h2>版本链</h2><span>NEWEST FIRST</span></div>${releases}</div><div><div class="section-title"><h2>下一执行队列</h2><span>GATES BEFORE FEATURES</span></div>${queue}<p class="boundary-copy">外部数据未满足许可、PIT 和样本门槛前，系统继续显示 Fixture / Candidate，不升级为 Verified。</p></div></section>
     <section class="release-download"><div><p class="eyebrow">RELEASE GOVERNANCE</p><h2>每次发布同时固定版本、提交、产物哈希、数据模式和降级原因。</h2><p>${escapeHtml(model.publication.sourceCommit.slice(0, 12))} · ${Object.keys(model.publication.artifactHashes).length} HASHED ARTIFACTS · READ ONLY</p></div><button data-open-manifest>检查当前发布清单</button></section>
@@ -554,8 +576,8 @@ function renderContextDrawer() {
   $("#drawer-content").innerHTML = `<section class="drawer-section context-sheet"><p>这些选择会跨页面保持一致。不可用视图会说明原因，不会回退到其他数据。</p>
     <label><span>实体</span><select data-context-select="entity">${Object.entries(entityLabels).map(([value, label]) => option(value, label, value === selectedEntity)).join("")}</select></label>
     <label><span>状态日期</span><select data-context-select="snapshot">${historyPoints().map((point) => option(point.period, point.period === latestHistoryPeriod() ? `${point.period} · CURRENT` : point.period, point.period === activeHistoryPeriod())).join("")}</select></label>
-    <label><span>数据视图</span><select data-context-select="data-view">${option("demo-state", "DEMO STATE", true)}${option("as-known-at", "AS KNOWN AT · 待接入", false, true)}${option("source-first-release", "SOURCE FIRST · 待接入", false, true)}${option("wmos-first-capture", "WMOS FIRST · 待接入", false, true)}${option("latest-revised", "LATEST REVISED · 待接入", false, true)}</select></label>
-    <label><span>模型视图</span><select data-context-select="model-lens">${option("demo-model", "DEMO MODEL", true)}${option("as-published", "AS PUBLISHED · 待接入", false, true)}${option("recomputed-current", "RECOMPUTED · 待接入", false, true)}</select></label>
+    <label><span>数据视图</span><select data-context-select="data-view">${option("demo-state", "DEMO STATE", true)}${option("as-known-at", "AS KNOWN AT · 合同就绪", false, true)}${option("source-first-release", "SOURCE FIRST · 合同就绪", false, true)}${option("wmos-first-capture", "WMOS FIRST · 前向采集", false, true)}${option("latest-revised", "LATEST REVISED · 仅回顾", false, true)}</select></label>
+    <label><span>模型视图</span><select data-context-select="model-lens">${option("demo-model", "DEMO MODEL", true)}${option("as-published", "AS PUBLISHED · 版本就绪", false, true)}${option("recomputed-current", "RECOMPUTED · 数据待接入", false, true)}</select></label>
     <label><span>更新循环</span><select data-context-select="loop">${["fast", "medium", "slow"].map((value) => option(value, value.toUpperCase(), value === selectedLoop)).join("")}</select></label>
   </section><section class="drawer-section"><h3>当前边界</h3><dl class="manifest-list"><div><dt>Data mode</dt><dd>${escapeHtml(model.historyReplay?.dataMode)}</dd></div><div><dt>Coverage</dt><dd>G/I · 12 demo points</dd></div><div><dt>Model lens</dt><dd>${escapeHtml(selectedModelLens)}</dd></div><div><dt>Approval</dt><dd>${escapeHtml(model.publication?.approvalStatus)}</dd></div></dl></section>`;
 }
@@ -596,11 +618,11 @@ function selectEntity(entity) {
 
 async function loadData() {
   try {
-    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief", "release-calendar", "history-replay", "factor-risk-method", "phase5-status", "total-return-ledger-method", "calibration-readiness"];
+    const names = ["world-state", "causal-map", "scenario-set", "portfolio-risk", "publication-manifest", "latest-brief", "release-calendar", "history-replay", "factor-risk-method", "phase5-status", "total-return-ledger-method", "calibration-readiness", "temporal-governance"];
     const responses = await Promise.all(names.map((name) => fetch(`./data/${name}.json`, { cache: "no-store" })));
     if (responses.some((response) => !response.ok)) throw new Error("required public artifacts are unavailable");
-    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData, releaseCalendarData, historyReplayData, factorRiskData, phase5StatusData, totalReturnLedgerData, calibrationData] = await Promise.all(responses.map((response) => response.json()));
-    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData, releaseCalendar: releaseCalendarData, historyReplay: historyReplayData, factorRisk: factorRiskData, phase5Status: phase5StatusData, totalReturnLedger: totalReturnLedgerData, calibration: calibrationData });
+    const [worldData, causalData, scenarioData, portfolioData, publicationData, briefData, releaseCalendarData, historyReplayData, factorRiskData, phase5StatusData, totalReturnLedgerData, calibrationData, temporalData] = await Promise.all(responses.map((response) => response.json()));
+    Object.assign(model, { world: worldData, causal: causalData, scenario: scenarioData, portfolio: portfolioData, publication: publicationData, brief: briefData, releaseCalendar: releaseCalendarData, historyReplay: historyReplayData, factorRisk: factorRiskData, phase5Status: phase5StatusData, totalReturnLedger: totalReturnLedgerData, calibration: calibrationData, temporal: temporalData });
     const url = new URL(window.location.href);
     const requestedEntity = url.searchParams.get("entity");
     selectedEntity = worldData.entities?.[requestedEntity] ? requestedEntity : (worldData.primaryEntity || "US");

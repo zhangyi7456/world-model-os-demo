@@ -519,6 +519,37 @@ main { grid-column: 2; min-height: 100vh; }
 .release-row b, .decision-row b { font-size: 9px; }
 .release-row small, .decision-row small { color: var(--muted); font: 7px ui-monospace, monospace; text-transform: uppercase; }
 .release-row.current { background: linear-gradient(90deg, var(--accent-dim), transparent); }
+.temporal-governance { border-bottom: 1px solid var(--line); }
+.temporal-governance > .section-title { padding: 24px 20px 12px; }
+.governance-gate { min-height: 164px; padding: 26px 20px; display: grid; grid-template-columns: 1fr 360px; gap: 48px; align-items: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: linear-gradient(110deg, rgba(99, 143, 203, 0.08), transparent 58%); }
+.governance-gate h3 { margin: 7px 0 10px; font: 400 25px Georgia, "Songti SC", serif; }
+.governance-gate p { max-width: 780px; margin: 0; color: var(--muted); font-size: 9px; line-height: 1.65; }
+.governance-gate > div:last-child { display: grid; grid-template-columns: 1fr auto; gap: 10px 18px; padding: 16px 0 16px 24px; border-left: 1px solid var(--line); }
+.governance-gate span { color: var(--muted); font: 8px ui-monospace, monospace; }
+.governance-gate b { color: var(--accent); font: 9px ui-monospace, monospace; text-align: right; }
+.governance-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+.governance-card { min-height: 188px; padding: 20px; border-right: 1px solid var(--line); }
+.governance-card:last-child { border-right: 0; }
+.governance-card > div { display: flex; justify-content: space-between; gap: 8px; }
+.governance-card > div > span, .governance-card small { color: var(--accent); font: 7px ui-monospace, monospace; }
+.governance-card h3 { margin: 25px 0 8px; font: 400 17px Georgia, "Songti SC", serif; }
+.governance-card p { min-height: 48px; margin: 0 0 15px; color: var(--muted); font-size: 8px; line-height: 1.55; }
+.governance-card small { display: block; overflow-wrap: anywhere; color: var(--muted); }
+.governance-lower { display: grid; grid-template-columns: 1.2fr 0.8fr; border-bottom: 1px solid var(--line); }
+.governance-lower > div { padding: 24px 20px; border-right: 1px solid var(--line); }
+.governance-lower > div:last-child { border-right: 0; }
+.governance-lower table { width: 100%; border-collapse: collapse; }
+.governance-lower th, .governance-lower td { padding: 11px 8px; border-bottom: 1px solid var(--line); text-align: left; font-size: 8px; }
+.governance-lower th { color: var(--muted); font-weight: 500; }
+.model-release-row { padding: 12px 0; border-top: 1px solid var(--line); }
+.model-release-row > div { display: flex; justify-content: space-between; gap: 14px; }
+.model-release-row span, .model-release-row b, .model-release-row small { font: 8px ui-monospace, monospace; }
+.model-release-row span { color: var(--accent); }
+.model-release-row b, .model-release-row small { color: var(--muted); }
+.model-release-row p { margin: 8px 0; color: var(--ink); font-size: 8px; }
+.license-gate { padding: 22px 20px; display: grid; grid-template-columns: 0.75fr 1.25fr; gap: 40px; align-items: center; }
+.license-gate h3 { margin: 7px 0 0; font: 400 18px Georgia, serif; }
+.license-gate > p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.65; }
 .return-ledger-panel { padding: 24px 20px; border-bottom: 1px solid var(--line); }
 .return-ledger-summary { margin-bottom: 18px; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .return-ledger-summary > div { padding: 15px 12px; border-right: 1px solid var(--line); }
@@ -628,7 +659,7 @@ main { grid-column: 2; min-height: 100vh; }
   .calibration-copy { border-right: 0; border-bottom: 1px solid var(--line); }
   .calibration-checks { grid-template-columns: repeat(2, 1fr); }
   .calibration-checks > div { border-bottom: 1px solid var(--line); }
-  .brief-grid, .brief-grid.lower, .world-grid, .scenario-analysis, .portfolio-thesis, .exposure-grid, .evidence-workspace, .risk-audit, .method-thesis, .method-grid { grid-template-columns: 1fr; }
+  .brief-grid, .brief-grid.lower, .world-grid, .scenario-analysis, .portfolio-thesis, .exposure-grid, .evidence-workspace, .risk-audit, .method-thesis, .method-grid, .governance-gate, .governance-lower, .license-gate { grid-template-columns: 1fr; }
   .brief-column, .matrix-panel, .drivers-panel, .scenario-analysis > div, .portfolio-thesis > div:first-child, .exposure-grid > div, .indicator-registry { border-right: 0; border-bottom: 1px solid var(--line); }
   .brief-column { min-height: 0; padding: 21px 12px; }
   .scenario-legend { grid-template-columns: 1fr 1fr 1fr; }
@@ -683,6 +714,10 @@ main { grid-column: 2; min-height: 100vh; }
   .delivery-summary { grid-template-columns: repeat(2, 1fr); }
   .delivery-summary > div { min-height: 92px; }
   .status-semantics { grid-template-columns: 1fr; }
+  .governance-gate, .governance-card, .governance-lower > div, .license-gate { padding-left: 12px; padding-right: 12px; }
+  .governance-gate > div:last-child { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); padding-top: 18px; }
+  .governance-grid { grid-template-columns: 1fr; }
+  .governance-card, .governance-lower > div { border-right: 0; border-bottom: 1px solid var(--line); }
   .delivery-row { padding: 18px 0; grid-template-columns: 1fr; gap: 14px; }
   .return-ledger-summary { grid-template-columns: repeat(2, 1fr); }
   .method-grid > div { border-right: 0; border-bottom: 1px solid var(--line); }

@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "0.1.0",
+  "asOf": "2026-09-11T16:00:00+08:00",
+  "dataMode": "TEMPORAL_GOVERNANCE_CANDIDATE",
+  "defaultDataView": "AS_KNOWN_AT",
+  "defaultModelLens": "AS_PUBLISHED_MODEL",
+  "dataViews": [
+    {
+      "id": "AS_KNOWN_AT",
+      "liveInferenceAllowed": true,
+      "availability": "CONTRACT_READY_DATA_PENDING",
+      "meaning": "Latest accepted revision knowable at decision time"
+    },
+    {
+      "id": "SOURCE_FIRST_RELEASE",
+      "liveInferenceAllowed": true,
+      "availability": "CONTRACT_READY_DATA_PENDING",
+      "meaning": "Provider-defined first official revision; never falls back to WMOS capture"
+    },
+    {
+      "id": "WMOS_FIRST_CAPTURE",
+      "liveInferenceAllowed": true,
+      "availability": "FORWARD_CAPTURE_ONLY",
+      "meaning": "First immutable value archived by WMOS"
+    },
+    {
+      "id": "LATEST_REVISED",
+      "liveInferenceAllowed": false,
+      "availability": "RETROSPECTIVE_ONLY_DATA_PENDING",
+      "meaning": "Current latest revision, including values unavailable at decision time"
+    }
+  ],
+  "modelLenses": [
+    {
+      "id": "AS_PUBLISHED_MODEL",
+      "availability": "MODEL_NOT_AVAILABLE_BEFORE_REGISTRY_START",
+      "meaning": "Model approved, published and effective at decision time"
+    },
+    {
+      "id": "RECOMPUTED_CURRENT_MODEL",
+      "availability": "CONTRACT_READY_PIT_DATA_PENDING",
+      "meaning": "Historical PIT inputs recomputed with the current model"
+    }
+  ],
+  "modelRegistry": {
+    "schemaVersion": "0.1.0",
+    "registryStatus": "CANDIDATE_NO_HISTORICAL_MODEL_COVERAGE",
+    "defaultLens": "AS_PUBLISHED_MODEL",
+    "releases": [
+      {
+        "modelVersion": "state-engine-0.2.0",
+        "publishedAt": "2026-09-15T00:00:00+08:00",
+        "effectiveFrom": "2026-09-15T00:00:00+08:00",
+        "retiredAt": null,
+        "catalogVersion": "indicator-catalog-0.2.0",
+        "transformVersion": "transform-registry-0.1.0",
+        "configVersion": "demo-multi-2026-09-11",
+        "approvalId": "DEMO-REVIEW-2026-09-15",
+        "approvalStatus": "approved",
+        "sourceCommit": "a4e40986deffeb1f7f3ea8d4723f65822be03a5a",
+        "artifactHash": "1f3f19ab96fba15efc6e3ce901fd357d52125cac08829c66d8cba321e547c179",
+        "dataEligibility": "DEMO_ONLY"
+      }
+    ]
+  },
+  "entityTimeContracts": {
+    "schemaVersion": "0.1.0",
+    "status": "FROZEN_CANDIDATE",
+    "utcStorageRequired": true,
+    "entities": [
+      {
+        "entityId": "US",
+        "timeZone": "America/New_York",
+        "decisionCutoffLocal": "16:30",
+        "calendarId": "US_NYSE_FEDERAL_COMPOSITE_CANDIDATE",
+        "stateDayRule": "KNOWN_BEFORE_OR_AT_CUTOFF_ELSE_NEXT_VALID_DAY",
+        "pitApproval": "PENDING_DATA_AND_LICENSE_REVIEW"
+      },
+      {
+        "entityId": "CN",
+        "timeZone": "Asia/Shanghai",
+        "decisionCutoffLocal": "16:30",
+        "calendarId": "CN_SSE_OFFICIAL_COMPOSITE_CANDIDATE",
+        "stateDayRule": "KNOWN_BEFORE_OR_AT_CUTOFF_ELSE_NEXT_VALID_DAY",
+        "pitApproval": "FORWARD_ONLY_CANDIDATE"
+      },
+      {
+        "entityId": "GLOBAL",
+        "timeZone": "UTC",
+        "decisionCutoffLocal": "23:59",
+        "calendarId": "UTC_DAILY",
+        "stateDayRule": "AGGREGATE_COMPLETED_ENTITY_SNAPSHOTS_WITH_AGE",
+        "pitApproval": "AGGREGATE_ONLY_CANDIDATE"
+      }
+    ]
+  },
+  "publicLicensePolicies": {
+    "schemaVersion": "0.1.0",
+    "registryStatus": "FAIL_CLOSED_PENDING_LICENSE_REVIEW",
+    "defaultDecision": "deny",
+    "policies": [
+      {
+        "licensePolicyId": "FRED_DERIVED_PUBLIC_CANDIDATE",
+        "licenseClass": "CITATION_REQUIRED",
+        "status": "pending_review",
+        "allowedArtifactTypes": [
+          "HIGH_LEVEL_STATE_SCORE",
+          "SOURCE_LINK"
+        ],
+        "minimumAggregation": "state",
+        "maximumPrecision": 2,
+        "minimumPublicationLagHours": 24,
+        "attributionText": "Source links and attribution required; derived publication pending review.",
+        "licenseReviewId": null,
+        "approvedAt": null
+      }
+    ]
+  },
+  "releaseGate": {
+    "status": "BLOCKED_PENDING_PIT_AND_LICENSE",
+    "verifiedPitEntities": [],
+    "historicalModelCoverageStart": "2026-09-15T00:00:00+08:00",
+    "silentFallbackAllowed": false,
+    "latestRevisedLiveInferenceAllowed": false,
+    "defaultPublicDecision": "deny"
+  }
+}

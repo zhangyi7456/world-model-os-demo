@@ -167,6 +167,27 @@
       "exitCriteria": "可从已标记版本重建并回滚上一 GitHub Pages release"
     },
     {
+      "id": "public-release-quality",
+      "priority": "P0",
+      "title": "公开站可访问性、性能与发布验收",
+      "status": "complete",
+      "completionPct": 100,
+      "ownerFunctions": [
+        "product",
+        "frontend",
+        "release"
+      ],
+      "evidence": [
+        "360/390/768/1024/1440 responsive audit",
+        "44px touch targets",
+        "keyboard tabs and focus trap",
+        "forced colors and reduced motion",
+        "release integrity and gzip budgets"
+      ],
+      "nextAction": "每次发布运行自动验收、桌面与移动端浏览器冒烟测试",
+      "exitCriteria": "公开包通过结构、哈希、性能、无障碍和线上版本一致性检查"
+    },
+    {
       "id": "history-replay-product",
       "priority": "P1",
       "title": "History Replay 独立研究页面",
@@ -269,6 +290,11 @@
     {
       "release": "site-v1.5.0",
       "focus": "Temporal & Publication Governance",
+      "status": "released"
+    },
+    {
+      "release": "site-v1.6.0",
+      "focus": "Public Release Accessibility & Acceptance",
       "status": "current"
     }
   ],
@@ -299,14 +325,14 @@
     }
   ],
   "asOf": "2026-09-11T16:00:00+08:00",
-  "siteRelease": "site-v1.5.0",
+  "siteRelease": "site-v1.6.0",
   "summary": {
-    "total": 10,
-    "complete": 2,
+    "total": 11,
+    "complete": 3,
     "partial": 4,
     "blocked": 2,
     "deferred": 2,
-    "weightedCompletionPct": 63.9,
-    "inScopeCompletionPct": 79.9
+    "weightedCompletionPct": 67.2,
+    "inScopeCompletionPct": 82.1
   }
 }

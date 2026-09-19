@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "siteRelease": "site-v1.5.0",
+  "siteRelease": "site-v1.6.0",
   "snapshotId": "demo-multi-2026-09-11T16:00:00+08:00",
   "dataModeComposition": {
     "worldState": "DEMO_FIXTURE",
@@ -35,7 +35,7 @@
     "calibrationReadiness": "0.1.0",
     "temporalGovernance": "0.1.0"
   },
-  "sourceCommit": "a4e40986deffeb1f7f3ea8d4723f65822be03a5a",
+  "sourceCommit": "f0bf84ec5c3424cc893b6a1cdecbf55df54d961c",
   "workingTreeDirty": false,
   "artifactHashes": {
     "worldState": "1f3f19ab96fba15efc6e3ce901fd357d52125cac08829c66d8cba321e547c179",
@@ -46,10 +46,10 @@
     "historyReplay": "26e37d31a9f9f469d54d8504b6549ec0a12a3fdecfb91a1d048fc3e7943daa80",
     "scenarioLedger": "bc60619a489a889debd5a8f906e770753fad8e267160d6f0b514079713ff7514",
     "factorRiskMethod": "03caa8336a3c0af37859b72e80bf4bc1236f3e95643805a0a744bfaa208d7d28",
-    "phase5Status": "145fb2e786e517a74914b457e4d5d1f9ad9b32f3cd49fbbdba3c453f0d31d5c6",
-    "totalReturnLedger": "e1e5c913eebcbf9d957e8c8bde0ed0bbbf8563653ae28dddcb231dda1744c264",
-    "calibrationReadiness": "7da0941f4155031ef7b805928d92404d821a2634274f101d5adcc72af05180ae",
-    "temporalGovernance": "06ee1900bc44c73cc6df3a34d53afb8e504c2daa3ea6ba8b61968595118da97c"
+    "phase5Status": "fe8133a179a779a6d1b436bfb9bb28859a03f1e3c5e4c1a8d87a711cac8fd54a",
+    "totalReturnLedger": "c33a714523ce0c5c2e9ff78c70c857e429fe3bed973e3b37670104dea6cd99d6",
+    "calibrationReadiness": "b6dbdf167792721fffce714de4dce8d611d5cd3bc1555115be3434162232166f",
+    "temporalGovernance": "5722d2d68cc931fd412fbecb0017df0f4a63aa4e0beb3e86a9b26a2cd37ff5bd"
   },
   "lastSuccessfulBuild": "2026-09-11T16:00:00+08:00",
   "approvalStatus": "demo_reviewed",

@@ -57,7 +57,7 @@
         "configVersion": "demo-multi-2026-09-11",
         "approvalId": "DEMO-REVIEW-2026-09-15",
         "approvalStatus": "approved",
-        "sourceCommit": "a4e40986deffeb1f7f3ea8d4723f65822be03a5a",
+        "sourceCommit": "f0bf84ec5c3424cc893b6a1cdecbf55df54d961c",
         "artifactHash": "1f3f19ab96fba15efc6e3ce901fd357d52125cac08829c66d8cba321e547c179",
         "dataEligibility": "DEMO_ONLY"
       }

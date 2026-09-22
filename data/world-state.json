@@ -19,7 +19,7 @@
           "momentum": -0.3601,
           "pressure": 0.3632,
           "trend": "down",
-          "confidence": 0.9202,
+          "confidence": 0.9734,
           "confidenceComponents": {
             "dataCoverage": 1.0,
             "sourceReliability": 0.949,
@@ -33,7 +33,7 @@
           "momentum": 0.274,
           "pressure": 0.5218,
           "trend": "up",
-          "confidence": 0.9112,
+          "confidence": 0.959,
           "confidenceComponents": {
             "dataCoverage": 1.0,
             "sourceReliability": 0.911,
@@ -47,7 +47,7 @@
           "momentum": 0.3148,
           "pressure": 0.4461,
           "trend": "up",
-          "confidence": 0.8867,
+          "confidence": 0.9236,
           "confidenceComponents": {
             "dataCoverage": 1.0,
             "sourceReliability": 0.874,
@@ -61,7 +61,7 @@
           "momentum": 0.4265,
           "pressure": 0.7095,
           "trend": "up",
-          "confidence": 0.7916,
+          "confidence": 0.8034,
           "confidenceComponents": {
             "dataCoverage": 1.0,
             "sourceReliability": 0.6635,
@@ -74,7 +74,7 @@
           "level": -0.4647,
           "momentum": -0.122,
           "pressure": 0.3276,
-          "confidence": 0.9187,
+          "confidence": 0.97,
           "coverage": 1.0,
           "trend": "flat",
           "freshness": "fresh",
@@ -89,7 +89,7 @@
               "momentum": 0.0,
               "pressure": 0.3148,
               "trend": "flat",
-              "confidence": 0.9325,
+              "confidence": 0.992,
               "confidenceComponents": {
                 "dataCoverage": 1.0,
                 "sourceReliability": 0.98,
@@ -103,7 +103,7 @@
               "momentum": -0.2133,
               "pressure": 0.3551,
               "trend": "down",
-              "confidence": 0.9075,
+              "confidence": 0.952,
               "confidenceComponents": {
                 "dataCoverage": 1.0,
                 "sourceReliability": 0.88,
@@ -117,7 +117,7 @@
               "momentum": -0.1467,
               "pressure": 0.3015,
               "trend": "flat",
-              "confidence": 0.9175,
+              "confidence": 0.968,
               "confidenceComponents": {
                 "dataCoverage": 1.0,
                 "sourceReliability": 0.92,
@@ -131,13 +131,13 @@
       },
       "regime": {
         "label": "stagflation",
-        "status": "confirmed",
-        "confidence": 0.9112,
-        "probabilities": {
-          "goldilocks": 0.0458,
-          "overheating": 0.1242,
-          "contraction": 0.2596,
-          "stagflation": 0.5704
+        "status": "research_candidate",
+        "confidence": 0.959,
+        "scoreShares": {
+          "goldilocks": 0.0411,
+          "overheating": 0.1177,
+          "contraction": 0.2557,
+          "stagflation": 0.5854
         },
         "transition": {
           "candidateLabel": "stagflation",
@@ -239,7 +239,7 @@
             "source": "FRED/ALFRED:INDPRO",
             "sourceUrl": "https://fred.stlouisfed.org/series/INDPRO",
             "sourceCapability": "A",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -258,7 +258,7 @@
             "source": "FRED/ALFRED:RRSFS",
             "sourceUrl": "https://fred.stlouisfed.org/series/RRSFS",
             "sourceCapability": "A",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -277,7 +277,7 @@
             "source": "FRED/ALFRED:PAYEMS",
             "sourceUrl": "https://fred.stlouisfed.org/series/PAYEMS",
             "sourceCapability": "A",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -296,7 +296,7 @@
             "source": "FRED/ALFRED:UNRATE",
             "sourceUrl": "https://fred.stlouisfed.org/series/UNRATE",
             "sourceCapability": "A",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -315,7 +315,7 @@
             "source": "FRED/ALFRED:PCEPILFE",
             "sourceUrl": "https://fred.stlouisfed.org/series/PCEPILFE",
             "sourceCapability": "A",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -334,7 +334,7 @@
             "source": "FRED/ALFRED:ECIALLCIV",
             "sourceUrl": "https://fred.stlouisfed.org/series/ECIALLCIV",
             "sourceCapability": "A",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -353,7 +353,7 @@
             "source": "OFFICIAL/RESEARCH",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -372,7 +372,7 @@
             "source": "FRED/ALFRED:DFF",
             "sourceUrl": "https://fred.stlouisfed.org/series/DFF",
             "sourceCapability": "A",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -391,7 +391,7 @@
             "source": "FRED/ALFRED:DRTSCILM",
             "sourceUrl": "https://fred.stlouisfed.org/series/DRTSCILM",
             "sourceCapability": "A",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -410,7 +410,7 @@
             "source": "FRED:NFCI",
             "sourceUrl": "https://fred.stlouisfed.org/series/NFCI",
             "sourceCapability": "A",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -429,7 +429,7 @@
             "source": "FRED:BAMLH0A0HYM2",
             "sourceUrl": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -448,7 +448,7 @@
             "source": "BEA/TREASURY",
             "sourceUrl": null,
             "sourceCapability": "A",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -467,7 +467,7 @@
             "source": "OFFICIAL/RESEARCH",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -486,7 +486,7 @@
             "source": "WTO/RESEARCH",
             "sourceUrl": "https://www.wto.org/",
             "sourceCapability": "D",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -505,7 +505,7 @@
             "source": "MULTISOURCE/RESEARCH",
             "sourceUrl": null,
             "sourceCapability": "D",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           }
         ]
@@ -530,7 +530,7 @@
           "momentum": -0.1765,
           "pressure": 0.2954,
           "trend": "flat",
-          "confidence": 0.8951,
+          "confidence": 0.9349,
           "confidenceComponents": {
             "dataCoverage": 1.0,
             "sourceReliability": 0.874,
@@ -544,7 +544,7 @@
           "momentum": 0.3967,
           "pressure": -0.1591,
           "trend": "up",
-          "confidence": 0.8844,
+          "confidence": 0.9223,
           "confidenceComponents": {
             "dataCoverage": 1.0,
             "sourceReliability": 0.844,
@@ -558,7 +558,7 @@
           "momentum": 0.0878,
           "pressure": 0.4468,
           "trend": "flat",
-          "confidence": 0.8284,
+          "confidence": 0.852,
           "confidenceComponents": {
             "dataCoverage": 1.0,
             "sourceReliability": 0.762,
@@ -572,7 +572,7 @@
           "momentum": 0.4265,
           "pressure": 0.7095,
           "trend": "up",
-          "confidence": 0.7916,
+          "confidence": 0.8034,
           "confidenceComponents": {
             "dataCoverage": 1.0,
             "sourceReliability": 0.6635,
@@ -585,7 +585,7 @@
           "level": 0.4122,
           "momentum": 0.2553,
           "pressure": -0.3494,
-          "confidence": 0.884,
+          "confidence": 0.9225,
           "coverage": 1.0,
           "trend": "up",
           "freshness": "fresh",
@@ -600,7 +600,7 @@
               "momentum": 0.32,
               "pressure": -0.4363,
               "trend": "up",
-              "confidence": 0.9075,
+              "confidence": 0.952,
               "confidenceComponents": {
                 "dataCoverage": 1.0,
                 "sourceReliability": 0.88,
@@ -614,7 +614,7 @@
               "momentum": 0.2583,
               "pressure": -0.3394,
               "trend": "up",
-              "confidence": 0.9075,
+              "confidence": 0.952,
               "confidenceComponents": {
                 "dataCoverage": 1.0,
                 "sourceReliability": 0.88,
@@ -628,7 +628,7 @@
               "momentum": 0.16,
               "pressure": -0.2439,
               "trend": "flat",
-              "confidence": 0.8135,
+              "confidence": 0.834,
               "confidenceComponents": {
                 "dataCoverage": 1.0,
                 "sourceReliability": 0.72,
@@ -642,13 +642,13 @@
       },
       "regime": {
         "label": "stagflation",
-        "status": "confirmed",
-        "confidence": 0.8844,
-        "probabilities": {
-          "goldilocks": 0.0788,
-          "overheating": 0.3205,
-          "contraction": 0.1021,
-          "stagflation": 0.4986
+        "status": "research_candidate",
+        "confidence": 0.9223,
+        "scoreShares": {
+          "goldilocks": 0.0742,
+          "overheating": 0.3204,
+          "contraction": 0.0972,
+          "stagflation": 0.5082
         },
         "transition": {
           "candidateLabel": "stagflation",
@@ -750,7 +750,7 @@
             "source": "NBS",
             "sourceUrl": "https://data.stats.gov.cn/",
             "sourceCapability": "B",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -769,7 +769,7 @@
             "source": "NBS",
             "sourceUrl": "https://data.stats.gov.cn/",
             "sourceCapability": "B",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -788,7 +788,7 @@
             "source": "NBS",
             "sourceUrl": "https://data.stats.gov.cn/",
             "sourceCapability": "B",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -807,7 +807,7 @@
             "source": "NBS",
             "sourceUrl": "https://data.stats.gov.cn/",
             "sourceCapability": "B",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -826,7 +826,7 @@
             "source": "NBS",
             "sourceUrl": "https://data.stats.gov.cn/",
             "sourceCapability": "B",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -845,7 +845,7 @@
             "source": "NBS",
             "sourceUrl": "https://data.stats.gov.cn/",
             "sourceCapability": "B",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -864,7 +864,7 @@
             "source": "NBS/RESEARCH",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -883,7 +883,7 @@
             "source": "PBOC",
             "sourceUrl": "https://www.pbc.gov.cn/",
             "sourceCapability": "B",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -902,7 +902,7 @@
             "source": "PBOC",
             "sourceUrl": "https://www.pbc.gov.cn/",
             "sourceCapability": "B",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -921,7 +921,7 @@
             "source": "PBOC/RESEARCH",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -940,7 +940,7 @@
             "source": "NBS",
             "sourceUrl": "https://data.stats.gov.cn/",
             "sourceCapability": "B",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -959,7 +959,7 @@
             "source": "MOF/RESEARCH",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -978,7 +978,7 @@
             "source": "PBOC/RESEARCH",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -997,7 +997,7 @@
             "source": "WTO/RESEARCH",
             "sourceUrl": "https://www.wto.org/",
             "sourceCapability": "D",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -1016,7 +1016,7 @@
             "source": "MULTISOURCE/RESEARCH",
             "sourceUrl": null,
             "sourceCapability": "D",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           }
         ]
@@ -1041,7 +1041,7 @@
           "momentum": -0.3044,
           "pressure": 0.3323,
           "trend": "down",
-          "confidence": 0.8309,
+          "confidence": 0.8546,
           "confidenceComponents": {
             "dataCoverage": 1.0,
             "sourceReliability": 0.75,
@@ -1055,7 +1055,7 @@
           "momentum": 0.2716,
           "pressure": 0.4218,
           "trend": "up",
-          "confidence": 0.8394,
+          "confidence": 0.8653,
           "confidenceComponents": {
             "dataCoverage": 1.0,
             "sourceReliability": 0.765,
@@ -1069,7 +1069,7 @@
           "momentum": 0.2023,
           "pressure": 0.3852,
           "trend": "up",
-          "confidence": 0.8027,
+          "confidence": 0.8168,
           "confidenceComponents": {
             "dataCoverage": 1.0,
             "sourceReliability": 0.69,
@@ -1083,7 +1083,7 @@
           "momentum": 0.4265,
           "pressure": 0.7095,
           "trend": "up",
-          "confidence": 0.7916,
+          "confidence": 0.8034,
           "confidenceComponents": {
             "dataCoverage": 1.0,
             "sourceReliability": 0.6635,
@@ -1096,7 +1096,7 @@
           "level": -0.1874,
           "momentum": -0.0293,
           "pressure": 0.1241,
-          "confidence": 0.8121,
+          "confidence": 0.8314,
           "coverage": 1.0,
           "trend": "flat",
           "freshness": "fresh",
@@ -1111,7 +1111,7 @@
               "momentum": -0.0533,
               "pressure": 0.2012,
               "trend": "flat",
-              "confidence": 0.8135,
+              "confidence": 0.834,
               "confidenceComponents": {
                 "dataCoverage": 1.0,
                 "sourceReliability": 0.72,
@@ -1125,7 +1125,7 @@
               "momentum": -0.0267,
               "pressure": 0.1006,
               "trend": "flat",
-              "confidence": 0.81,
+              "confidence": 0.8275,
               "confidenceComponents": {
                 "dataCoverage": 1.0,
                 "sourceReliability": 0.7,
@@ -1139,7 +1139,7 @@
               "momentum": 0.0,
               "pressure": 0.0539,
               "trend": "flat",
-              "confidence": 0.8135,
+              "confidence": 0.834,
               "confidenceComponents": {
                 "dataCoverage": 1.0,
                 "sourceReliability": 0.72,
@@ -1153,13 +1153,13 @@
       },
       "regime": {
         "label": "stagflation",
-        "status": "confirmed",
-        "confidence": 0.8309,
-        "probabilities": {
-          "goldilocks": 0.0714,
-          "overheating": 0.176,
-          "contraction": 0.2294,
-          "stagflation": 0.5233
+        "status": "research_candidate",
+        "confidence": 0.8546,
+        "scoreShares": {
+          "goldilocks": 0.0684,
+          "overheating": 0.1732,
+          "contraction": 0.2274,
+          "stagflation": 0.5311
         },
         "transition": {
           "candidateLabel": "stagflation",
@@ -1261,7 +1261,7 @@
             "source": "WORLD_BANK/OECD",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -1280,7 +1280,7 @@
             "source": "WTO",
             "sourceUrl": "https://www.wto.org/",
             "sourceCapability": "B",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -1299,7 +1299,7 @@
             "source": "OFFICIAL_AGGREGATE",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -1318,7 +1318,7 @@
             "source": "ILO/OECD",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -1337,7 +1337,7 @@
             "source": "OECD/IMF",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -1356,7 +1356,7 @@
             "source": "WORLD_BANK_COMMODITIES",
             "sourceUrl": null,
             "sourceCapability": "B",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -1375,7 +1375,7 @@
             "source": "ILO/OECD",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -1394,7 +1394,7 @@
             "source": "BIS/IMF",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -1413,7 +1413,7 @@
             "source": "BIS",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -1432,7 +1432,7 @@
             "source": "BIS/RESEARCH",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -1451,7 +1451,7 @@
             "source": "IMF",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -1470,7 +1470,7 @@
             "source": "BIS",
             "sourceUrl": null,
             "sourceCapability": "C",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -1489,7 +1489,7 @@
             "source": "WTO/RESEARCH",
             "sourceUrl": null,
             "sourceCapability": "D",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           },
           {
@@ -1508,7 +1508,7 @@
             "source": "WTO/RESEARCH",
             "sourceUrl": "https://www.wto.org/",
             "sourceCapability": "D",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": false
           },
           {
@@ -1527,7 +1527,7 @@
             "source": "MULTISOURCE/RESEARCH",
             "sourceUrl": null,
             "sourceCapability": "D",
-            "releaseTimeBasis": "official",
+            "releaseTimeBasis": "demo_fixture_time",
             "isEstimated": true
           }
         ]
@@ -2128,6 +2128,29 @@
       "estimated": 15,
       "missing": 0,
       "bad": 0
+    },
+    "verifiedDimensionCoverage": {
+      "US": {
+        "growth": false,
+        "inflation": false,
+        "liquidity": false,
+        "fragility": false,
+        "order": false
+      },
+      "CN": {
+        "growth": false,
+        "inflation": false,
+        "liquidity": false,
+        "fragility": false,
+        "order": false
+      },
+      "GLOBAL": {
+        "growth": false,
+        "inflation": false,
+        "liquidity": false,
+        "fragility": false,
+        "order": false
+      }
     }
   },
   "modelVersion": "state-regime-0.3.0"

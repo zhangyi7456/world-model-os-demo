@@ -33,8 +33,9 @@ let selectedLoop = "medium";
 let drawerReturnFocus = null;
 
 const $ = (selector) => document.querySelector(selector);
-const pct = (value) => `${Math.round(Number(value || 0) * 100)}%`;
-const signed = (value, digits = 1) => `${Number(value) >= 0 ? "+" : "−"}${Math.abs(Number(value || 0)).toFixed(digits)}`;
+const finite = (value) => value !== null && value !== undefined && Number.isFinite(Number(value));
+const pct = (value) => finite(value) ? `${Math.round(Number(value) * 100)}%` : "—";
+const signed = (value, digits = 1) => finite(value) ? `${Number(value) >= 0 ? "+" : "−"}${Math.abs(Number(value)).toFixed(digits)}` : "—";
 const arrow = (trend) => trend === "up" ? "↑" : trend === "down" ? "↓" : "→";
 const escapeHtml = (value) => String(value ?? "—").replace(/[&<>'"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char]);
 const state = () => model.world?.entities?.[selectedEntity];
@@ -75,7 +76,7 @@ function displayedDimensions() {
 }
 
 function pageHead(number, title, description, context = "") {
-  return `<header class="page-head"><div><p class="eyebrow">${String(number).padStart(2, "0")} / WORLD MODEL OS</p><h1>${title}</h1><p>${description}</p></div>${context}</header>`;
+  return `<header class="page-head"><div><p class="eyebrow">${String(number).padStart(2, "0")} / WORLD MODEL OS</p><h1>${title}</h1><p>${description}</p></div>${context}</header><section class="claim-bar" aria-label="研究声明"><b>RESEARCH MVP</b><span>DEMO / CANDIDATE DATA</span><span>SCORE SHARES · NOT CALIBRATED PROBABILITIES</span><span>NO TRADE INSTRUCTIONS</span></section>`;
 }
 
 function statusBadge(status) {
@@ -199,22 +200,22 @@ function latest() {
   const changes = item.changes.map((change, index) => `<button class="change-row" data-indicator="${change.id}">
     <span>${String(index + 1).padStart(2, "0")}</span><div><b>${escapeHtml(change.label)}</b><small>${escapeHtml(change.explanation)} · 来源 ${change.sourceCapability} · ${qualityLabels[change.qualityStatus] || change.qualityStatus}</small></div><em class="impact ${change.impact < 0 ? "negative" : "positive"}">${signed(change.impact, 3)}</em>
   </button>`).join("");
-  const scenarios = [...scenarioSet().scenarios].sort((a, b) => b.suggestedProbability - a.suggestedProbability);
-  const probabilityBar = scenarios.map((scenario) => `<i style="width:${scenario.suggestedProbability * 100}%" title="${escapeHtml(scenario.title)} ${pct(scenario.suggestedProbability)}"></i>`).join("");
-  const scenarioLegend = scenarios.map((scenario) => `<button data-route-link="scenario"><span>${scenario.slot}</span><b>${pct(scenario.suggestedProbability)}</b><small>${signed(scenario.deltaPp, 1)}pp</small></button>`).join("");
+  const scenarios = [...scenarioSet().scenarios].sort((a, b) => b.suggestedScoreShare - a.suggestedScoreShare);
+  const probabilityBar = scenarios.map((scenario) => `<i style="width:${scenario.suggestedScoreShare * 100}%" title="${escapeHtml(scenario.title)} ${pct(scenario.suggestedScoreShare)}"></i>`).join("");
+  const scenarioLegend = scenarios.map((scenario) => `<button data-route-link="scenario"><span>${scenario.slot}</span><b>${pct(scenario.suggestedScoreShare)}</b><small>${signed(scenario.deltaScoreSharePp, 1)}pp</small></button>`).join("");
   return `<div class="view latest-view">
     ${pageHead(1, "最新简报", `${entityLabels[selectedEntity]} · 本期状态变化、主导机制、情景分布与参考组合风险。`, releaseContext())}
     <section class="brief-thesis">
       <div><p class="eyebrow">CURRENT READING · MACHINE GENERATED DEMO</p><h2>${escapeHtml(item.summary)}</h2><p>这是结构化研究摘要，不是预测、投资建议或人工批准结论。</p></div>
-      <div class="regime-read"><span>STATISTICAL REGIME</span><b>${escapeHtml(item.regime.label.replaceAll("_", " "))}</b><small>Score share ${pct(Math.max(...Object.values(item.regime.probabilities || {})))} · Model confidence ${pct(item.regime.confidence)}</small></div>
+      <div class="regime-read"><span>RESEARCH REGIME</span><b>${escapeHtml(item.regime.label.replaceAll("_", " "))}</b><small>Score share ${pct(Math.max(...Object.values(item.regime.scoreShares || {})))} · Model confidence ${pct(item.regime.confidence)}</small></div>
     </section>
     ${stateStrip({ compact: true })}
     <section class="brief-grid">
       <div class="brief-column"><div class="section-title"><h2>自上期最重要的变化</h2><span>TOP CONTRIBUTIONS · NOT CAUSAL</span></div><div class="changes">${changes}</div></div>
-      <div class="brief-column"><div class="section-title"><h2>当前主导机制</h2>${statusBadge("RESEARCH_CANDIDATE")}</div><button class="dominant-path" data-route-link="causal"><span>${escapeHtml(topPath.label)}</span><b>${Math.round(topPath.activityScore * 100)}</b><small>活动度 · Evidence ${topPath.evidenceGrade}</small></button><p class="boundary-copy">活动度只表示当前状态与研究路径相符，不代表因果关系已经识别。</p></div>
+      <div class="brief-column"><div class="section-title"><h2>当前关注机制</h2>${statusBadge("RESEARCH_CANDIDATE")}</div><button class="dominant-path" data-route-link="causal"><span>${escapeHtml(topPath.label)}</span><b>${topPath.activityScore == null ? "—" : Math.round(topPath.activityScore * 100)}</b><small>研究活动度 · Evidence ${topPath.evidenceGrade}</small></button><p class="boundary-copy">活动度只表示当前状态与研究路径相符，不代表因果关系已经识别。</p></div>
     </section>
     <section class="brief-grid lower">
-      <div class="brief-column"><div class="section-title"><h2>情景分布</h2><span>SUGGESTED · PENDING REVIEW</span></div><div class="probability-stack">${probabilityBar}</div><div class="scenario-legend">${scenarioLegend}</div></div>
+      <div class="brief-column"><div class="section-title"><h2>情景研究权重</h2><span>SCORE SHARE · NOT PROBABILITY</span></div><div class="probability-stack">${probabilityBar}</div><div class="scenario-legend">${scenarioLegend}</div></div>
       <div class="brief-column"><div class="section-title"><h2>参考组合风险镜头</h2>${statusBadge("SYNTHETIC")}</div><div class="risk-lens"><div><span>最大风险来源</span><b>${factorLabels[topRisk.factorId] || topRisk.factorId}</b><strong>${pct(topRisk.absoluteContributionPct)}</strong></div><div><span>最差研究情景</span><b>${escapeHtml(worst.title)}</b><strong class="negative">${formatRange(worst.impactRange)}</strong></div></div><a class="text-link" href="#portfolio">查看风险归因 →</a></div>
     </section>
     <section class="uncertainty"><div><p class="eyebrow">KNOWN LIMITS</p><h2>当前最大的限制，是数据可信度而非覆盖率。</h2></div><p>${model.publication.degradationFlags.map((flag) => escapeHtml(flag.replaceAll("_", " "))).join(" · ")}。所有模块在公开站分别声明数据模式。</p><a href="#evidence">检查证据链 →</a></section>
@@ -375,7 +376,7 @@ function causal() {
   if (isHistoricalMode()) return historicalUnavailablePage(4, "因果机制", "mechanism");
   const current = graph();
   if (!current) return loadingView(4, "因果地图");
-  const path = current.paths.find((item) => item.id === (selectedPathId || current.primaryPathId)) || current.paths[0];
+  const path = current.paths.find((item) => item.id === (selectedPathId || current.attentionPathId)) || current.paths[0];
   selectedPathId = path.id;
   const edges = path.edgeIds.map((id) => current.edges.find((edge) => edge.id === id)).filter(Boolean);
   const edge = edges.find((item) => item.id === selectedEdgeId) || edges[0];
@@ -383,14 +384,14 @@ function causal() {
   const node = (id) => current.nodes.find((item) => item.id === id);
   const pathNodes = [];
   edges.forEach((item) => { if (!pathNodes.includes(item.source)) pathNodes.push(item.source); if (!pathNodes.includes(item.target)) pathNodes.push(item.target); });
-  const flow = pathNodes.map((id, index) => `<button class="flow-node"><span>${escapeHtml(node(id)?.layer || "node")}</span><b>${escapeHtml(node(id)?.label || id)}</b><small>${node(id)?.state?.bindingStatus === "observed_model_state" ? `${signed(node(id).state.score)} · ${pct(node(id).state.confidence)}` : "RESEARCH ASSUMPTION"}</small></button>${index < pathNodes.length - 1 ? `<button class="flow-edge ${edges[index]?.id === edge?.id ? "active" : ""}" data-edge="${edges[index]?.id}" aria-label="查看因果边证据">→<small>${edges[index]?.evidenceGrade}</small></button>` : ""}`).join("");
-  const tabs = current.paths.map((item) => `<button type="button" role="tab" aria-selected="${item.id === path.id}" tabindex="${item.id === path.id ? "0" : "-1"}" data-tab-key="${item.id}" data-path="${item.id}" class="${item.id === path.id ? "active" : ""}">${escapeHtml(item.label)}<span>${Math.round(item.activityScore * 100)}</span></button>`).join("");
+  const flow = pathNodes.map((id, index) => `<div class="flow-node"><span>${escapeHtml(node(id)?.layer || "node")}</span><b>${escapeHtml(node(id)?.label || id)}</b><small>${node(id)?.state?.bindingStatus === "observed_model_state" ? `${signed(node(id).state.score)} · ${pct(node(id).state.confidence)}` : "RESEARCH ASSUMPTION"}</small></div>${index < pathNodes.length - 1 ? `<button class="flow-edge ${edges[index]?.id === edge?.id ? "active" : ""}" data-edge="${edges[index]?.id}" aria-label="查看因果边证据">→<small>${edges[index]?.evidenceGrade}</small></button>` : ""}`).join("");
+  const tabs = current.paths.map((item) => `<button type="button" role="tab" aria-selected="${item.id === path.id}" tabindex="${item.id === path.id ? "0" : "-1"}" data-tab-key="${item.id}" data-path="${item.id}" class="${item.id === path.id ? "active" : ""}">${escapeHtml(item.label)}<span>${item.activityScore == null ? "—" : Math.round(item.activityScore * 100)}</span></button>`).join("");
   const source = node(edge?.source); const target = node(edge?.target);
   const mechanism = current.mechanismContracts?.find((item) => item.id === edge?.mechanismId);
   return `<div class="view">
-    ${pageHead(4, "因果地图", `${entityLabels[selectedEntity]} · 只绘制契约中真实存在的边；所有机制仍是研究候选。`, `<div class="release-context">${statusBadge("RESEARCH_CANDIDATE")}<strong>${escapeHtml(path.label)}</strong><small>Evidence ${path.evidenceGrade} · 活动度 ${Math.round(path.activityScore * 100)}</small></div>`)}
+    ${pageHead(4, "因果地图", `${entityLabels[selectedEntity]} · 只绘制契约中真实存在的边；所有机制仍是研究候选。`, `<div class="release-context">${statusBadge("RESEARCH_CANDIDATE")}<strong>${escapeHtml(path.label)}</strong><small>Evidence ${path.evidenceGrade} · 活动度 ${path.activityScore == null ? "BLOCKED" : Math.round(path.activityScore * 100)}</small></div>`)}
     <div class="path-tabs" role="tablist" aria-label="选择因果路径">${tabs}</div>
-    <section class="causal-workspace"><div class="causal-canvas"><p class="eyebrow">CURRENT DOMINANT PATH</p><div class="causal-flow">${flow}</div><p class="boundary-copy">节点之间仅在数据契约存在 edge 时显示箭头；活动度不等于因果强度。</p></div>
+    <section class="causal-workspace"><div class="causal-canvas"><p class="eyebrow">CURRENT ATTENTION PATH</p><div class="causal-flow">${flow}</div><p class="boundary-copy">节点之间仅在数据契约存在 edge 时显示箭头；活动度不等于因果强度。</p></div>
     <aside class="inspector"><p class="eyebrow">SELECTED EDGE · ${escapeHtml(edge?.runtimeStatus)}</p><h2>${escapeHtml(source?.label)} → ${escapeHtml(target?.label)}</h2><p>${escapeHtml(mechanism?.statement || edge?.conditions?.join("；") || "未配置适用条件")}</p><div class="edge-picker">${edges.map((item) => `<button data-edge="${item.id}" class="${item.id === edge?.id ? "active" : ""}">${escapeHtml(node(item.source)?.label)} → ${escapeHtml(node(item.target)?.label)}</button>`).join("")}</div><dl class="evidence-list"><div><dt>证据等级</dt><dd>${escapeHtml(edge?.evidenceGrade)}</dd></div><div><dt>方向 / 形状</dt><dd>${escapeHtml(edge?.sign)} / ${escapeHtml(edge?.shape)}</dd></div><div><dt>时滞</dt><dd>${edge?.lag?.minDays || 0}—${edge?.lag?.maxDays || 0} 天；典型 ${edge?.lag?.modeDays || 0} 天</dd></div><div><dt>反证条件</dt><dd>${escapeHtml(edge?.invalidation)}</dd></div><div><dt>审批边界</dt><dd>候选机制；不得描述为已验证因果</dd></div></dl>${mechanismAudit(mechanism)}</aside></section>
   </div>`;
 }
@@ -408,20 +409,21 @@ function scenario() {
   if (!set) return loadingView(5, "情景推演");
   const forecast = set.forecasts?.find((item) => item.horizon === selectedHorizon) || set.forecasts?.[0];
   const scenarios = forecast?.scenarios || set.scenarios;
-  const rows = scenarios.map((item) => `<article class="scenario-row"><div><p class="eyebrow">${item.slot} · ${escapeHtml(item.approvalStatus)}</p><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.definition)}</p></div><div class="probability-steps"><span><small>PRIOR</small><b>${pct(item.priorProbability)}</b></span><i>→</i><span><small>SUGGESTED</small><b>${pct(item.suggestedProbability)}</b></span><i>→</i><span class="pending"><small>APPROVED</small><b>—</b></span></div><dl><dt>进入条件</dt><dd>${escapeHtml(item.trigger)}</dd><dt>失效条件</dt><dd>${escapeHtml(item.invalidation)}</dd><dt>影响区间</dt><dd class="${item.impactRange.low < 0 ? "negative" : "positive"}">${formatRange(item.impactRange)} · 假设</dd></dl></article>`).join("");
+  const rows = scenarios.map((item) => `<article class="scenario-row"><div><p class="eyebrow">${item.slot} · ${escapeHtml(item.approvalStatus)}</p><h2>${escapeHtml(item.title)}</h2><p>${escapeHtml(item.definition)}</p></div><div class="probability-steps"><span><small>PRIOR SCORE</small><b>${pct(item.priorScoreShare)}</b></span><i>→</i><span><small>SUGGESTED SCORE</small><b>${pct(item.suggestedScoreShare)}</b></span><i>→</i><span class="pending"><small>APPROVED PROB.</small><b>—</b></span></div><dl><dt>进入条件</dt><dd>${escapeHtml(item.trigger)}</dd><dt>失效条件</dt><dd>${escapeHtml(item.invalidation)}</dd><dt>影响区间</dt><dd class="${item.impactRange.low < 0 ? "negative" : "positive"}">${formatRange(item.impactRange)} · 假设</dd></dl></article>`).join("");
   const evidence = (forecast?.waterfall || set.waterfall || []).slice(0, 8).map((item) => `<div class="waterfall-row"><span>${escapeHtml(item.cluster)}</span><div><i style="width:${Math.min(100, Math.abs(item.rawImpact) * 120)}%"></i></div><b>${signed(item.rawImpact, 3)} → ${signed(item.discountedImpact, 3)}</b><small>${escapeHtml(item.scenarioId)}</small></div>`).join("");
   const horizonTabs = (set.forecasts || []).map((item) => `<button type="button" role="tab" aria-selected="${item.horizon === forecast?.horizon}" tabindex="${item.horizon === forecast?.horizon ? "0" : "-1"}" data-tab-key="${item.horizon}" data-horizon="${item.horizon}" class="${item.horizon === forecast?.horizon ? "active" : ""}"><b>${item.horizon}</b><small>结算 ${escapeHtml(item.settlesAt.slice(0, 10))}</small></button>`).join("");
-  const jointBranches = [...(set.overlayTree || [])].sort((a, b) => b.jointProbability - a.jointProbability).slice(0, 6).map((item) => `<tr><td>${escapeHtml(item.baseScenarioId)}</td><td>${item.productivityUpside ? "ON" : "OFF"}</td><td>${item.orderShock ? "ON" : "OFF"}</td><td>${pct(item.jointProbability)}</td></tr>`).join("");
+  const jointBranches = [...(set.overlayTree || [])].sort((a, b) => b.jointScoreShare - a.jointScoreShare).slice(0, 6).map((item) => `<tr><td>${escapeHtml(item.baseScenarioId)}</td><td>${item.productivityUpside ? "ON" : "OFF"}</td><td>${item.orderShock ? "ON" : "OFF"}</td><td>${pct(item.jointScoreShare)}</td></tr>`).join("");
   return `<div class="view">
     ${pageHead(5, "情景推演", `${entityLabels[selectedEntity]} · 3M/6M/12M 预测账本；展示先验、机器建议与人工批准的严格边界。`, `<div class="release-context"><p class="kicker">HORIZON · ${escapeHtml(forecast?.horizon)}</p><strong>PENDING HUMAN REVIEW</strong><small>结算 ${escapeHtml(forecast?.settlesAt.slice(0, 10))}</small></div>`)}
     <section class="horizon-tabs" role="tablist" aria-label="选择情景期限">${horizonTabs}</section>
     <section class="scenario-list">${rows}</section>
-    <section class="scenario-analysis"><div><div class="section-title"><h2>簇折扣 Waterfall</h2><span>RAW → DISCOUNTED</span></div>${evidence}<p class="boundary-copy">同一维度只保留一个主导信号，避免重复计数。</p></div><div><div class="section-title"><h2>独立覆盖层</h2><span>NOT ADDED TO 100%</span></div>${set.overlays.map((item) => `<article class="overlay-row"><div><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.trigger)}</small></div><strong>${pct(item.suggestedProbability)}</strong></article>`).join("")}<p class="boundary-copy">覆盖层通过下方联合树进入情景，不与主路径直接相加。</p></div></section>
+    <section class="scenario-analysis"><div><div class="section-title"><h2>簇折扣 Waterfall</h2><span>RAW → DISCOUNTED</span></div>${evidence}<p class="boundary-copy">同一维度只保留一个主导信号，避免重复计数。</p></div><div><div class="section-title"><h2>独立覆盖层</h2><span>SCORE SHARE · NOT PROBABILITY</span></div>${set.overlays.map((item) => `<article class="overlay-row"><div><b>${escapeHtml(item.title)}</b><small>${escapeHtml(item.trigger)}</small></div><strong>${pct(item.suggestedScoreShare)}</strong></article>`).join("")}<p class="boundary-copy">覆盖层通过下方联合树进入情景，不与主路径直接相加。</p></div></section>
     <section class="overlay-tree"><div class="section-title"><h2>Overlay 联合树 · 最高分支</h2><span>CONDITIONAL INDEPENDENCE DEMO</span></div><div class="table-scroll"><table><thead><tr><th>主路径</th><th>生产率上行</th><th>秩序冲击</th><th>联合权重</th></tr></thead><tbody>${jointBranches}</tbody></table></div><p class="boundary-copy">这是结构演示，条件独立是假设，不是经校准的联合概率。</p></section>
   </div>`;
 }
 
 function formatRange(range) {
+  if (!range || !finite(range.low) || !finite(range.high)) return "—";
   return `${Math.round(Number(range.low) * 100)}% 至 ${Number(range.high) >= 0 ? "+" : ""}${Math.round(Number(range.high) * 100)}%`;
 }
 
@@ -435,7 +437,7 @@ function portfolio() {
   const top = contributions[0]; const budget = data.riskBudgets.find((item) => item.factorId === top.factorId);
   const capital = data.capitalWeights.map((item) => exposureRow(item.label, item.weight)).join("");
   const risks = contributions.map((item) => { const policy = data.riskBudgets.find((row) => row.factorId === item.factorId); const status = selectedRiskView === "stress" ? policy.stressStatus : policy.normalStatus; return exposureRow(factorLabels[item.factorId] || item.factorId, item.absoluteContributionPct, policy.policyMax, status); }).join("") + exposureRow(factorLabels.specific_risk, activeRisk.specificContribution.absoluteContributionPct);
-  const stresses = data.scenarioStress.map((item) => `<tr><td>${escapeHtml(item.title)}<small>${item.scenarioType.toUpperCase()} · ${escapeHtml(item.approvalStatus)}</small></td><td>${item.suggestedProbability == null ? "条件事件" : pct(item.suggestedProbability)}</td><td class="negative">${formatRange(item.lossRange)}</td><td>${escapeHtml(factorLabels[item.leadingLossFactor] || item.leadingLossFactor)}</td></tr>`).join("");
+  const stresses = data.scenarioStress.map((item) => `<tr><td>${escapeHtml(item.title)}<small>${item.scenarioType.toUpperCase()} · ${escapeHtml(item.approvalStatus)}</small></td><td>${item.suggestedScoreShare == null ? "条件事件" : pct(item.suggestedScoreShare)}</td><td class="negative">${formatRange(item.lossRange)}</td><td>${escapeHtml(factorLabels[item.leadingLossFactor] || item.leadingLossFactor)}</td></tr>`).join("");
   const method = data.riskMethod; const comparison = data.proposal.comparison;
   const estimator = `<section class="risk-audit"><div><p class="eyebrow">ACTIVE ESTIMATOR</p><h2>${escapeHtml(method.activeEstimator)}</h2><p>${escapeHtml(method.fallbackReason)}</p></div><dl><div><dt>请求方法</dt><dd>${escapeHtml(method.requestedEstimator)}</dd></div><div><dt>周频样本</dt><dd>${method.actualWeeks} / ${method.minimumWeeks} 最低</dd></div><div><dt>收缩强度</dt><dd>${pct(method.shrinkageIntensity)}</dd></div><div><dt>候选矩阵 PSD</dt><dd>${method.candidatePsd ? "PASS" : "—"}</dd></div><div><dt>Normal 矩阵</dt><dd>${escapeHtml(data.matrixGovernance.normal.status)}</dd></div><div><dt>Stress 矩阵</dt><dd>${escapeHtml(data.matrixGovernance.stress.status)}</dd></div></dl></section>`;
   const exposureRows = data.exposureEngine.assets.map((item) => { const estimate = item.exploratoryEstimate; const publishMetric = estimate && item.actualWeeks >= item.minimumWeeks; return `<tr><td><b>${escapeHtml(item.label)}</b><small>${escapeHtml(item.activeMappingMethod)}</small></td><td>${item.actualWeeks} / ${item.minimumWeeks}</td><td>${publishMetric ? pct(estimate.rSquared) : estimate ? "PIPELINE ONLY" : "—"}</td><td>${publishMetric ? pct(estimate.residualVolatility) : estimate ? "PIPELINE ONLY" : "—"}</td><td>${escapeHtml(item.stabilityStatus)}</td><td>${escapeHtml(item.status)}</td></tr>`; }).join("");
@@ -451,7 +453,7 @@ function portfolio() {
     ${estimator}
     ${returnDataGate}
     ${exposureDiagnostics}
-    <section class="stress-panel"><div class="section-title"><h2>情景压力</h2><span>RESEARCH ASSUMPTIONS</span></div><div class="table-scroll"><table><thead><tr><th>情景</th><th>建议概率</th><th>影响区间</th><th>最大损失来源</th></tr></thead><tbody>${stresses}</tbody></table></div></section>
+    <section class="stress-panel"><div class="section-title"><h2>情景压力</h2><span>RESEARCH ASSUMPTIONS</span></div><div class="table-scroll"><table><thead><tr><th>情景</th><th>研究权重</th><th>影响区间</th><th>最大损失来源</th></tr></thead><tbody>${stresses}</tbody></table></div></section>
     <section class="proposal"><div><p class="eyebrow">READ-ONLY PROPOSAL</p><b>${escapeHtml(data.proposal.reasons.join("；"))}</b><small>requiresHumanApproval = true · orderPayload = null</small>${proposalCompare}</div><button disabled>不生成交易指令</button></section>
   </div>`;
 }
@@ -578,7 +580,7 @@ function renderContextDrawer() {
     <label><span>状态日期</span><select data-context-select="snapshot">${historyPoints().map((point) => option(point.period, point.period === latestHistoryPeriod() ? `${point.period} · CURRENT` : point.period, point.period === activeHistoryPeriod())).join("")}</select></label>
     <label><span>数据视图</span><select data-context-select="data-view">${option("demo-state", "DEMO STATE", true)}${option("as-known-at", "AS KNOWN AT · 合同就绪", false, true)}${option("source-first-release", "SOURCE FIRST · 合同就绪", false, true)}${option("wmos-first-capture", "WMOS FIRST · 前向采集", false, true)}${option("latest-revised", "LATEST REVISED · 仅回顾", false, true)}</select></label>
     <label><span>模型视图</span><select data-context-select="model-lens">${option("demo-model", "DEMO MODEL", true)}${option("as-published", "AS PUBLISHED · 版本就绪", false, true)}${option("recomputed-current", "RECOMPUTED · 数据待接入", false, true)}</select></label>
-    <label><span>更新循环</span><select data-context-select="loop">${["fast", "medium", "slow"].map((value) => option(value, value.toUpperCase(), value === selectedLoop)).join("")}</select></label>
+    <label><span>更新循环</span><select data-context-select="loop" disabled>${option("medium", "MEDIUM · MVP", true)}</select></label>
   </section><section class="drawer-section"><h3>当前边界</h3><dl class="manifest-list"><div><dt>Data mode</dt><dd>${escapeHtml(model.historyReplay?.dataMode)}</dd></div><div><dt>Coverage</dt><dd>G/I · 12 demo points</dd></div><div><dt>Model lens</dt><dd>${escapeHtml(selectedModelLens)}</dd></div><div><dt>Approval</dt><dd>${escapeHtml(model.publication?.approvalStatus)}</dd></div></dl></section>`;
 }
 
@@ -642,7 +644,7 @@ async function loadData() {
     selectedSnapshotPeriod = historyReplayData.points.some((point) => point.period === requestedSnapshot) && requestedSnapshot !== historyReplayData.points.at(-1)?.period ? requestedSnapshot : null;
     const requestedCompare = url.searchParams.get("compare");
     compareSnapshotPeriod = historyReplayData.points.some((point) => point.period === requestedCompare) ? requestedCompare : null;
-    selectedLoop = ["fast", "medium", "slow"].includes(url.searchParams.get("loop")) ? url.searchParams.get("loop") : "medium";
+    selectedLoop = "medium";
     syncContextControls();
     $("#data-mode").textContent = publicationData.dataModeComposition.worldState;
     $("#site-release").textContent = publicationData.siteRelease.toUpperCase();

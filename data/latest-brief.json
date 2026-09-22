@@ -11,13 +11,13 @@
       "summaryStatus": "machine_generated_demo",
       "regime": {
         "label": "stagflation",
-        "status": "confirmed",
-        "confidence": 0.9112,
-        "probabilities": {
-          "goldilocks": 0.0458,
-          "overheating": 0.1242,
-          "contraction": 0.2596,
-          "stagflation": 0.5704
+        "status": "research_candidate",
+        "confidence": 0.959,
+        "scoreShares": {
+          "goldilocks": 0.0411,
+          "overheating": 0.1177,
+          "contraction": 0.2557,
+          "stagflation": 0.5854
         },
         "transition": {
           "candidateLabel": "stagflation",
@@ -71,7 +71,8 @@
           "e.fragility.growth",
           "e.growth.equity"
         ],
-        "activityScore": 0.3574,
+        "activityScore": 0.3719,
+        "runtimeStatus": "research_candidate",
         "evidenceGrade": "C"
       },
       "scenarioChanges": [
@@ -79,27 +80,27 @@
           "id": "soft_landing",
           "slot": "BASE",
           "title": "低速增长，通胀缓慢回落",
-          "priorProbability": 0.4,
-          "suggestedProbability": 0.32,
-          "deltaPp": -8.0,
+          "priorScoreShare": 0.4,
+          "suggestedScoreShare": 0.32,
+          "deltaScoreSharePp": -8.0,
           "approvalStatus": "pending_human_review"
         },
         {
           "id": "stagflation",
           "slot": "REINFLATION",
           "title": "增长减速，价格压力再起",
-          "priorProbability": 0.35,
-          "suggestedProbability": 0.3931,
-          "deltaPp": 4.3,
+          "priorScoreShare": 0.35,
+          "suggestedScoreShare": 0.3931,
+          "deltaScoreSharePp": 4.3,
           "approvalStatus": "pending_human_review"
         },
         {
           "id": "credit_contraction",
           "slot": "BEAR",
           "title": "需求收缩触发信用压力",
-          "priorProbability": 0.25,
-          "suggestedProbability": 0.2869,
-          "deltaPp": 3.7,
+          "priorScoreShare": 0.25,
+          "suggestedScoreShare": 0.2869,
+          "deltaScoreSharePp": 3.7,
           "approvalStatus": "pending_human_review"
         }
       ]
@@ -109,13 +110,13 @@
       "summaryStatus": "machine_generated_demo",
       "regime": {
         "label": "stagflation",
-        "status": "confirmed",
-        "confidence": 0.8844,
-        "probabilities": {
-          "goldilocks": 0.0788,
-          "overheating": 0.3205,
-          "contraction": 0.1021,
-          "stagflation": 0.4986
+        "status": "research_candidate",
+        "confidence": 0.9223,
+        "scoreShares": {
+          "goldilocks": 0.0742,
+          "overheating": 0.3204,
+          "contraction": 0.0972,
+          "stagflation": 0.5082
         },
         "transition": {
           "candidateLabel": "stagflation",
@@ -169,7 +170,8 @@
           "e.inflation.liquidity",
           "e.liquidity.growth"
         ],
-        "activityScore": 0.3473,
+        "activityScore": 0.3578,
+        "runtimeStatus": "research_candidate",
         "evidenceGrade": "C"
       },
       "scenarioChanges": [
@@ -177,27 +179,27 @@
           "id": "soft_landing",
           "slot": "BASE",
           "title": "低速增长，通胀缓慢回落",
-          "priorProbability": 0.4,
-          "suggestedProbability": 0.32,
-          "deltaPp": -8.0,
+          "priorScoreShare": 0.4,
+          "suggestedScoreShare": 0.32,
+          "deltaScoreSharePp": -8.0,
           "approvalStatus": "pending_human_review"
         },
         {
           "id": "stagflation",
           "slot": "REINFLATION",
           "title": "增长减速，价格压力再起",
-          "priorProbability": 0.35,
-          "suggestedProbability": 0.4211,
-          "deltaPp": 7.1,
+          "priorScoreShare": 0.35,
+          "suggestedScoreShare": 0.4211,
+          "deltaScoreSharePp": 7.1,
           "approvalStatus": "pending_human_review"
         },
         {
           "id": "credit_contraction",
           "slot": "BEAR",
           "title": "需求收缩触发信用压力",
-          "priorProbability": 0.25,
-          "suggestedProbability": 0.2589,
-          "deltaPp": 0.9,
+          "priorScoreShare": 0.25,
+          "suggestedScoreShare": 0.2589,
+          "deltaScoreSharePp": 0.9,
           "approvalStatus": "pending_human_review"
         }
       ]
@@ -207,13 +209,13 @@
       "summaryStatus": "machine_generated_demo",
       "regime": {
         "label": "stagflation",
-        "status": "confirmed",
-        "confidence": 0.8309,
-        "probabilities": {
-          "goldilocks": 0.0714,
-          "overheating": 0.176,
-          "contraction": 0.2294,
-          "stagflation": 0.5233
+        "status": "research_candidate",
+        "confidence": 0.8546,
+        "scoreShares": {
+          "goldilocks": 0.0684,
+          "overheating": 0.1732,
+          "contraction": 0.2274,
+          "stagflation": 0.5311
         },
         "transition": {
           "candidateLabel": "stagflation",
@@ -260,14 +262,15 @@
         }
       ],
       "primaryPath": {
-        "id": "path.credit_contraction",
-        "label": "金融收紧 → 脆弱性 → 增长",
+        "id": "path.supply_policy",
+        "label": "供给冲击 → 政策约束",
         "edgeIds": [
-          "e.liquidity.fragility",
-          "e.fragility.growth",
-          "e.growth.equity"
+          "e.order.inflation",
+          "e.inflation.liquidity",
+          "e.liquidity.growth"
         ],
-        "activityScore": 0.3136,
+        "activityScore": 0.32,
+        "runtimeStatus": "research_candidate",
         "evidenceGrade": "C"
       },
       "scenarioChanges": [
@@ -275,27 +278,27 @@
           "id": "soft_landing",
           "slot": "BASE",
           "title": "低速增长，通胀缓慢回落",
-          "priorProbability": 0.4,
-          "suggestedProbability": 0.32,
-          "deltaPp": -8.0,
+          "priorScoreShare": 0.4,
+          "suggestedScoreShare": 0.32,
+          "deltaScoreSharePp": -8.0,
           "approvalStatus": "pending_human_review"
         },
         {
           "id": "stagflation",
           "slot": "REINFLATION",
           "title": "增长减速，价格压力再起",
-          "priorProbability": 0.35,
-          "suggestedProbability": 0.4024,
-          "deltaPp": 5.2,
+          "priorScoreShare": 0.35,
+          "suggestedScoreShare": 0.4024,
+          "deltaScoreSharePp": 5.2,
           "approvalStatus": "pending_human_review"
         },
         {
           "id": "credit_contraction",
           "slot": "BEAR",
           "title": "需求收缩触发信用压力",
-          "priorProbability": 0.25,
-          "suggestedProbability": 0.2776,
-          "deltaPp": 2.8,
+          "priorScoreShare": 0.25,
+          "suggestedScoreShare": 0.2776,
+          "deltaScoreSharePp": 2.8,
           "approvalStatus": "pending_human_review"
         }
       ]
@@ -319,7 +322,7 @@
         "mode": "factor_stress_research_assumption"
       }
     },
-    "proposalStatus": "review_required",
+    "proposalStatus": "blocked_model_input",
     "nonExecutable": true
   }
 }

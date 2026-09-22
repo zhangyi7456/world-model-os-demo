@@ -903,9 +903,9 @@
       "policyMin": 0.25,
       "policyTarget": 0.38,
       "policyMax": 0.5,
-      "status": "above_max",
-      "normalStatus": "above_max",
-      "stressStatus": "above_max",
+      "status": "unknown_model_blocked",
+      "normalStatus": "unknown_model_blocked",
+      "stressStatus": "unknown_model_blocked",
       "confidence": 0.8294
     },
     {
@@ -917,9 +917,9 @@
       "policyMin": 0.05,
       "policyTarget": 0.12,
       "policyMax": 0.22,
-      "status": "within_band",
-      "normalStatus": "within_band",
-      "stressStatus": "within_band",
+      "status": "unknown_model_blocked",
+      "normalStatus": "unknown_model_blocked",
+      "stressStatus": "unknown_model_blocked",
       "confidence": 0.8294
     },
     {
@@ -931,9 +931,9 @@
       "policyMin": 0.06,
       "policyTarget": 0.14,
       "policyMax": 0.25,
-      "status": "within_band",
-      "normalStatus": "within_band",
-      "stressStatus": "within_band",
+      "status": "unknown_model_blocked",
+      "normalStatus": "unknown_model_blocked",
+      "stressStatus": "unknown_model_blocked",
       "confidence": 0.8294
     },
     {
@@ -945,9 +945,9 @@
       "policyMin": 0.02,
       "policyTarget": 0.08,
       "policyMax": 0.16,
-      "status": "within_band",
-      "normalStatus": "within_band",
-      "stressStatus": "within_band",
+      "status": "unknown_model_blocked",
+      "normalStatus": "unknown_model_blocked",
+      "stressStatus": "unknown_model_blocked",
       "confidence": 0.8294
     },
     {
@@ -959,9 +959,9 @@
       "policyMin": 0.05,
       "policyTarget": 0.12,
       "policyMax": 0.24,
-      "status": "below_min",
-      "normalStatus": "below_min",
-      "stressStatus": "below_min",
+      "status": "unknown_model_blocked",
+      "normalStatus": "unknown_model_blocked",
+      "stressStatus": "unknown_model_blocked",
       "confidence": 0.8294
     },
     {
@@ -973,9 +973,9 @@
       "policyMin": 0.0,
       "policyTarget": 0.06,
       "policyMax": 0.14,
-      "status": "within_band",
-      "normalStatus": "within_band",
-      "stressStatus": "within_band",
+      "status": "unknown_model_blocked",
+      "normalStatus": "unknown_model_blocked",
+      "stressStatus": "unknown_model_blocked",
       "confidence": 0.8294
     },
     {
@@ -987,9 +987,9 @@
       "policyMin": 0.02,
       "policyTarget": 0.1,
       "policyMax": 0.2,
-      "status": "within_band",
-      "normalStatus": "within_band",
-      "stressStatus": "within_band",
+      "status": "unknown_model_blocked",
+      "normalStatus": "unknown_model_blocked",
+      "stressStatus": "unknown_model_blocked",
       "confidence": 0.8294
     }
   ],
@@ -998,7 +998,7 @@
       "scenarioId": "soft_landing",
       "title": "低速增长，通胀缓慢回落",
       "scenarioType": "primary",
-      "suggestedProbability": 0.32,
+      "suggestedScoreShare": 0.32,
       "approvalStatus": "pending_human_review",
       "lossRange": {
         "low": 0.01298,
@@ -1022,7 +1022,7 @@
       "scenarioId": "credit_contraction",
       "title": "需求收缩触发信用压力",
       "scenarioType": "primary",
-      "suggestedProbability": 0.2869,
+      "suggestedScoreShare": 0.2869,
       "approvalStatus": "pending_human_review",
       "lossRange": {
         "low": -0.19117,
@@ -1046,7 +1046,7 @@
       "scenarioId": "stagflation",
       "title": "增长减速，价格压力再起",
       "scenarioType": "primary",
-      "suggestedProbability": 0.3931,
+      "suggestedScoreShare": 0.3931,
       "approvalStatus": "pending_human_review",
       "lossRange": {
         "low": -0.19045,
@@ -1070,7 +1070,7 @@
       "scenarioId": "productivity_upside",
       "title": "生产率上行超预期",
       "scenarioType": "overlay",
-      "suggestedProbability": 0.25,
+      "suggestedScoreShare": 0.25,
       "approvalStatus": "pending_human_review",
       "lossRange": {
         "low": 0.04987,
@@ -1094,7 +1094,7 @@
       "scenarioId": "order_shock",
       "title": "秩序与供应链冲击",
       "scenarioType": "overlay",
-      "suggestedProbability": 0.2963,
+      "suggestedScoreShare": 0.2963,
       "approvalStatus": "pending_human_review",
       "lossRange": {
         "low": -0.1971,
@@ -1115,6 +1115,146 @@
       }
     }
   ],
+  "jointScenarioStress": [
+    {
+      "scenarioId": "soft_landing+productivity_upside",
+      "title": "低速增长，通胀缓慢回落 + 生产率上行超预期",
+      "components": [
+        "soft_landing",
+        "productivity_upside"
+      ],
+      "lossRange": {
+        "low": 0.06285,
+        "high": 0.18285,
+        "mode": "combined_factor_stress_research_assumption"
+      },
+      "pointEstimate": 0.12285,
+      "leadingLossFactor": "real_rate"
+    },
+    {
+      "scenarioId": "soft_landing+order_shock",
+      "title": "低速增长，通胀缓慢回落 + 秩序与供应链冲击",
+      "components": [
+        "soft_landing",
+        "order_shock"
+      ],
+      "lossRange": {
+        "low": -0.18412,
+        "high": -0.05412,
+        "mode": "combined_factor_stress_research_assumption"
+      },
+      "pointEstimate": -0.11912,
+      "leadingLossFactor": "equity"
+    },
+    {
+      "scenarioId": "soft_landing+productivity_upside+order_shock",
+      "title": "低速增长，通胀缓慢回落 + 生产率上行超预期 + 秩序与供应链冲击",
+      "components": [
+        "soft_landing",
+        "productivity_upside",
+        "order_shock"
+      ],
+      "lossRange": {
+        "low": -0.13425,
+        "high": 0.06575,
+        "mode": "combined_factor_stress_research_assumption"
+      },
+      "pointEstimate": -0.03425,
+      "leadingLossFactor": "nominal_duration"
+    },
+    {
+      "scenarioId": "credit_contraction+productivity_upside",
+      "title": "需求收缩触发信用压力 + 生产率上行超预期",
+      "components": [
+        "credit_contraction",
+        "productivity_upside"
+      ],
+      "lossRange": {
+        "low": -0.1413,
+        "high": -0.0013,
+        "mode": "combined_factor_stress_research_assumption"
+      },
+      "pointEstimate": -0.0713,
+      "leadingLossFactor": "equity"
+    },
+    {
+      "scenarioId": "credit_contraction+order_shock",
+      "title": "需求收缩触发信用压力 + 秩序与供应链冲击",
+      "components": [
+        "credit_contraction",
+        "order_shock"
+      ],
+      "lossRange": {
+        "low": -0.38827,
+        "high": -0.23827,
+        "mode": "combined_factor_stress_research_assumption"
+      },
+      "pointEstimate": -0.31327,
+      "leadingLossFactor": "equity"
+    },
+    {
+      "scenarioId": "credit_contraction+productivity_upside+order_shock",
+      "title": "需求收缩触发信用压力 + 生产率上行超预期 + 秩序与供应链冲击",
+      "components": [
+        "credit_contraction",
+        "productivity_upside",
+        "order_shock"
+      ],
+      "lossRange": {
+        "low": -0.3384,
+        "high": -0.1184,
+        "mode": "combined_factor_stress_research_assumption"
+      },
+      "pointEstimate": -0.2284,
+      "leadingLossFactor": "equity"
+    },
+    {
+      "scenarioId": "stagflation+productivity_upside",
+      "title": "增长减速，价格压力再起 + 生产率上行超预期",
+      "components": [
+        "stagflation",
+        "productivity_upside"
+      ],
+      "lossRange": {
+        "low": -0.14058,
+        "high": -0.01058,
+        "mode": "combined_factor_stress_research_assumption"
+      },
+      "pointEstimate": -0.07558,
+      "leadingLossFactor": "nominal_duration"
+    },
+    {
+      "scenarioId": "stagflation+order_shock",
+      "title": "增长减速，价格压力再起 + 秩序与供应链冲击",
+      "components": [
+        "stagflation",
+        "order_shock"
+      ],
+      "lossRange": {
+        "low": -0.38755,
+        "high": -0.24755,
+        "mode": "combined_factor_stress_research_assumption"
+      },
+      "pointEstimate": -0.31755,
+      "leadingLossFactor": "equity"
+    },
+    {
+      "scenarioId": "stagflation+productivity_upside+order_shock",
+      "title": "增长减速，价格压力再起 + 生产率上行超预期 + 秩序与供应链冲击",
+      "components": [
+        "stagflation",
+        "productivity_upside",
+        "order_shock"
+      ],
+      "lossRange": {
+        "low": -0.33768,
+        "high": -0.12768,
+        "mode": "combined_factor_stress_research_assumption"
+      },
+      "pointEstimate": -0.23268,
+      "leadingLossFactor": "equity"
+    }
+  ],
   "constraints": {
     "policy": {
       "volatilityTarget": {
@@ -1133,9 +1273,9 @@
       {
         "id": "tail_loss",
         "label": "情景尾部损失",
-        "value": -0.1971,
+        "value": -0.38827,
         "limit": -0.18,
-        "status": "breach"
+        "status": "blocked_model_input"
       },
       {
         "id": "single_asset",
@@ -1156,7 +1296,7 @@
         "label": "正常波动上限",
         "value": 0.118511,
         "limit": 0.12,
-        "status": "pass"
+        "status": "blocked_model_input"
       },
       {
         "id": "max_liquidity_days",
@@ -1167,17 +1307,12 @@
       }
     ],
     "liquidWeight": 0.92,
-    "worstTailLoss": -0.1971
+    "worstTailLoss": -0.38827
   },
   "proposal": {
     "proposalType": "RISK_BUDGET_REVIEW",
-    "status": "review_required",
-    "reasons": [
-      "权益系统风险（正常）高于上限",
-      "权益系统风险（压力）高于上限",
-      "通胀 / 商品（正常）低于下限",
-      "情景尾部损失"
-    ],
+    "status": "blocked_model_input",
+    "reasons": [],
     "nonExecutable": true,
     "requiresHumanApproval": true,
     "orderPayload": null,
@@ -1188,19 +1323,19 @@
       "factorBetaScale": 0.9,
       "before": {
         "expectedVolatility": 0.118511,
-        "worstTailLoss": -0.1971,
+        "worstTailLoss": -0.38827,
         "topFactorId": "equity",
         "topFactorContribution": 0.62617
       },
       "after": {
         "expectedVolatility": 0.111168,
-        "worstTailLoss": -0.188604,
+        "worstTailLoss": -0.37339,
         "topFactorId": "equity",
         "topFactorContribution": 0.587903
       },
       "delta": {
         "expectedVolatility": -0.007343,
-        "worstTailLoss": 0.008496
+        "worstTailLoss": 0.01488
       },
       "notAnAllocation": true
     },

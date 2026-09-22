@@ -18,7 +18,7 @@
       "horizon": "6M",
       "updateMode": "bounded_bayesian_like_suggestion",
       "requiresHumanApproval": true,
-      "probabilityClaim": "research judgment support; not an objective posterior",
+      "scoreShareClaim": "bounded research score shares; not calibrated probabilities",
       "scenarios": [
         {
           "id": "soft_landing",
@@ -33,10 +33,11 @@
             "high": 0.06,
             "mode": "research_assumption"
           },
-          "rawModelProbability": 0.2226,
-          "suggestedProbability": 0.32,
+          "priorScoreShare": 0.4,
+          "rawModelScoreShare": 0.2226,
+          "suggestedScoreShare": 0.32,
           "approvedProbability": null,
-          "deltaPp": -8.0,
+          "deltaScoreSharePp": -8.0,
           "contributions": [
             {
               "feature": "growth.momentum",
@@ -84,10 +85,11 @@
             "high": -0.05,
             "mode": "research_assumption"
           },
-          "rawModelProbability": 0.3219,
-          "suggestedProbability": 0.2869,
+          "priorScoreShare": 0.25,
+          "rawModelScoreShare": 0.3219,
+          "suggestedScoreShare": 0.2869,
           "approvedProbability": null,
-          "deltaPp": 3.7,
+          "deltaScoreSharePp": 3.7,
           "contributions": [
             {
               "feature": "fragility.level",
@@ -129,10 +131,11 @@
             "high": -0.02,
             "mode": "research_assumption"
           },
-          "rawModelProbability": 0.4555,
-          "suggestedProbability": 0.3931,
+          "priorScoreShare": 0.35,
+          "rawModelScoreShare": 0.4555,
+          "suggestedScoreShare": 0.3931,
           "approvedProbability": null,
-          "deltaPp": 4.3,
+          "deltaScoreSharePp": 4.3,
           "contributions": [
             {
               "feature": "order.level",
@@ -192,10 +195,11 @@
                 "high": 0.06,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2751,
-              "suggestedProbability": 0.35,
+              "priorScoreShare": 0.4,
+              "rawModelScoreShare": 0.2751,
+              "suggestedScoreShare": 0.35,
               "approvedProbability": null,
-              "deltaPp": -5.0,
+              "deltaScoreSharePp": -5.0,
               "contributions": [
                 {
                   "feature": "growth.momentum",
@@ -243,10 +247,11 @@
                 "high": -0.05,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.3008,
-              "suggestedProbability": 0.275,
+              "priorScoreShare": 0.25,
+              "rawModelScoreShare": 0.3008,
+              "suggestedScoreShare": 0.275,
               "approvedProbability": null,
-              "deltaPp": 2.5,
+              "deltaScoreSharePp": 2.5,
               "contributions": [
                 {
                   "feature": "fragility.level",
@@ -288,10 +293,11 @@
                 "high": -0.02,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.4241,
-              "suggestedProbability": 0.375,
+              "priorScoreShare": 0.35,
+              "rawModelScoreShare": 0.4241,
+              "suggestedScoreShare": 0.375,
               "approvedProbability": null,
-              "deltaPp": 2.5,
+              "deltaScoreSharePp": 2.5,
               "contributions": [
                 {
                   "feature": "order.level",
@@ -326,35 +332,35 @@
               "scenarioId": "credit_contraction",
               "feature": "fragility.level",
               "impact": 0.3517,
-              "reliability": 0.8867,
+              "reliability": 0.9236,
               "independenceCluster": "fragility"
             },
             {
               "scenarioId": "stagflation",
               "feature": "order.level",
               "impact": 0.3323,
-              "reliability": 0.7916,
+              "reliability": 0.8034,
               "independenceCluster": "order"
             },
             {
               "scenarioId": "credit_contraction",
               "feature": "liquidity.level",
               "impact": 0.3253,
-              "reliability": 0.9187,
+              "reliability": 0.97,
               "independenceCluster": "liquidity"
             },
             {
               "scenarioId": "soft_landing",
               "feature": "growth.momentum",
               "impact": -0.2881,
-              "reliability": 0.9202,
+              "reliability": 0.9734,
               "independenceCluster": "growth"
             },
             {
               "scenarioId": "soft_landing",
               "feature": "inflation.momentum",
               "impact": -0.2192,
-              "reliability": 0.9112,
+              "reliability": 0.959,
               "independenceCluster": "inflation"
             }
           ],
@@ -464,11 +470,11 @@
               "leadingFeature": "liquidity.level"
             }
           ],
-          "probabilityHistory": [
+          "scoreShareHistory": [
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "prior",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.4,
                 "credit_contraction": 0.25,
                 "stagflation": 0.35
@@ -477,7 +483,7 @@
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "machine_suggested",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.35,
                 "credit_contraction": 0.275,
                 "stagflation": 0.375
@@ -518,10 +524,11 @@
                 "high": 0.06,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2226,
-              "suggestedProbability": 0.32,
+              "priorScoreShare": 0.4,
+              "rawModelScoreShare": 0.2226,
+              "suggestedScoreShare": 0.32,
               "approvedProbability": null,
-              "deltaPp": -8.0,
+              "deltaScoreSharePp": -8.0,
               "contributions": [
                 {
                   "feature": "growth.momentum",
@@ -569,10 +576,11 @@
                 "high": -0.05,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.3219,
-              "suggestedProbability": 0.2869,
+              "priorScoreShare": 0.25,
+              "rawModelScoreShare": 0.3219,
+              "suggestedScoreShare": 0.2869,
               "approvedProbability": null,
-              "deltaPp": 3.7,
+              "deltaScoreSharePp": 3.7,
               "contributions": [
                 {
                   "feature": "fragility.level",
@@ -614,10 +622,11 @@
                 "high": -0.02,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.4555,
-              "suggestedProbability": 0.3931,
+              "priorScoreShare": 0.35,
+              "rawModelScoreShare": 0.4555,
+              "suggestedScoreShare": 0.3931,
               "approvedProbability": null,
-              "deltaPp": 4.3,
+              "deltaScoreSharePp": 4.3,
               "contributions": [
                 {
                   "feature": "order.level",
@@ -652,35 +661,35 @@
               "scenarioId": "credit_contraction",
               "feature": "fragility.level",
               "impact": 0.3517,
-              "reliability": 0.8867,
+              "reliability": 0.9236,
               "independenceCluster": "fragility"
             },
             {
               "scenarioId": "stagflation",
               "feature": "order.level",
               "impact": 0.3323,
-              "reliability": 0.7916,
+              "reliability": 0.8034,
               "independenceCluster": "order"
             },
             {
               "scenarioId": "credit_contraction",
               "feature": "liquidity.level",
               "impact": 0.3253,
-              "reliability": 0.9187,
+              "reliability": 0.97,
               "independenceCluster": "liquidity"
             },
             {
               "scenarioId": "soft_landing",
               "feature": "growth.momentum",
               "impact": -0.2881,
-              "reliability": 0.9202,
+              "reliability": 0.9734,
               "independenceCluster": "growth"
             },
             {
               "scenarioId": "soft_landing",
               "feature": "inflation.momentum",
               "impact": -0.2192,
-              "reliability": 0.9112,
+              "reliability": 0.959,
               "independenceCluster": "inflation"
             }
           ],
@@ -790,11 +799,11 @@
               "leadingFeature": "liquidity.level"
             }
           ],
-          "probabilityHistory": [
+          "scoreShareHistory": [
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "prior",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.4,
                 "credit_contraction": 0.25,
                 "stagflation": 0.35
@@ -803,7 +812,7 @@
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "machine_suggested",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.32,
                 "credit_contraction": 0.2869,
                 "stagflation": 0.3931
@@ -845,10 +854,11 @@
                 "high": 0.06,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2007,
-              "suggestedProbability": 0.3,
+              "priorScoreShare": 0.4,
+              "rawModelScoreShare": 0.2007,
+              "suggestedScoreShare": 0.3,
               "approvedProbability": null,
-              "deltaPp": -10.0,
+              "deltaScoreSharePp": -10.0,
               "contributions": [
                 {
                   "feature": "growth.momentum",
@@ -896,10 +906,11 @@
                 "high": -0.05,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.3306,
-              "suggestedProbability": 0.2924,
+              "priorScoreShare": 0.25,
+              "rawModelScoreShare": 0.3306,
+              "suggestedScoreShare": 0.2924,
               "approvedProbability": null,
-              "deltaPp": 4.2,
+              "deltaScoreSharePp": 4.2,
               "contributions": [
                 {
                   "feature": "fragility.level",
@@ -941,10 +952,11 @@
                 "high": -0.02,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.4687,
-              "suggestedProbability": 0.4076,
+              "priorScoreShare": 0.35,
+              "rawModelScoreShare": 0.4687,
+              "suggestedScoreShare": 0.4076,
               "approvedProbability": null,
-              "deltaPp": 5.8,
+              "deltaScoreSharePp": 5.8,
               "contributions": [
                 {
                   "feature": "order.level",
@@ -979,35 +991,35 @@
               "scenarioId": "credit_contraction",
               "feature": "fragility.level",
               "impact": 0.3517,
-              "reliability": 0.8867,
+              "reliability": 0.9236,
               "independenceCluster": "fragility"
             },
             {
               "scenarioId": "stagflation",
               "feature": "order.level",
               "impact": 0.3323,
-              "reliability": 0.7916,
+              "reliability": 0.8034,
               "independenceCluster": "order"
             },
             {
               "scenarioId": "credit_contraction",
               "feature": "liquidity.level",
               "impact": 0.3253,
-              "reliability": 0.9187,
+              "reliability": 0.97,
               "independenceCluster": "liquidity"
             },
             {
               "scenarioId": "soft_landing",
               "feature": "growth.momentum",
               "impact": -0.2881,
-              "reliability": 0.9202,
+              "reliability": 0.9734,
               "independenceCluster": "growth"
             },
             {
               "scenarioId": "soft_landing",
               "feature": "inflation.momentum",
               "impact": -0.2192,
-              "reliability": 0.9112,
+              "reliability": 0.959,
               "independenceCluster": "inflation"
             }
           ],
@@ -1117,11 +1129,11 @@
               "leadingFeature": "liquidity.level"
             }
           ],
-          "probabilityHistory": [
+          "scoreShareHistory": [
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "prior",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.4,
                 "credit_contraction": 0.25,
                 "stagflation": 0.35
@@ -1130,7 +1142,7 @@
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "machine_suggested",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.3,
                 "credit_contraction": 0.2924,
                 "stagflation": 0.4076
@@ -1149,7 +1161,7 @@
           "definition": "企业采用与单位成本改善形成广泛生产率传导。",
           "trigger": "生产率与单位成本的正式数据确认",
           "invalidation": "资本开支未转化为采用率或效率",
-          "suggestedProbability": 0.25,
+          "suggestedScoreShare": 0.25,
           "approvalStatus": "pending_human_review"
         },
         {
@@ -1158,7 +1170,7 @@
           "definition": "贸易、制裁、能源或安全事件产生非线性损失。",
           "trigger": "冲击持续并传导至物流、能源或资本限制",
           "invalidation": "冲突降级且供应链价格快速正常化",
-          "suggestedProbability": 0.2963,
+          "suggestedScoreShare": 0.2963,
           "approvalStatus": "pending_human_review"
         }
       ],
@@ -1167,84 +1179,84 @@
           "baseScenarioId": "soft_landing",
           "productivityUpside": false,
           "orderShock": false,
-          "jointProbability": 0.1689,
+          "jointScoreShare": 0.1689,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "soft_landing",
           "productivityUpside": false,
           "orderShock": true,
-          "jointProbability": 0.0711,
+          "jointScoreShare": 0.0711,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "soft_landing",
           "productivityUpside": true,
           "orderShock": false,
-          "jointProbability": 0.0563,
+          "jointScoreShare": 0.0563,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "soft_landing",
           "productivityUpside": true,
           "orderShock": true,
-          "jointProbability": 0.0237,
+          "jointScoreShare": 0.0237,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "credit_contraction",
           "productivityUpside": false,
           "orderShock": false,
-          "jointProbability": 0.1514,
+          "jointScoreShare": 0.1514,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "credit_contraction",
           "productivityUpside": false,
           "orderShock": true,
-          "jointProbability": 0.0638,
+          "jointScoreShare": 0.0638,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "credit_contraction",
           "productivityUpside": true,
           "orderShock": false,
-          "jointProbability": 0.0505,
+          "jointScoreShare": 0.0505,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "credit_contraction",
           "productivityUpside": true,
           "orderShock": true,
-          "jointProbability": 0.0213,
+          "jointScoreShare": 0.0213,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "stagflation",
           "productivityUpside": false,
           "orderShock": false,
-          "jointProbability": 0.2075,
+          "jointScoreShare": 0.2075,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "stagflation",
           "productivityUpside": false,
           "orderShock": true,
-          "jointProbability": 0.0874,
+          "jointScoreShare": 0.0874,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "stagflation",
           "productivityUpside": true,
           "orderShock": false,
-          "jointProbability": 0.0692,
+          "jointScoreShare": 0.0692,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "stagflation",
           "productivityUpside": true,
           "orderShock": true,
-          "jointProbability": 0.0289,
+          "jointScoreShare": 0.0289,
           "assumption": "conditional_independence_demo"
         }
       ],
@@ -1253,35 +1265,35 @@
           "scenarioId": "credit_contraction",
           "feature": "fragility.level",
           "impact": 0.3517,
-          "reliability": 0.8867,
+          "reliability": 0.9236,
           "independenceCluster": "fragility"
         },
         {
           "scenarioId": "stagflation",
           "feature": "order.level",
           "impact": 0.3323,
-          "reliability": 0.7916,
+          "reliability": 0.8034,
           "independenceCluster": "order"
         },
         {
           "scenarioId": "credit_contraction",
           "feature": "liquidity.level",
           "impact": 0.3253,
-          "reliability": 0.9187,
+          "reliability": 0.97,
           "independenceCluster": "liquidity"
         },
         {
           "scenarioId": "soft_landing",
           "feature": "growth.momentum",
           "impact": -0.2881,
-          "reliability": 0.9202,
+          "reliability": 0.9734,
           "independenceCluster": "growth"
         },
         {
           "scenarioId": "soft_landing",
           "feature": "inflation.momentum",
           "impact": -0.2192,
-          "reliability": 0.9112,
+          "reliability": 0.959,
           "independenceCluster": "inflation"
         }
       ],
@@ -1411,7 +1423,7 @@
       "horizon": "6M",
       "updateMode": "bounded_bayesian_like_suggestion",
       "requiresHumanApproval": true,
-      "probabilityClaim": "research judgment support; not an objective posterior",
+      "scoreShareClaim": "bounded research score shares; not calibrated probabilities",
       "scenarios": [
         {
           "id": "soft_landing",
@@ -1426,10 +1438,11 @@
             "high": 0.06,
             "mode": "research_assumption"
           },
-          "rawModelProbability": 0.2775,
-          "suggestedProbability": 0.32,
+          "priorScoreShare": 0.4,
+          "rawModelScoreShare": 0.2775,
+          "suggestedScoreShare": 0.32,
           "approvedProbability": null,
-          "deltaPp": -8.0,
+          "deltaScoreSharePp": -8.0,
           "contributions": [
             {
               "feature": "inflation.momentum",
@@ -1477,10 +1490,11 @@
             "high": -0.05,
             "mode": "research_assumption"
           },
-          "rawModelProbability": 0.2641,
-          "suggestedProbability": 0.2589,
+          "priorScoreShare": 0.25,
+          "rawModelScoreShare": 0.2641,
+          "suggestedScoreShare": 0.2589,
           "approvedProbability": null,
-          "deltaPp": 0.9,
+          "deltaScoreSharePp": 0.9,
           "contributions": [
             {
               "feature": "fragility.level",
@@ -1522,10 +1536,11 @@
             "high": -0.02,
             "mode": "research_assumption"
           },
-          "rawModelProbability": 0.4584,
-          "suggestedProbability": 0.4211,
+          "priorScoreShare": 0.35,
+          "rawModelScoreShare": 0.4584,
+          "suggestedScoreShare": 0.4211,
           "approvedProbability": null,
-          "deltaPp": 7.1,
+          "deltaScoreSharePp": 7.1,
           "contributions": [
             {
               "feature": "inflation.momentum",
@@ -1585,10 +1600,11 @@
                 "high": 0.06,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.3161,
-              "suggestedProbability": 0.35,
+              "priorScoreShare": 0.4,
+              "rawModelScoreShare": 0.3161,
+              "suggestedScoreShare": 0.35,
               "approvedProbability": null,
-              "deltaPp": -5.0,
+              "deltaScoreSharePp": -5.0,
               "contributions": [
                 {
                   "feature": "inflation.momentum",
@@ -1636,10 +1652,11 @@
                 "high": -0.05,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2615,
-              "suggestedProbability": 0.2571,
+              "priorScoreShare": 0.25,
+              "rawModelScoreShare": 0.2615,
+              "suggestedScoreShare": 0.2571,
               "approvedProbability": null,
-              "deltaPp": 0.7,
+              "deltaScoreSharePp": 0.7,
               "contributions": [
                 {
                   "feature": "fragility.level",
@@ -1681,10 +1698,11 @@
                 "high": -0.02,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.4224,
-              "suggestedProbability": 0.3929,
+              "priorScoreShare": 0.35,
+              "rawModelScoreShare": 0.4224,
+              "suggestedScoreShare": 0.3929,
               "approvedProbability": null,
-              "deltaPp": 4.3,
+              "deltaScoreSharePp": 4.3,
               "contributions": [
                 {
                   "feature": "inflation.momentum",
@@ -1719,28 +1737,28 @@
               "scenarioId": "credit_contraction",
               "feature": "fragility.level",
               "impact": 0.4204,
-              "reliability": 0.8284,
+              "reliability": 0.852,
               "independenceCluster": "fragility"
             },
             {
               "scenarioId": "stagflation",
               "feature": "inflation.momentum",
               "impact": 0.357,
-              "reliability": 0.8844,
+              "reliability": 0.9223,
               "independenceCluster": "inflation"
             },
             {
               "scenarioId": "stagflation",
               "feature": "order.level",
               "impact": 0.3323,
-              "reliability": 0.7916,
+              "reliability": 0.8034,
               "independenceCluster": "order"
             },
             {
               "scenarioId": "credit_contraction",
               "feature": "liquidity.level",
               "impact": -0.2885,
-              "reliability": 0.884,
+              "reliability": 0.9225,
               "independenceCluster": "liquidity"
             }
           ],
@@ -1850,11 +1868,11 @@
               "leadingFeature": "growth.momentum"
             }
           ],
-          "probabilityHistory": [
+          "scoreShareHistory": [
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "prior",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.4,
                 "credit_contraction": 0.25,
                 "stagflation": 0.35
@@ -1863,7 +1881,7 @@
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "machine_suggested",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.35,
                 "credit_contraction": 0.2571,
                 "stagflation": 0.3929
@@ -1904,10 +1922,11 @@
                 "high": 0.06,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2775,
-              "suggestedProbability": 0.32,
+              "priorScoreShare": 0.4,
+              "rawModelScoreShare": 0.2775,
+              "suggestedScoreShare": 0.32,
               "approvedProbability": null,
-              "deltaPp": -8.0,
+              "deltaScoreSharePp": -8.0,
               "contributions": [
                 {
                   "feature": "inflation.momentum",
@@ -1955,10 +1974,11 @@
                 "high": -0.05,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2641,
-              "suggestedProbability": 0.2589,
+              "priorScoreShare": 0.25,
+              "rawModelScoreShare": 0.2641,
+              "suggestedScoreShare": 0.2589,
               "approvedProbability": null,
-              "deltaPp": 0.9,
+              "deltaScoreSharePp": 0.9,
               "contributions": [
                 {
                   "feature": "fragility.level",
@@ -2000,10 +2020,11 @@
                 "high": -0.02,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.4584,
-              "suggestedProbability": 0.4211,
+              "priorScoreShare": 0.35,
+              "rawModelScoreShare": 0.4584,
+              "suggestedScoreShare": 0.4211,
               "approvedProbability": null,
-              "deltaPp": 7.1,
+              "deltaScoreSharePp": 7.1,
               "contributions": [
                 {
                   "feature": "inflation.momentum",
@@ -2038,28 +2059,28 @@
               "scenarioId": "credit_contraction",
               "feature": "fragility.level",
               "impact": 0.4204,
-              "reliability": 0.8284,
+              "reliability": 0.852,
               "independenceCluster": "fragility"
             },
             {
               "scenarioId": "stagflation",
               "feature": "inflation.momentum",
               "impact": 0.357,
-              "reliability": 0.8844,
+              "reliability": 0.9223,
               "independenceCluster": "inflation"
             },
             {
               "scenarioId": "stagflation",
               "feature": "order.level",
               "impact": 0.3323,
-              "reliability": 0.7916,
+              "reliability": 0.8034,
               "independenceCluster": "order"
             },
             {
               "scenarioId": "credit_contraction",
               "feature": "liquidity.level",
               "impact": -0.2885,
-              "reliability": 0.884,
+              "reliability": 0.9225,
               "independenceCluster": "liquidity"
             }
           ],
@@ -2169,11 +2190,11 @@
               "leadingFeature": "growth.momentum"
             }
           ],
-          "probabilityHistory": [
+          "scoreShareHistory": [
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "prior",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.4,
                 "credit_contraction": 0.25,
                 "stagflation": 0.35
@@ -2182,7 +2203,7 @@
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "machine_suggested",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.32,
                 "credit_contraction": 0.2589,
                 "stagflation": 0.4211
@@ -2224,10 +2245,11 @@
                 "high": 0.06,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2605,
-              "suggestedProbability": 0.3,
+              "priorScoreShare": 0.4,
+              "rawModelScoreShare": 0.2605,
+              "suggestedScoreShare": 0.3,
               "approvedProbability": null,
-              "deltaPp": -10.0,
+              "deltaScoreSharePp": -10.0,
               "contributions": [
                 {
                   "feature": "inflation.momentum",
@@ -2275,10 +2297,11 @@
                 "high": -0.05,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2646,
-              "suggestedProbability": 0.2593,
+              "priorScoreShare": 0.25,
+              "rawModelScoreShare": 0.2646,
+              "suggestedScoreShare": 0.2593,
               "approvedProbability": null,
-              "deltaPp": 0.9,
+              "deltaScoreSharePp": 0.9,
               "contributions": [
                 {
                   "feature": "fragility.level",
@@ -2320,10 +2343,11 @@
                 "high": -0.02,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.4749,
-              "suggestedProbability": 0.4407,
+              "priorScoreShare": 0.35,
+              "rawModelScoreShare": 0.4749,
+              "suggestedScoreShare": 0.4407,
               "approvedProbability": null,
-              "deltaPp": 9.1,
+              "deltaScoreSharePp": 9.1,
               "contributions": [
                 {
                   "feature": "inflation.momentum",
@@ -2358,28 +2382,28 @@
               "scenarioId": "credit_contraction",
               "feature": "fragility.level",
               "impact": 0.4204,
-              "reliability": 0.8284,
+              "reliability": 0.852,
               "independenceCluster": "fragility"
             },
             {
               "scenarioId": "stagflation",
               "feature": "inflation.momentum",
               "impact": 0.357,
-              "reliability": 0.8844,
+              "reliability": 0.9223,
               "independenceCluster": "inflation"
             },
             {
               "scenarioId": "stagflation",
               "feature": "order.level",
               "impact": 0.3323,
-              "reliability": 0.7916,
+              "reliability": 0.8034,
               "independenceCluster": "order"
             },
             {
               "scenarioId": "credit_contraction",
               "feature": "liquidity.level",
               "impact": -0.2885,
-              "reliability": 0.884,
+              "reliability": 0.9225,
               "independenceCluster": "liquidity"
             }
           ],
@@ -2489,11 +2513,11 @@
               "leadingFeature": "growth.momentum"
             }
           ],
-          "probabilityHistory": [
+          "scoreShareHistory": [
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "prior",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.4,
                 "credit_contraction": 0.25,
                 "stagflation": 0.35
@@ -2502,7 +2526,7 @@
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "machine_suggested",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.3,
                 "credit_contraction": 0.2593,
                 "stagflation": 0.4407
@@ -2521,7 +2545,7 @@
           "definition": "企业采用与单位成本改善形成广泛生产率传导。",
           "trigger": "生产率与单位成本的正式数据确认",
           "invalidation": "资本开支未转化为采用率或效率",
-          "suggestedProbability": 0.25,
+          "suggestedScoreShare": 0.25,
           "approvalStatus": "pending_human_review"
         },
         {
@@ -2530,7 +2554,7 @@
           "definition": "贸易、制裁、能源或安全事件产生非线性损失。",
           "trigger": "冲击持续并传导至物流、能源或资本限制",
           "invalidation": "冲突降级且供应链价格快速正常化",
-          "suggestedProbability": 0.2963,
+          "suggestedScoreShare": 0.2963,
           "approvalStatus": "pending_human_review"
         }
       ],
@@ -2539,84 +2563,84 @@
           "baseScenarioId": "soft_landing",
           "productivityUpside": false,
           "orderShock": false,
-          "jointProbability": 0.1689,
+          "jointScoreShare": 0.1689,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "soft_landing",
           "productivityUpside": false,
           "orderShock": true,
-          "jointProbability": 0.0711,
+          "jointScoreShare": 0.0711,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "soft_landing",
           "productivityUpside": true,
           "orderShock": false,
-          "jointProbability": 0.0563,
+          "jointScoreShare": 0.0563,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "soft_landing",
           "productivityUpside": true,
           "orderShock": true,
-          "jointProbability": 0.0237,
+          "jointScoreShare": 0.0237,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "credit_contraction",
           "productivityUpside": false,
           "orderShock": false,
-          "jointProbability": 0.1366,
+          "jointScoreShare": 0.1366,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "credit_contraction",
           "productivityUpside": false,
           "orderShock": true,
-          "jointProbability": 0.0575,
+          "jointScoreShare": 0.0575,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "credit_contraction",
           "productivityUpside": true,
           "orderShock": false,
-          "jointProbability": 0.0455,
+          "jointScoreShare": 0.0455,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "credit_contraction",
           "productivityUpside": true,
           "orderShock": true,
-          "jointProbability": 0.0192,
+          "jointScoreShare": 0.0192,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "stagflation",
           "productivityUpside": false,
           "orderShock": false,
-          "jointProbability": 0.2222,
+          "jointScoreShare": 0.2222,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "stagflation",
           "productivityUpside": false,
           "orderShock": true,
-          "jointProbability": 0.0936,
+          "jointScoreShare": 0.0936,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "stagflation",
           "productivityUpside": true,
           "orderShock": false,
-          "jointProbability": 0.0741,
+          "jointScoreShare": 0.0741,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "stagflation",
           "productivityUpside": true,
           "orderShock": true,
-          "jointProbability": 0.0313,
+          "jointScoreShare": 0.0313,
           "assumption": "conditional_independence_demo"
         }
       ],
@@ -2625,28 +2649,28 @@
           "scenarioId": "credit_contraction",
           "feature": "fragility.level",
           "impact": 0.4204,
-          "reliability": 0.8284,
+          "reliability": 0.852,
           "independenceCluster": "fragility"
         },
         {
           "scenarioId": "stagflation",
           "feature": "inflation.momentum",
           "impact": 0.357,
-          "reliability": 0.8844,
+          "reliability": 0.9223,
           "independenceCluster": "inflation"
         },
         {
           "scenarioId": "stagflation",
           "feature": "order.level",
           "impact": 0.3323,
-          "reliability": 0.7916,
+          "reliability": 0.8034,
           "independenceCluster": "order"
         },
         {
           "scenarioId": "credit_contraction",
           "feature": "liquidity.level",
           "impact": -0.2885,
-          "reliability": 0.884,
+          "reliability": 0.9225,
           "independenceCluster": "liquidity"
         }
       ],
@@ -2776,7 +2800,7 @@
       "horizon": "6M",
       "updateMode": "bounded_bayesian_like_suggestion",
       "requiresHumanApproval": true,
-      "probabilityClaim": "research judgment support; not an objective posterior",
+      "scoreShareClaim": "bounded research score shares; not calibrated probabilities",
       "scenarios": [
         {
           "id": "soft_landing",
@@ -2791,10 +2815,11 @@
             "high": 0.06,
             "mode": "research_assumption"
           },
-          "rawModelProbability": 0.2467,
-          "suggestedProbability": 0.32,
+          "priorScoreShare": 0.4,
+          "rawModelScoreShare": 0.2467,
+          "suggestedScoreShare": 0.32,
           "approvedProbability": null,
-          "deltaPp": -8.0,
+          "deltaScoreSharePp": -8.0,
           "contributions": [
             {
               "feature": "growth.momentum",
@@ -2842,10 +2867,11 @@
             "high": -0.05,
             "mode": "research_assumption"
           },
-          "rawModelProbability": 0.2999,
-          "suggestedProbability": 0.2776,
+          "priorScoreShare": 0.25,
+          "rawModelScoreShare": 0.2999,
+          "suggestedScoreShare": 0.2776,
           "approvedProbability": null,
-          "deltaPp": 2.8,
+          "deltaScoreSharePp": 2.8,
           "contributions": [
             {
               "feature": "fragility.level",
@@ -2887,10 +2913,11 @@
             "high": -0.02,
             "mode": "research_assumption"
           },
-          "rawModelProbability": 0.4534,
-          "suggestedProbability": 0.4024,
+          "priorScoreShare": 0.35,
+          "rawModelScoreShare": 0.4534,
+          "suggestedScoreShare": 0.4024,
           "approvedProbability": null,
-          "deltaPp": 5.2,
+          "deltaScoreSharePp": 5.2,
           "contributions": [
             {
               "feature": "order.level",
@@ -2950,10 +2977,11 @@
                 "high": 0.06,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2933,
-              "suggestedProbability": 0.35,
+              "priorScoreShare": 0.4,
+              "rawModelScoreShare": 0.2933,
+              "suggestedScoreShare": 0.35,
               "approvedProbability": null,
-              "deltaPp": -5.0,
+              "deltaScoreSharePp": -5.0,
               "contributions": [
                 {
                   "feature": "growth.momentum",
@@ -3001,10 +3029,11 @@
                 "high": -0.05,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2857,
-              "suggestedProbability": 0.2692,
+              "priorScoreShare": 0.25,
+              "rawModelScoreShare": 0.2857,
+              "suggestedScoreShare": 0.2692,
               "approvedProbability": null,
-              "deltaPp": 1.9,
+              "deltaScoreSharePp": 1.9,
               "contributions": [
                 {
                   "feature": "fragility.level",
@@ -3046,10 +3075,11 @@
                 "high": -0.02,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.421,
-              "suggestedProbability": 0.3808,
+              "priorScoreShare": 0.35,
+              "rawModelScoreShare": 0.421,
+              "suggestedScoreShare": 0.3808,
               "approvedProbability": null,
-              "deltaPp": 3.1,
+              "deltaScoreSharePp": 3.1,
               "contributions": [
                 {
                   "feature": "order.level",
@@ -3084,28 +3114,28 @@
               "scenarioId": "stagflation",
               "feature": "order.level",
               "impact": 0.3323,
-              "reliability": 0.7916,
+              "reliability": 0.8034,
               "independenceCluster": "order"
             },
             {
               "scenarioId": "credit_contraction",
               "feature": "fragility.level",
               "impact": 0.3245,
-              "reliability": 0.8027,
+              "reliability": 0.8168,
               "independenceCluster": "fragility"
             },
             {
               "scenarioId": "credit_contraction",
               "feature": "growth.momentum",
               "impact": 0.274,
-              "reliability": 0.8309,
+              "reliability": 0.8546,
               "independenceCluster": "growth"
             },
             {
               "scenarioId": "stagflation",
               "feature": "inflation.momentum",
               "impact": 0.2444,
-              "reliability": 0.8394,
+              "reliability": 0.8653,
               "independenceCluster": "inflation"
             }
           ],
@@ -3215,11 +3245,11 @@
               "leadingFeature": "liquidity.level"
             }
           ],
-          "probabilityHistory": [
+          "scoreShareHistory": [
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "prior",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.4,
                 "credit_contraction": 0.25,
                 "stagflation": 0.35
@@ -3228,7 +3258,7 @@
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "machine_suggested",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.35,
                 "credit_contraction": 0.2692,
                 "stagflation": 0.3808
@@ -3269,10 +3299,11 @@
                 "high": 0.06,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2467,
-              "suggestedProbability": 0.32,
+              "priorScoreShare": 0.4,
+              "rawModelScoreShare": 0.2467,
+              "suggestedScoreShare": 0.32,
               "approvedProbability": null,
-              "deltaPp": -8.0,
+              "deltaScoreSharePp": -8.0,
               "contributions": [
                 {
                   "feature": "growth.momentum",
@@ -3320,10 +3351,11 @@
                 "high": -0.05,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2999,
-              "suggestedProbability": 0.2776,
+              "priorScoreShare": 0.25,
+              "rawModelScoreShare": 0.2999,
+              "suggestedScoreShare": 0.2776,
               "approvedProbability": null,
-              "deltaPp": 2.8,
+              "deltaScoreSharePp": 2.8,
               "contributions": [
                 {
                   "feature": "fragility.level",
@@ -3365,10 +3397,11 @@
                 "high": -0.02,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.4534,
-              "suggestedProbability": 0.4024,
+              "priorScoreShare": 0.35,
+              "rawModelScoreShare": 0.4534,
+              "suggestedScoreShare": 0.4024,
               "approvedProbability": null,
-              "deltaPp": 5.2,
+              "deltaScoreSharePp": 5.2,
               "contributions": [
                 {
                   "feature": "order.level",
@@ -3403,28 +3436,28 @@
               "scenarioId": "stagflation",
               "feature": "order.level",
               "impact": 0.3323,
-              "reliability": 0.7916,
+              "reliability": 0.8034,
               "independenceCluster": "order"
             },
             {
               "scenarioId": "credit_contraction",
               "feature": "fragility.level",
               "impact": 0.3245,
-              "reliability": 0.8027,
+              "reliability": 0.8168,
               "independenceCluster": "fragility"
             },
             {
               "scenarioId": "credit_contraction",
               "feature": "growth.momentum",
               "impact": 0.274,
-              "reliability": 0.8309,
+              "reliability": 0.8546,
               "independenceCluster": "growth"
             },
             {
               "scenarioId": "stagflation",
               "feature": "inflation.momentum",
               "impact": 0.2444,
-              "reliability": 0.8394,
+              "reliability": 0.8653,
               "independenceCluster": "inflation"
             }
           ],
@@ -3534,11 +3567,11 @@
               "leadingFeature": "liquidity.level"
             }
           ],
-          "probabilityHistory": [
+          "scoreShareHistory": [
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "prior",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.4,
                 "credit_contraction": 0.25,
                 "stagflation": 0.35
@@ -3547,7 +3580,7 @@
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "machine_suggested",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.32,
                 "credit_contraction": 0.2776,
                 "stagflation": 0.4024
@@ -3589,10 +3622,11 @@
                 "high": 0.06,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.2267,
-              "suggestedProbability": 0.3,
+              "priorScoreShare": 0.4,
+              "rawModelScoreShare": 0.2267,
+              "suggestedScoreShare": 0.3,
               "approvedProbability": null,
-              "deltaPp": -10.0,
+              "deltaScoreSharePp": -10.0,
               "contributions": [
                 {
                   "feature": "growth.momentum",
@@ -3640,10 +3674,11 @@
                 "high": -0.05,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.3057,
-              "suggestedProbability": 0.2813,
+              "priorScoreShare": 0.25,
+              "rawModelScoreShare": 0.3057,
+              "suggestedScoreShare": 0.2813,
               "approvedProbability": null,
-              "deltaPp": 3.1,
+              "deltaScoreSharePp": 3.1,
               "contributions": [
                 {
                   "feature": "fragility.level",
@@ -3685,10 +3720,11 @@
                 "high": -0.02,
                 "mode": "research_assumption"
               },
-              "rawModelProbability": 0.4677,
-              "suggestedProbability": 0.4187,
+              "priorScoreShare": 0.35,
+              "rawModelScoreShare": 0.4677,
+              "suggestedScoreShare": 0.4187,
               "approvedProbability": null,
-              "deltaPp": 6.9,
+              "deltaScoreSharePp": 6.9,
               "contributions": [
                 {
                   "feature": "order.level",
@@ -3723,28 +3759,28 @@
               "scenarioId": "stagflation",
               "feature": "order.level",
               "impact": 0.3323,
-              "reliability": 0.7916,
+              "reliability": 0.8034,
               "independenceCluster": "order"
             },
             {
               "scenarioId": "credit_contraction",
               "feature": "fragility.level",
               "impact": 0.3245,
-              "reliability": 0.8027,
+              "reliability": 0.8168,
               "independenceCluster": "fragility"
             },
             {
               "scenarioId": "credit_contraction",
               "feature": "growth.momentum",
               "impact": 0.274,
-              "reliability": 0.8309,
+              "reliability": 0.8546,
               "independenceCluster": "growth"
             },
             {
               "scenarioId": "stagflation",
               "feature": "inflation.momentum",
               "impact": 0.2444,
-              "reliability": 0.8394,
+              "reliability": 0.8653,
               "independenceCluster": "inflation"
             }
           ],
@@ -3854,11 +3890,11 @@
               "leadingFeature": "liquidity.level"
             }
           ],
-          "probabilityHistory": [
+          "scoreShareHistory": [
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "prior",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.4,
                 "credit_contraction": 0.25,
                 "stagflation": 0.35
@@ -3867,7 +3903,7 @@
             {
               "recordedAt": "2026-09-11T16:00:00+08:00",
               "stage": "machine_suggested",
-              "probabilities": {
+              "scoreShares": {
                 "soft_landing": 0.3,
                 "credit_contraction": 0.2813,
                 "stagflation": 0.4187
@@ -3886,7 +3922,7 @@
           "definition": "企业采用与单位成本改善形成广泛生产率传导。",
           "trigger": "生产率与单位成本的正式数据确认",
           "invalidation": "资本开支未转化为采用率或效率",
-          "suggestedProbability": 0.25,
+          "suggestedScoreShare": 0.25,
           "approvalStatus": "pending_human_review"
         },
         {
@@ -3895,7 +3931,7 @@
           "definition": "贸易、制裁、能源或安全事件产生非线性损失。",
           "trigger": "冲击持续并传导至物流、能源或资本限制",
           "invalidation": "冲突降级且供应链价格快速正常化",
-          "suggestedProbability": 0.2963,
+          "suggestedScoreShare": 0.2963,
           "approvalStatus": "pending_human_review"
         }
       ],
@@ -3904,84 +3940,84 @@
           "baseScenarioId": "soft_landing",
           "productivityUpside": false,
           "orderShock": false,
-          "jointProbability": 0.1689,
+          "jointScoreShare": 0.1689,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "soft_landing",
           "productivityUpside": false,
           "orderShock": true,
-          "jointProbability": 0.0711,
+          "jointScoreShare": 0.0711,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "soft_landing",
           "productivityUpside": true,
           "orderShock": false,
-          "jointProbability": 0.0563,
+          "jointScoreShare": 0.0563,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "soft_landing",
           "productivityUpside": true,
           "orderShock": true,
-          "jointProbability": 0.0237,
+          "jointScoreShare": 0.0237,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "credit_contraction",
           "productivityUpside": false,
           "orderShock": false,
-          "jointProbability": 0.1465,
+          "jointScoreShare": 0.1465,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "credit_contraction",
           "productivityUpside": false,
           "orderShock": true,
-          "jointProbability": 0.0617,
+          "jointScoreShare": 0.0617,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "credit_contraction",
           "productivityUpside": true,
           "orderShock": false,
-          "jointProbability": 0.0488,
+          "jointScoreShare": 0.0488,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "credit_contraction",
           "productivityUpside": true,
           "orderShock": true,
-          "jointProbability": 0.0206,
+          "jointScoreShare": 0.0206,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "stagflation",
           "productivityUpside": false,
           "orderShock": false,
-          "jointProbability": 0.2124,
+          "jointScoreShare": 0.2124,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "stagflation",
           "productivityUpside": false,
           "orderShock": true,
-          "jointProbability": 0.0894,
+          "jointScoreShare": 0.0894,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "stagflation",
           "productivityUpside": true,
           "orderShock": false,
-          "jointProbability": 0.0708,
+          "jointScoreShare": 0.0708,
           "assumption": "conditional_independence_demo"
         },
         {
           "baseScenarioId": "stagflation",
           "productivityUpside": true,
           "orderShock": true,
-          "jointProbability": 0.0298,
+          "jointScoreShare": 0.0298,
           "assumption": "conditional_independence_demo"
         }
       ],
@@ -3990,28 +4026,28 @@
           "scenarioId": "stagflation",
           "feature": "order.level",
           "impact": 0.3323,
-          "reliability": 0.7916,
+          "reliability": 0.8034,
           "independenceCluster": "order"
         },
         {
           "scenarioId": "credit_contraction",
           "feature": "fragility.level",
           "impact": 0.3245,
-          "reliability": 0.8027,
+          "reliability": 0.8168,
           "independenceCluster": "fragility"
         },
         {
           "scenarioId": "credit_contraction",
           "feature": "growth.momentum",
           "impact": 0.274,
-          "reliability": 0.8309,
+          "reliability": 0.8546,
           "independenceCluster": "growth"
         },
         {
           "scenarioId": "stagflation",
           "feature": "inflation.momentum",
           "impact": 0.2444,
-          "reliability": 0.8394,
+          "reliability": 0.8653,
           "independenceCluster": "inflation"
         }
       ],

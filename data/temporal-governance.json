@@ -57,8 +57,8 @@
         "configVersion": "demo-multi-2026-09-11",
         "approvalId": "DEMO-REVIEW-2026-09-15",
         "approvalStatus": "approved",
-        "sourceCommit": "f0bf84ec5c3424cc893b6a1cdecbf55df54d961c",
-        "artifactHash": "1f3f19ab96fba15efc6e3ce901fd357d52125cac08829c66d8cba321e547c179",
+        "sourceCommit": "dc8baf71a9482326692edbfa7c59475c33ce637c",
+        "artifactHash": "2048924030aedc30fe6a37e96b898ea15ae8f3fe261630a7497623f74e51770c",
         "dataEligibility": "DEMO_ONLY"
       }
     ]
@@ -95,7 +95,7 @@
     ]
   },
   "publicLicensePolicies": {
-    "schemaVersion": "0.1.0",
+    "schemaVersion": "0.2.0",
     "registryStatus": "FAIL_CLOSED_PENDING_LICENSE_REVIEW",
     "defaultDecision": "deny",
     "policies": [
@@ -103,6 +103,44 @@
         "licensePolicyId": "FRED_DERIVED_PUBLIC_CANDIDATE",
         "licenseClass": "CITATION_REQUIRED",
         "status": "pending_review",
+        "seriesScope": [
+          {
+            "indicatorId": "US_G_INDPRO",
+            "seriesId": "INDPRO"
+          },
+          {
+            "indicatorId": "US_G_RETAIL",
+            "seriesId": "RRSFS"
+          },
+          {
+            "indicatorId": "US_G_PAYROLL",
+            "seriesId": "PAYEMS"
+          },
+          {
+            "indicatorId": "US_G_UNRATE",
+            "seriesId": "UNRATE"
+          },
+          {
+            "indicatorId": "US_I_CORE",
+            "seriesId": "PCEPILFE"
+          },
+          {
+            "indicatorId": "US_I_WAGE",
+            "seriesId": "ECIALLCIV"
+          },
+          {
+            "indicatorId": "US_L_POLICY",
+            "seriesId": "DFF"
+          },
+          {
+            "indicatorId": "US_L_CREDIT",
+            "seriesId": "DRTSCILM"
+          },
+          {
+            "indicatorId": "US_L_MARKET",
+            "seriesId": "NFCI"
+          }
+        ],
         "allowedArtifactTypes": [
           "HIGH_LEVEL_STATE_SCORE",
           "SOURCE_LINK"

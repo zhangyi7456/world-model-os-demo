@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "siteRelease": "site-v1.6.0",
+  "siteRelease": "site-v1.7.0",
   "snapshotId": "demo-multi-2026-09-11T16:00:00+08:00",
   "dataModeComposition": {
     "worldState": "DEMO_FIXTURE",
@@ -35,21 +35,21 @@
     "calibrationReadiness": "0.1.0",
     "temporalGovernance": "0.1.0"
   },
-  "sourceCommit": "f0bf84ec5c3424cc893b6a1cdecbf55df54d961c",
+  "sourceCommit": "dc8baf71a9482326692edbfa7c59475c33ce637c",
   "workingTreeDirty": false,
   "artifactHashes": {
-    "worldState": "1f3f19ab96fba15efc6e3ce901fd357d52125cac08829c66d8cba321e547c179",
-    "causalMap": "27e141fd1f5044d1032242c4eaa2b9f69c029cac6d6fcb103d4f62f204caf1d9",
-    "scenarios": "6e77f61542951a10630981477df30bd4249974697dc37ba7fba57b3b6d57f520",
-    "referencePortfolio": "b2af20d5510476b973e7d62dd21de6db4829746373dfc20d3606af0f82b5ea6f",
+    "worldState": "2048924030aedc30fe6a37e96b898ea15ae8f3fe261630a7497623f74e51770c",
+    "causalMap": "da804cc57f65ac39931f761ffdcdfc015d4febb6ea86f2ef2af7f9f4779264ed",
+    "scenarios": "7f96c3aed87ca74e80c514ba967241aea37982fe59388c726b6daecd8b054f47",
+    "referencePortfolio": "6b30298fcdb583b193caaee02d9c5701ad4e4c5a3d87fdae692ab2dba2a43608",
     "releaseCalendar": "0ac12c8d32043c2ee9d461232e5e39f37557b1435f2ef06f44ec8b9aa4611225",
     "historyReplay": "26e37d31a9f9f469d54d8504b6549ec0a12a3fdecfb91a1d048fc3e7943daa80",
-    "scenarioLedger": "bc60619a489a889debd5a8f906e770753fad8e267160d6f0b514079713ff7514",
+    "scenarioLedger": "2002ca495033af099cf47e9d73b0624832b81bd17969a74be865c943c14cb724",
     "factorRiskMethod": "03caa8336a3c0af37859b72e80bf4bc1236f3e95643805a0a744bfaa208d7d28",
-    "phase5Status": "fe8133a179a779a6d1b436bfb9bb28859a03f1e3c5e4c1a8d87a711cac8fd54a",
-    "totalReturnLedger": "c33a714523ce0c5c2e9ff78c70c857e429fe3bed973e3b37670104dea6cd99d6",
-    "calibrationReadiness": "b6dbdf167792721fffce714de4dce8d611d5cd3bc1555115be3434162232166f",
-    "temporalGovernance": "5722d2d68cc931fd412fbecb0017df0f4a63aa4e0beb3e86a9b26a2cd37ff5bd"
+    "phase5Status": "b5614724c4aa758c4b5da6f11d025825b9f884a5ebe5a1a5de2d6071b3db1445",
+    "totalReturnLedger": "61dfe5a78d408ce8e0a6256c0abab2f904672ec5fb05d4fbbd026ccd279eb5cb",
+    "calibrationReadiness": "bd2c269730e64a718bf013cf846df1ee2eb02b232f4395cc90e43efa5bd054ce",
+    "temporalGovernance": "556c64020c17e0089e3262ce2dec0692ae2ca47d3796a906f1231d973d3a3b26"
   },
   "lastSuccessfulBuild": "2026-09-11T16:00:00+08:00",
   "approvalStatus": "demo_reviewed",

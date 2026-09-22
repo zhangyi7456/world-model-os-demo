@@ -50,7 +50,7 @@
             "field": "level",
             "score": 0.8308,
             "trend": "up",
-            "confidence": 0.7916,
+            "confidence": 0.8034,
             "freshness": "stale"
           }
         },
@@ -71,7 +71,7 @@
             "field": "momentum",
             "score": -0.3601,
             "trend": "down",
-            "confidence": 0.9202,
+            "confidence": 0.9734,
             "freshness": "fresh"
           }
         },
@@ -92,7 +92,7 @@
             "field": "momentum",
             "score": 0.274,
             "trend": "up",
-            "confidence": 0.9112,
+            "confidence": 0.959,
             "freshness": "fresh"
           }
         },
@@ -113,7 +113,7 @@
             "field": "level",
             "score": 0.5024,
             "trend": "up",
-            "confidence": 0.8867,
+            "confidence": 0.9236,
             "freshness": "fresh"
           }
         },
@@ -134,7 +134,7 @@
             "field": "level",
             "score": -0.4647,
             "trend": "flat",
-            "confidence": 0.9187,
+            "confidence": 0.97,
             "freshness": "fresh"
           }
         },
@@ -253,7 +253,7 @@
           ],
           "invalidation": "核心价格与工资动量持续回落且供给冲击消退",
           "status": "research_candidate",
-          "activityScore": 0.3317,
+          "activityScore": 0.34,
           "runtimeStatus": "candidate_only",
           "mechanismId": "mc.order_supply_inflation"
         },
@@ -280,7 +280,7 @@
           ],
           "invalidation": "政策明确转向增长或金融稳定目标且通胀容忍度上升",
           "status": "research_candidate",
-          "activityScore": 0.3696,
+          "activityScore": 0.3856,
           "runtimeStatus": "candidate_only",
           "mechanismId": "mc.inflation_policy"
         },
@@ -307,7 +307,7 @@
           ],
           "invalidation": "金融条件收紧但信用、需求和就业持续改善",
           "status": "research_candidate",
-          "activityScore": 0.369,
+          "activityScore": 0.3855,
           "runtimeStatus": "candidate_only",
           "mechanismId": "mc.liquidity_growth"
         },
@@ -334,7 +334,7 @@
           ],
           "invalidation": "偿债负担与违约指标在高利率环境下持续改善",
           "status": "research_candidate",
-          "activityScore": 0.3559,
+          "activityScore": 0.369,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -361,7 +361,7 @@
           ],
           "invalidation": "高脆弱性未伴随贷款标准、信用利差或支出恶化",
           "status": "research_candidate",
-          "activityScore": 0.3571,
+          "activityScore": 0.3709,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -388,7 +388,7 @@
           ],
           "invalidation": "盈利与权益风险溢价显著脱离增长状态",
           "status": "research_candidate",
-          "activityScore": 0.3592,
+          "activityScore": 0.3759,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -415,7 +415,7 @@
           ],
           "invalidation": "信用压力代理与脆弱性长期反向变化",
           "status": "research_candidate",
-          "activityScore": 0.3653,
+          "activityScore": 0.3766,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -442,7 +442,7 @@
           ],
           "invalidation": "通胀风险资产未对持续通胀意外产生正向敏感度",
           "status": "research_candidate",
-          "activityScore": 0.3301,
+          "activityScore": 0.3447,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -469,7 +469,7 @@
           ],
           "invalidation": "政策金融条件与实际利率风险长期脱钩",
           "status": "research_candidate",
-          "activityScore": 0.3788,
+          "activityScore": 0.395,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -496,7 +496,7 @@
           ],
           "invalidation": "秩序压力上升未伴随储备多元化或保险需求",
           "status": "research_candidate",
-          "activityScore": 0.304,
+          "activityScore": 0.3068,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         }
@@ -510,7 +510,8 @@
             "e.fragility.growth",
             "e.growth.equity"
           ],
-          "activityScore": 0.3574,
+          "activityScore": 0.3719,
+          "runtimeStatus": "research_candidate",
           "evidenceGrade": "C"
         },
         {
@@ -521,7 +522,8 @@
             "e.inflation.liquidity",
             "e.liquidity.growth"
           ],
-          "activityScore": 0.3568,
+          "activityScore": 0.3704,
+          "runtimeStatus": "research_candidate",
           "evidenceGrade": "C"
         },
         {
@@ -530,11 +532,12 @@
           "edgeIds": [
             "e.order.insurance"
           ],
-          "activityScore": 0.304,
+          "activityScore": 0.3068,
+          "runtimeStatus": "research_candidate",
           "evidenceGrade": "D"
         }
       ],
-      "primaryPathId": "path.credit_contraction",
+      "attentionPathId": "path.credit_contraction",
       "hypotheses": [
         {
           "id": "H1",
@@ -892,7 +895,7 @@
             "field": "level",
             "score": 0.8308,
             "trend": "up",
-            "confidence": 0.7916,
+            "confidence": 0.8034,
             "freshness": "stale"
           }
         },
@@ -913,7 +916,7 @@
             "field": "momentum",
             "score": -0.1765,
             "trend": "flat",
-            "confidence": 0.8951,
+            "confidence": 0.9349,
             "freshness": "fresh"
           }
         },
@@ -934,7 +937,7 @@
             "field": "momentum",
             "score": 0.3967,
             "trend": "up",
-            "confidence": 0.8844,
+            "confidence": 0.9223,
             "freshness": "fresh"
           }
         },
@@ -955,7 +958,7 @@
             "field": "level",
             "score": 0.6006,
             "trend": "flat",
-            "confidence": 0.8284,
+            "confidence": 0.852,
             "freshness": "stale"
           }
         },
@@ -976,7 +979,7 @@
             "field": "level",
             "score": 0.4122,
             "trend": "up",
-            "confidence": 0.884,
+            "confidence": 0.9225,
             "freshness": "fresh"
           }
         },
@@ -1095,7 +1098,7 @@
           ],
           "invalidation": "核心价格与工资动量持续回落且供给冲击消退",
           "status": "research_candidate",
-          "activityScore": 0.3384,
+          "activityScore": 0.3454,
           "runtimeStatus": "candidate_only",
           "mechanismId": "mc.order_supply_inflation"
         },
@@ -1122,7 +1125,7 @@
           ],
           "invalidation": "政策明确转向增长或金融稳定目标且通胀容忍度上升",
           "status": "research_candidate",
-          "activityScore": 0.3666,
+          "activityScore": 0.3789,
           "runtimeStatus": "candidate_only",
           "mechanismId": "mc.inflation_policy"
         },
@@ -1149,7 +1152,7 @@
           ],
           "invalidation": "金融条件收紧但信用、需求和就业持续改善",
           "status": "research_candidate",
-          "activityScore": 0.3369,
+          "activityScore": 0.3492,
           "runtimeStatus": "candidate_only",
           "mechanismId": "mc.liquidity_growth"
         },
@@ -1176,7 +1179,7 @@
           ],
           "invalidation": "偿债负担与违约指标在高利率环境下持续改善",
           "status": "research_candidate",
-          "activityScore": 0.3462,
+          "activityScore": 0.3554,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -1203,7 +1206,7 @@
           ],
           "invalidation": "高脆弱性未伴随贷款标准、信用利差或支出恶化",
           "status": "research_candidate",
-          "activityScore": 0.3364,
+          "activityScore": 0.3461,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -1230,7 +1233,7 @@
           ],
           "invalidation": "盈利与权益风险溢价显著脱离增长状态",
           "status": "research_candidate",
-          "activityScore": 0.3159,
+          "activityScore": 0.3285,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -1257,7 +1260,7 @@
           ],
           "invalidation": "信用压力代理与脆弱性长期反向变化",
           "status": "research_candidate",
-          "activityScore": 0.3658,
+          "activityScore": 0.373,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -1284,7 +1287,7 @@
           ],
           "invalidation": "通胀风险资产未对持续通胀意外产生正向敏感度",
           "status": "research_candidate",
-          "activityScore": 0.3448,
+          "activityScore": 0.3564,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -1311,7 +1314,7 @@
           ],
           "invalidation": "政策金融条件与实际利率风险长期脱钩",
           "status": "research_candidate",
-          "activityScore": 0.3578,
+          "activityScore": 0.3699,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -1338,7 +1341,7 @@
           ],
           "invalidation": "秩序压力上升未伴随储备多元化或保险需求",
           "status": "research_candidate",
-          "activityScore": 0.304,
+          "activityScore": 0.3068,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         }
@@ -1352,7 +1355,8 @@
             "e.inflation.liquidity",
             "e.liquidity.growth"
           ],
-          "activityScore": 0.3473,
+          "activityScore": 0.3578,
+          "runtimeStatus": "research_candidate",
           "evidenceGrade": "C"
         },
         {
@@ -1363,7 +1367,8 @@
             "e.fragility.growth",
             "e.growth.equity"
           ],
-          "activityScore": 0.3328,
+          "activityScore": 0.3433,
+          "runtimeStatus": "research_candidate",
           "evidenceGrade": "C"
         },
         {
@@ -1372,11 +1377,12 @@
           "edgeIds": [
             "e.order.insurance"
           ],
-          "activityScore": 0.304,
+          "activityScore": 0.3068,
+          "runtimeStatus": "research_candidate",
           "evidenceGrade": "D"
         }
       ],
-      "primaryPathId": "path.supply_policy",
+      "attentionPathId": "path.supply_policy",
       "hypotheses": [
         {
           "id": "H1",
@@ -1734,7 +1740,7 @@
             "field": "level",
             "score": 0.8308,
             "trend": "up",
-            "confidence": 0.7916,
+            "confidence": 0.8034,
             "freshness": "stale"
           }
         },
@@ -1755,7 +1761,7 @@
             "field": "momentum",
             "score": -0.3044,
             "trend": "down",
-            "confidence": 0.8309,
+            "confidence": 0.8546,
             "freshness": "fresh"
           }
         },
@@ -1776,7 +1782,7 @@
             "field": "momentum",
             "score": 0.2716,
             "trend": "up",
-            "confidence": 0.8394,
+            "confidence": 0.8653,
             "freshness": "fresh"
           }
         },
@@ -1797,7 +1803,7 @@
             "field": "level",
             "score": 0.4636,
             "trend": "up",
-            "confidence": 0.8027,
+            "confidence": 0.8168,
             "freshness": "fresh"
           }
         },
@@ -1818,7 +1824,7 @@
             "field": "level",
             "score": -0.1874,
             "trend": "flat",
-            "confidence": 0.8121,
+            "confidence": 0.8314,
             "freshness": "fresh"
           }
         },
@@ -1937,7 +1943,7 @@
           ],
           "invalidation": "核心价格与工资动量持续回落且供给冲击消退",
           "status": "research_candidate",
-          "activityScore": 0.3215,
+          "activityScore": 0.3268,
           "runtimeStatus": "candidate_only",
           "mechanismId": "mc.order_supply_inflation"
         },
@@ -1964,7 +1970,7 @@
           ],
           "invalidation": "政策明确转向增长或金融稳定目标且通胀容忍度上升",
           "status": "research_candidate",
-          "activityScore": 0.313,
+          "activityScore": 0.3203,
           "runtimeStatus": "candidate_only",
           "mechanismId": "mc.inflation_policy"
         },
@@ -1991,7 +1997,7 @@
           ],
           "invalidation": "金融条件收紧但信用、需求和就业持续改善",
           "status": "research_candidate",
-          "activityScore": 0.3061,
+          "activityScore": 0.3129,
           "runtimeStatus": "candidate_only",
           "mechanismId": "mc.liquidity_growth"
         },
@@ -2018,7 +2024,7 @@
           ],
           "invalidation": "偿债负担与违约指标在高利率环境下持续改善",
           "status": "research_candidate",
-          "activityScore": 0.2989,
+          "activityScore": 0.3038,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -2045,7 +2051,7 @@
           ],
           "invalidation": "高脆弱性未伴随贷款标准、信用利差或支出恶化",
           "status": "research_candidate",
-          "activityScore": 0.3217,
+          "activityScore": 0.3275,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -2072,7 +2078,7 @@
           ],
           "invalidation": "盈利与权益风险溢价显著脱离增长状态",
           "status": "research_candidate",
-          "activityScore": 0.3203,
+          "activityScore": 0.3278,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -2099,7 +2105,7 @@
           ],
           "invalidation": "信用压力代理与脆弱性长期反向变化",
           "status": "research_candidate",
-          "activityScore": 0.3323,
+          "activityScore": 0.3366,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -2126,7 +2132,7 @@
           ],
           "invalidation": "通胀风险资产未对持续通胀意外产生正向敏感度",
           "status": "research_candidate",
-          "activityScore": 0.3076,
+          "activityScore": 0.3156,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -2153,7 +2159,7 @@
           ],
           "invalidation": "政策金融条件与实际利率风险长期脱钩",
           "status": "research_candidate",
-          "activityScore": 0.2919,
+          "activityScore": 0.298,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         },
@@ -2180,23 +2186,12 @@
           ],
           "invalidation": "秩序压力上升未伴随储备多元化或保险需求",
           "status": "research_candidate",
-          "activityScore": 0.304,
+          "activityScore": 0.3068,
           "runtimeStatus": "candidate_only",
           "mechanismId": null
         }
       ],
       "paths": [
-        {
-          "id": "path.credit_contraction",
-          "label": "金融收紧 → 脆弱性 → 增长",
-          "edgeIds": [
-            "e.liquidity.fragility",
-            "e.fragility.growth",
-            "e.growth.equity"
-          ],
-          "activityScore": 0.3136,
-          "evidenceGrade": "C"
-        },
         {
           "id": "path.supply_policy",
           "label": "供给冲击 → 政策约束",
@@ -2205,7 +2200,20 @@
             "e.inflation.liquidity",
             "e.liquidity.growth"
           ],
-          "activityScore": 0.3135,
+          "activityScore": 0.32,
+          "runtimeStatus": "research_candidate",
+          "evidenceGrade": "C"
+        },
+        {
+          "id": "path.credit_contraction",
+          "label": "金融收紧 → 脆弱性 → 增长",
+          "edgeIds": [
+            "e.liquidity.fragility",
+            "e.fragility.growth",
+            "e.growth.equity"
+          ],
+          "activityScore": 0.3197,
+          "runtimeStatus": "research_candidate",
           "evidenceGrade": "C"
         },
         {
@@ -2214,11 +2222,12 @@
           "edgeIds": [
             "e.order.insurance"
           ],
-          "activityScore": 0.304,
+          "activityScore": 0.3068,
+          "runtimeStatus": "research_candidate",
           "evidenceGrade": "D"
         }
       ],
-      "primaryPathId": "path.credit_contraction",
+      "attentionPathId": "path.supply_policy",
       "hypotheses": [
         {
           "id": "H1",

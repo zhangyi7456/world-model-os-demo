@@ -70,6 +70,9 @@ main { grid-column: 2; min-height: 100vh; }
 .section-title h2 { margin: 0; font-size: 11px; letter-spacing: 0.1em; }
 .section-title > span { color: var(--muted); font: 8px ui-monospace, monospace; }
 .boundary-copy { margin: 15px 0 0; padding-left: 10px; border-left: 2px solid var(--warn); color: var(--muted); font-size: 9px; line-height: 1.6; }
+.claim-bar { margin: 0 0 26px; padding: 11px 0; display: flex; flex-wrap: wrap; gap: 10px 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1.5; letter-spacing: .035em; }
+.claim-bar b { color: var(--warn); }
+.boundary-copy, .calibration-copy p:last-child, .mechanism-audit, .mechanism-audit li, .evidence-sides b, .scenario-row p, .scenario-row dl, .proposal small, .proposal-compare > p, .warning, .license-gate > p { font-size: 12px; line-height: 1.55; }
 .negative { color: var(--danger) !important; }
 .positive { color: var(--good) !important; }
 .text-link { color: var(--accent); text-decoration: none; font-size: 10px; }
